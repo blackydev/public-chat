@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'com.diffplug.spotless' version '6.25.0'
+}
+
+group = 'com.patryklikus'
+version = '0.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+spotless {
+    java {
+        target project.fileTree(project.rootDir) {
+            include '**/*.java'
+        }
+        indentWithSpaces()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        importOrder 'static', ''
+        licenseHeader('/* Copyright Patryk Likus All Rights Reserved. */')
+    }
+}
