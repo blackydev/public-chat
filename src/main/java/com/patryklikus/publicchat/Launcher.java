@@ -10,7 +10,7 @@ import java.net.InetSocketAddress;
 public class Launcher {
     public static void main(String[] args) throws IOException {
         InetSocketAddress inetSocketAddress = new InetSocketAddress(8080);
-        HttpServer server = HttpServer.create(inetSocketAddress, 0);
+        HttpServer server = HttpServer.create(inetSocketAddress, 0); // todo change to Https
 
         RequestHandlersManager requestHandlersManager = new RequestHandlersManager(server);
         requestHandlersManager.addController(BeanProvider.getPublicController());
