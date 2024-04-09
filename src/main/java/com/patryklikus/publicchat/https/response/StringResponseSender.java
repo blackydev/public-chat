@@ -1,7 +1,7 @@
-package com.patryklikus.publicchat.httpUtils.Response;
+/* Copyright Patryk Likus All Rights Reserved. */
+package com.patryklikus.publicchat.https.response;
 
 import com.sun.net.httpserver.HttpExchange;
-
 import java.io.IOException;
 import java.io.OutputStream;
 

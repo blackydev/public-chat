@@ -1,14 +1,17 @@
-package com.patryklikus.publicchat.httpUtils.Request;
+/* Copyright Patryk Likus All Rights Reserved. */
+package com.patryklikus.publicchat.https.request;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
+/**
+ * Represents Http Request.
+ */
 public class Request implements com.sun.net.httpserver.Request {
     private final URI uri;
     private final String method;

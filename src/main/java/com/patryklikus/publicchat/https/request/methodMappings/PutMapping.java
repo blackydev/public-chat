@@ -1,9 +1,10 @@
-package com.patryklikus.publicchat.httpUtils.Request.mapping;
+/* Copyright Patryk Likus All Rights Reserved. */
+package com.patryklikus.publicchat.https.request.methodMappings;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GetMapping {
+public @interface PutMapping {
     String path() default "";
 }
