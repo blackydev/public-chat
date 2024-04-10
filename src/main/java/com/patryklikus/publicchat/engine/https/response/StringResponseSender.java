@@ -1,5 +1,5 @@
 /* Copyright Patryk Likus All Rights Reserved. */
-package com.patryklikus.publicchat.https.response;
+package com.patryklikus.publicchat.engine.https.response;
 
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;

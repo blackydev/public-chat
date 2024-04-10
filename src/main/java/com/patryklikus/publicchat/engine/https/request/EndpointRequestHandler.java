@@ -1,9 +1,9 @@
 /* Copyright Patryk Likus All Rights Reserved. */
-package com.patryklikus.publicchat.https.request;
+package com.patryklikus.publicchat.engine.https.request;
 
-import com.patryklikus.publicchat.https.response.Response;
-import com.patryklikus.publicchat.https.response.ResponseStatusCode;
-import com.patryklikus.publicchat.https.response.StringResponseSender;
+import com.patryklikus.publicchat.engine.https.response.Response;
+import com.patryklikus.publicchat.engine.https.response.ResponseStatusCode;
+import com.patryklikus.publicchat.engine.https.response.StringResponseSender;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.util.function.Function;

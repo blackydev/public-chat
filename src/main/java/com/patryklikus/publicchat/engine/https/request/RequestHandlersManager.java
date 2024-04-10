@@ -1,9 +1,9 @@
 /* Copyright Patryk Likus All Rights Reserved. */
-package com.patryklikus.publicchat.https.request;
+package com.patryklikus.publicchat.engine.https.request;
 
-import com.patryklikus.publicchat.https.request.methodMappings.*;
-import com.patryklikus.publicchat.https.response.Response;
-import com.patryklikus.publicchat.https.response.StringResponseSender;
+import com.patryklikus.publicchat.engine.https.request.methodMappings.*;
+import com.patryklikus.publicchat.engine.https.response.Response;
+import com.patryklikus.publicchat.engine.https.response.StringResponseSender;
 import com.sun.net.httpserver.HttpServer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,6 +25,10 @@ public class RequestHandlersManager {
         endpointHandlers = new HashMap<>();
     }
 
+    public void init() {
+        endpointHandlers.forEach(server::createContext);
+    }
+
     public void addController(Object controller) {
         Class<?> controllerClass = controller.getClass();
         LOG.info("Adding controller to server: " + controllerClass.getName());
@@ -34,7 +38,7 @@ public class RequestHandlersManager {
                 : requestMapping.path();
 
         for (Method method : controllerClass.getMethods()) {
-            if (controllerClass.getAnnotations().length == 0) {
+            if (method.getAnnotations().length == 0) {
                 break;
             }
 
@@ -70,8 +74,6 @@ public class RequestHandlersManager {
                 break;
             }
         }
-
-        endpointHandlers.forEach(server::createContext);
     }
 
     private EndpointRequestHandler getEndpointHandler(String basePath, String path) {
