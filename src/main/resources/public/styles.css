@@ -1,3 +1,103 @@
-h1 {
-    background: red
+@font-face {
+    font-family: "Comfortaa";
+    src: url("public/fonts/Comfortaa-Bold.ttf") format("truetype");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Comfortaa";
+    src: url("public/fonts/Comfortaa-Light.ttf") format("truetype");
+    font-weight: 300; /* Light */
+}
+
+@font-face {
+    font-family: "Comfortaa";
+    src: url("public/fonts/Comfortaa-Medium.ttf") format("truetype");
+    font-weight: 500; /* Medium */
+}
+
+@font-face {
+    font-family: "Comfortaa";
+    src: url("public/fonts/Comfortaa-Regular.ttf") format("truetype");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Comfortaa";
+    src: url("public/fonts/Comfortaa-SemiBold.ttf") format("truetype");
+    font-weight: 600; /* SemiBold */
+}
+
+.logo {
+    font-family: Arial, sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.public {
+    color: black;
+}
+
+.chat {
+    color: #007bff;
+    margin-left: -0.585em;
+}
+
+body {
+    font-family: "Comfortaa", sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.form-window {
+    background-color: #efefef;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 400px;
+}
+
+.form-window input {
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: inline-block;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    padding: 12px 20px;
+    width: 100%;
+}
+
+.form-window button {
+    background-color: #007bff;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px 0;
+    padding: 10px;
+    width: 100%;
+}
+
+.form-window button:hover {
+    background-color: #5ca0ff;
+}
+
+.form-window a {
+    color: #101010;
+    text-decoration: none;
+    font-size: 0.8em;
 }

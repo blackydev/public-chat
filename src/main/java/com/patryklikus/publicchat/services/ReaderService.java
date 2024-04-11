@@ -1,17 +1,16 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.services;
 
-import com.patryklikus.publicchat.controllers.PublicController;
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class PublicService {
-    private static final ClassLoader CLASS_LOADER = PublicController.class.getClassLoader();
+public class ReaderService {
+    private static final ClassLoader CLASS_LOADER = ReaderService.class.getClassLoader();
 
     /**
      * @return resource content or null if doesn't exist
      */
-    public String getPublicResource(String resourceUri) {
+    public String readResource(String resourceUri) {
         StringBuilder content = new StringBuilder();
         try (InputStream inputStream = CLASS_LOADER.getResourceAsStream(resourceUri)) {
             if (inputStream == null) {

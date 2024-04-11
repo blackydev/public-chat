@@ -25,6 +25,10 @@ public class RequestHandlersManager {
         endpointHandlers = new HashMap<>();
     }
 
+    public void init() {
+        endpointHandlers.forEach(server::createContext);
+    }
+
     public void addController(Object controller) {
         Class<?> controllerClass = controller.getClass();
         LOG.info("Adding controller to server: " + controllerClass.getName());
@@ -34,16 +38,11 @@ public class RequestHandlersManager {
                 : requestMapping.path();
 
         for (Method method : controllerClass.getMethods()) {
-            if (controllerClass.getAnnotations().length == 0) {
-                break;
-            }
-
             GetMapping getMapping = method.getAnnotation(GetMapping.class);
             if (getMapping != null) {
                 EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, getMapping.path());
                 endpointHandler.setGetHandler(methodToHandlerFunction(controller, method));
                 LOG.info("Create handler for GET request method. Endpoint: " + basePath + getMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
-                break;
             }
 
             PostMapping postMapping = method.getAnnotation(PostMapping.class);
@@ -51,7 +50,6 @@ public class RequestHandlersManager {
                 EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, postMapping.path());
                 endpointHandler.setPostHandler(methodToHandlerFunction(controller, method));
                 LOG.info("Create handler for POST request method. Endpoint: " + basePath + getMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
-                break;
             }
 
             PutMapping putMapping = method.getAnnotation(PutMapping.class);
@@ -59,7 +57,6 @@ public class RequestHandlersManager {
                 EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, putMapping.path());
                 endpointHandler.setPutMethod(methodToHandlerFunction(controller, method));
                 LOG.info("Create handler for PUT request method: " + basePath + getMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
-                break;
             }
 
             DeleteMapping deleteMapping = method.getAnnotation(DeleteMapping.class);
@@ -67,11 +64,8 @@ public class RequestHandlersManager {
                 EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, deleteMapping.path());
                 endpointHandler.setDeleteMethod(methodToHandlerFunction(controller, method));
                 LOG.info("Create handler for DELETE request method: " + basePath + getMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
-                break;
             }
         }
-
-        endpointHandlers.forEach(server::createContext);
     }
 
     private EndpointRequestHandler getEndpointHandler(String basePath, String path) {

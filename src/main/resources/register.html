@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Public Chat</title>
+    <link rel="stylesheet" href="public/styles.css">
+    <meta name="description" content="description">
+    <meta name="author" content="Patryk Likus github/blackydev"/>
+    <meta name="copyright" content="Patryk Likus"/>
+</head>
+
+<body class="flex-center">
+<form action="/api/users" method="POST" class="form-window">
+    <div class="logo flex-center">
+        <span class="public">PUBLIC</span>
+        <span class="chat">CHAT</span>
+    </div>
+
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username">
+
+    <label for="email">Email</label>
+    <input type="text" id="email" name="email">
+
+    <label for="password">Password</label>
+    <input type="text" id="password" name="password">
+
+    <button>REGISTER</button>
+    <a href="/login">Login</a>
+</form>
+</body>
+
+</html>
