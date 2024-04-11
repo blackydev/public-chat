@@ -6,7 +6,6 @@ import com.patryklikus.publicchat.https.response.ResponseStatusCode;
 import com.patryklikus.publicchat.https.response.StringResponseSender;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.logging.Logger;

@@ -5,7 +5,6 @@ import com.patryklikus.publicchat.https.request.methodMappings.*;
 import com.patryklikus.publicchat.https.response.Response;
 import com.patryklikus.publicchat.https.response.StringResponseSender;
 import com.sun.net.httpserver.HttpServer;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
