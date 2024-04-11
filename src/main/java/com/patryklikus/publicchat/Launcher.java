@@ -2,7 +2,7 @@
 package com.patryklikus.publicchat;
 
 import com.patryklikus.publicchat.config.BeanProvider;
-import com.patryklikus.publicchat.engine.https.request.RequestHandlersManager;
+import com.patryklikus.publicchat.https.request.RequestHandlersManager;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -27,7 +27,7 @@ public class Launcher {
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(20, 2_000, 60, TimeUnit.SECONDS, new SynchronousQueue<>(), Thread.ofVirtual().factory());
         server.setExecutor(threadPoolExecutor);
         LOG.info("Running server...");
-        server.start(); // todo handle closing
+        server.start();
         LOG.info("Server has been started on port " + PORT);
     }
 }

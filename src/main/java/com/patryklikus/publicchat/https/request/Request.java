@@ -1,5 +1,5 @@
 /* Copyright Patryk Likus All Rights Reserved. */
-package com.patryklikus.publicchat.engine.https.request;
+package com.patryklikus.publicchat.https.request;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;

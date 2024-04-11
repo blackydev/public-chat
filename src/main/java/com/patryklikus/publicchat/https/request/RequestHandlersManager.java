@@ -1,10 +1,11 @@
 /* Copyright Patryk Likus All Rights Reserved. */
-package com.patryklikus.publicchat.engine.https.request;
+package com.patryklikus.publicchat.https.request;
 
-import com.patryklikus.publicchat.engine.https.request.methodMappings.*;
-import com.patryklikus.publicchat.engine.https.response.Response;
-import com.patryklikus.publicchat.engine.https.response.StringResponseSender;
+import com.patryklikus.publicchat.https.request.methodMappings.*;
+import com.patryklikus.publicchat.https.response.Response;
+import com.patryklikus.publicchat.https.response.StringResponseSender;
 import com.sun.net.httpserver.HttpServer;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -38,16 +39,11 @@ public class RequestHandlersManager {
                 : requestMapping.path();
 
         for (Method method : controllerClass.getMethods()) {
-            if (method.getAnnotations().length == 0) {
-                break;
-            }
-
             GetMapping getMapping = method.getAnnotation(GetMapping.class);
             if (getMapping != null) {
                 EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, getMapping.path());
                 endpointHandler.setGetHandler(methodToHandlerFunction(controller, method));
                 LOG.info("Create handler for GET request method. Endpoint: " + basePath + getMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
-                break;
             }
 
             PostMapping postMapping = method.getAnnotation(PostMapping.class);
@@ -55,7 +51,6 @@ public class RequestHandlersManager {
                 EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, postMapping.path());
                 endpointHandler.setPostHandler(methodToHandlerFunction(controller, method));
                 LOG.info("Create handler for POST request method. Endpoint: " + basePath + getMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
-                break;
             }
 
             PutMapping putMapping = method.getAnnotation(PutMapping.class);
@@ -63,7 +58,6 @@ public class RequestHandlersManager {
                 EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, putMapping.path());
                 endpointHandler.setPutMethod(methodToHandlerFunction(controller, method));
                 LOG.info("Create handler for PUT request method: " + basePath + getMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
-                break;
             }
 
             DeleteMapping deleteMapping = method.getAnnotation(DeleteMapping.class);
@@ -71,7 +65,6 @@ public class RequestHandlersManager {
                 EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, deleteMapping.path());
                 endpointHandler.setDeleteMethod(methodToHandlerFunction(controller, method));
                 LOG.info("Create handler for DELETE request method: " + basePath + getMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
-                break;
             }
         }
     }

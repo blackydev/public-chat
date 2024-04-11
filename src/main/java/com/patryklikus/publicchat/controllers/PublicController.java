@@ -1,11 +1,11 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.controllers;
 
-import com.patryklikus.publicchat.engine.https.request.Request;
-import com.patryklikus.publicchat.engine.https.request.methodMappings.GetMapping;
-import com.patryklikus.publicchat.engine.https.request.methodMappings.RequestMapping;
-import com.patryklikus.publicchat.engine.https.response.Response;
-import com.patryklikus.publicchat.engine.https.response.ResponseStatusCode;
+import com.patryklikus.publicchat.https.request.Request;
+import com.patryklikus.publicchat.https.request.methodMappings.GetMapping;
+import com.patryklikus.publicchat.https.request.methodMappings.RequestMapping;
+import com.patryklikus.publicchat.https.response.Response;
+import com.patryklikus.publicchat.https.response.ResponseStatusCode;
 import com.patryklikus.publicchat.services.ReaderService;
 
 @RequestMapping(path = "/public")

@@ -1,10 +1,10 @@
 /* Copyright Patryk Likus All Rights Reserved. */
-package com.patryklikus.publicchat.engine.https.request.methodMappings;
+package com.patryklikus.publicchat.https.request.methodMappings;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GetMapping {
-    String path() default "/";
+public @interface RequestMapping {
+    String path() default "";
 }

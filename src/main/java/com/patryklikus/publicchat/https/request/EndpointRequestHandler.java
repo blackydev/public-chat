@@ -1,11 +1,13 @@
 /* Copyright Patryk Likus All Rights Reserved. */
-package com.patryklikus.publicchat.engine.https.request;
+package com.patryklikus.publicchat.https.request;
 
-import com.patryklikus.publicchat.engine.https.response.Response;
-import com.patryklikus.publicchat.engine.https.response.ResponseStatusCode;
-import com.patryklikus.publicchat.engine.https.response.StringResponseSender;
+import com.patryklikus.publicchat.https.response.Response;
+import com.patryklikus.publicchat.https.response.ResponseStatusCode;
+import com.patryklikus.publicchat.https.response.StringResponseSender;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
+import java.util.Arrays;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
@@ -26,6 +28,7 @@ public class EndpointRequestHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) {
+        LOG.info("Request " + exchange.getRequestMethod()  + " " + exchange.getRequestURI());
         String method = exchange.getRequestMethod();
         Request request = Request.create(exchange);
         Function<Request, Response> methodHandler = null;
@@ -39,8 +42,12 @@ public class EndpointRequestHandler implements HttpHandler {
             Response response = new Response(ResponseStatusCode.BAD_REQUEST, "This website is unavailable");
             responseSender.send(exchange, response); // todo add website sender
         } else {
-            Response response = methodHandler.apply(request);
-            responseSender.send(exchange, response);
+            try {
+                Response response = methodHandler.apply(request);
+                responseSender.send(exchange, response);
+            } catch (RuntimeException e) {
+                LOG.info(Arrays.toString(e.getStackTrace()));
+            }
         }
     }
 

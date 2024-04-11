@@ -1,12 +1,11 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.services;
 
-import com.patryklikus.publicchat.controllers.PublicController;
 import java.io.InputStream;
 import java.util.Scanner;
 
 public class ReaderService {
-    private static final ClassLoader CLASS_LOADER = PublicController.class.getClassLoader();
+    private static final ClassLoader CLASS_LOADER = ReaderService.class.getClassLoader();
 
     /**
      * @return resource content or null if doesn't exist
