@@ -50,8 +50,13 @@ public class Launcher {
                 .build();
         userRepository.create(user);
 
-
         ResultSet rs = postgresClient.query("SELECT * FROM users");
-        System.out.println(rs.getString(0));
+        while (rs.next()) {
+            String email = rs.getString("email");
+            String username = rs.getString("username");
+            String password = rs.getString("password");
+            System.out.println(email + username + password);
+        }
+        rs.close();
     }
 }

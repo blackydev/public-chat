@@ -15,7 +15,7 @@ public class UserRepository {
                 "INSERT INTO users (email, username, password, isadmin) VALUES ('%s', '%s', '%s', '%s');",
                 user.getEmail(), user.getUsername(), user.getPassword(), user.isAdmin()
         );
-        System.out.println(postgresClient.query(query));
+        System.out.println(" create : " + postgresClient.query(query));
         return null;
     }
 }

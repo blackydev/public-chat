@@ -50,9 +50,12 @@ public class PostgresClient {
         ).forEach(this::query);
     }
 
+    /**
+     * Create statement and executes query. It's important to close statement.
+     */
     public ResultSet query(String query) {
         try {
-            Statement statement = connection.createStatement();
+            Statement statement = connection.createStatement(); // todo remember about closing
             return statement.executeQuery(query);
         } catch (SQLException e) {
             LOG.warning("Exception during quering a database: " + e.getMessage());
