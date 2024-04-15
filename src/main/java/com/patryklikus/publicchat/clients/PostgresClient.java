@@ -1,7 +1,10 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.clients;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -47,24 +50,27 @@ public class PostgresClient {
                     timestamp timestamp default CURRENT_TIMESTAMP not null
                 );
                 """
-        ).forEach(this::query);
+        ).forEach(this::send);
     }
 
-    /**
-     * Create statement and executes query. It's important to close statement.
-     */
-    public ResultSet query(String query) {
+    public Statement createStatement() {
         try {
-            Statement statement = connection.createStatement(); // todo remember about closing
-            return statement.executeQuery(query);
+            return connection.createStatement();
         } catch (SQLException e) {
-            LOG.warning("Exception during quering a database: " + e.getMessage());
-            return null;
+            LOG.warning("Exception during creating statement to postgreSQL database: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
     public void close() throws SQLException {
         connection.close();
         LOG.info("Application has been disconnected from database");
+    }
+
+    private void send(String query) {
+        try (Statement statement = createStatement()) {
+            statement.executeQuery(query);
+        } catch (SQLException ignore) {
+        }
     }
 }

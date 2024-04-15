@@ -49,14 +49,5 @@ public class Launcher {
                 .withPassword("Password123")
                 .build();
         userRepository.create(user);
-
-        ResultSet rs = postgresClient.query("SELECT * FROM users");
-        while (rs.next()) {
-            String email = rs.getString("email");
-            String username = rs.getString("username");
-            String password = rs.getString("password");
-            System.out.println(email + username + password);
-        }
-        rs.close();
     }
 }
