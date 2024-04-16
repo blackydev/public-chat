@@ -50,7 +50,7 @@ public class PostgresClient {
                     timestamp timestamp default CURRENT_TIMESTAMP not null
                 );
                 """
-        ).forEach(this::send);
+        ).forEach(this::executeUpdate);
     }
 
     public Statement createStatement() {
@@ -67,9 +67,9 @@ public class PostgresClient {
         LOG.info("Application has been disconnected from database");
     }
 
-    private void send(String query) {
+    private void executeUpdate(String query) {
         try (Statement statement = createStatement()) {
-            statement.executeQuery(query);
+            statement.executeUpdate(query);
         } catch (SQLException ignore) {
         }
     }

@@ -10,7 +10,6 @@ import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -48,6 +47,6 @@ public class Launcher {
                 .withEmail("email@gmail.com")
                 .withPassword("Password123")
                 .build();
-        userRepository.create(user);
+        userRepository.save(user);
     }
 }

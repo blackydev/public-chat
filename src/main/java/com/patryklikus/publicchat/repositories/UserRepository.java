@@ -6,44 +6,52 @@ import com.patryklikus.publicchat.models.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Logger;
 
-public class UserRepository {
-    private static final Logger LOG = Logger.getLogger(UserRepository.class.getName());
+public class UserRepository implements Repository<User> {
     private final PostgresClient postgresClient;
 
     public UserRepository(PostgresClient postgresClient) {
         this.postgresClient = postgresClient;
     }
 
-    public User create(User user) {
+    @Override
+    public User findById(Long id) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public User save(User user) throws SQLException {
+        return user.getId() == null ? create(user) : update(user);
+    }
+
+    @Override
+    public void remove(User user) throws SQLException {
+        String query = String.format("DELETE FROM users WHERE id = %s;", user.getId());
+        try (Statement statement = postgresClient.createStatement()) {
+            statement.executeUpdate(query);
+        }
+    }
+
+    private User create(User user) throws SQLException {
         String query = String.format(
-                "INSERT INTO users (email, username, password, isadmin) VALUES ('%s', '%s', '%s', '%s');",
+                "INSERT INTO users (email, username, password, isAdmin) VALUES ('%s', '%s', '%s', '%b') RETURNING ID;",
                 user.getEmail(), user.getUsername(), user.getPassword(), user.isAdmin()
         );
-        Statement statement = postgresClient.createStatement(); // todo remember about closing
-
-        try {
-            int updated = statement.executeUpdate(query);
-            if (updated == 0) {
-                return null;
-            }
-            query = String.format(
-                    "SELECT * FROM users WHERE email = %s AND username = %s;",
-                    user.getEmail(), user.getUsername()
-            );
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next())
-                    user.setId(generatedKeys.getLong(1));
-                else
-                    return null;
-            }
-
-            statement.close();
+        try (Statement statement = postgresClient.createStatement()) {
+            ResultSet rs = statement.executeQuery(query);
+            rs.next();
+            user.setId(rs.getLong(1));
             return user;
-        } catch (SQLException e) {
-            LOG.warning("Exception during creating user in database: " + e.getMessage());
         }
-        return null;
+    }
+
+    private User update(User user) throws SQLException {
+        String query = String.format(
+                "UPDATE users SET email = %s, username = %s , password = %s, isAdmin = %b WHERE id = %s;",
+                user.getEmail(), user.getUsername(), user.getPassword(), user.isAdmin(), user.getId()
+        );
+        try (Statement statement = postgresClient.createStatement()) {
+            return statement.executeUpdate(query) == 0 ? null : user;
+        }
     }
 }
