@@ -1,7 +1,7 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.config;
 
-import com.patryklikus.publicchat.https.request.RequestHandlersManager;
+import com.patryklikus.publicchat.https.RequestHandlersManager;
 import com.sun.net.httpserver.HttpServer;
 import java.sql.SQLException;
 

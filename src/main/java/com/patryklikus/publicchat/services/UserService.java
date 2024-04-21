@@ -1,7 +1,7 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.services;
 
-import static com.patryklikus.publicchat.https.response.ResponseStatusCode.BAD_REQUEST;
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
 
 import com.patryklikus.publicchat.exceptions.ResponseException;
 import com.patryklikus.publicchat.models.User;

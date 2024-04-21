@@ -1,12 +1,12 @@
 /* Copyright Patryk Likus All Rights Reserved. */
-package com.patryklikus.publicchat.https.request;
+package com.patryklikus.publicchat.https.engine;
 
-import static com.patryklikus.publicchat.https.response.ResponseStatusCode.BAD_REQUEST;
-import static com.patryklikus.publicchat.https.response.ResponseStatusCode.INTERNAL_SERVER_ERROR;
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.INTERNAL_SERVER_ERROR;
 
 import com.patryklikus.publicchat.exceptions.ResponseException;
-import com.patryklikus.publicchat.https.response.Response;
-import com.patryklikus.publicchat.https.response.StringResponseSender;
+import com.patryklikus.publicchat.https.models.Request;
+import com.patryklikus.publicchat.https.models.Response;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.util.Arrays;

@@ -1,9 +1,11 @@
 /* Copyright Patryk Likus All Rights Reserved. */
-package com.patryklikus.publicchat.https.request;
+package com.patryklikus.publicchat.https;
 
-import com.patryklikus.publicchat.https.request.methodMappings.*;
-import com.patryklikus.publicchat.https.response.Response;
-import com.patryklikus.publicchat.https.response.StringResponseSender;
+import com.patryklikus.publicchat.https.annotations.*;
+import com.patryklikus.publicchat.https.engine.EndpointRequestHandler;
+import com.patryklikus.publicchat.https.engine.StringResponseSender;
+import com.patryklikus.publicchat.https.models.Request;
+import com.patryklikus.publicchat.https.models.Response;
 import com.sun.net.httpserver.HttpServer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

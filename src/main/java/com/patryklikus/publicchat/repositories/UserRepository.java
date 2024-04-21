@@ -39,20 +39,22 @@ public class UserRepository implements Repository<User> {
     public User save(User user) {
         try {
             return user.getId() == null ? create(user) : update(user);
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void remove(User user) throws SQLException {
+    public void remove(User user) {
         String query = String.format("DELETE FROM users WHERE id = %s;", user.getId());
         try (Statement statement = postgresClient.createStatement()) {
             statement.executeUpdate(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private User create(User user) throws SQLException {
+    private User create(User user) {
         String query = String.format(
                 "INSERT INTO users (email, username, password, isAdmin) VALUES ('%s', '%s', '%s', '%b') RETURNING ID;",
                 user.getEmail(), user.getUsername(), user.getPassword(), user.isAdmin()
@@ -62,6 +64,8 @@ public class UserRepository implements Repository<User> {
             rs.next();
             user.setId(rs.getLong(1));
             return user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
