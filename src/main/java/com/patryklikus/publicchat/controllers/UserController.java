@@ -5,10 +5,11 @@ import com.patryklikus.publicchat.https.annotations.PostMapping;
 import com.patryklikus.publicchat.https.annotations.RequestMapping;
 import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.Response;
-import com.patryklikus.publicchat.https.models.ResponseStatusCode;
 import com.patryklikus.publicchat.models.User;
 import com.patryklikus.publicchat.models.mappers.ObjectMapper;
 import com.patryklikus.publicchat.services.UserService;
+
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
 
 @RequestMapping(path = "/api/users")
 public class UserController {
@@ -24,6 +25,6 @@ public class UserController {
     public Response createUser(Request request) {
         User user = objectMapper.toUser(request.getRequestBody());
         userService.createUser(user);
-        return new Response(ResponseStatusCode.NO_CONTENT, "");
+        return new Response(NO_CONTENT, "");
     }
 }
