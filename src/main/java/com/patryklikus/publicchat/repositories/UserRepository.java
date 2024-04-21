@@ -11,7 +11,6 @@ public class UserRepository implements Repository<User> {
     private final String CREATE_TABLE_QUERY = """
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
-                email VARCHAR(255) NOT NULL UNIQUE,
                 username VARCHAR(50) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL,
                 isadmin BOOLEAN DEFAULT FALSE NOT NULL
@@ -56,8 +55,8 @@ public class UserRepository implements Repository<User> {
 
     private User create(User user) {
         String query = String.format(
-                "INSERT INTO users (email, username, password, isAdmin) VALUES ('%s', '%s', '%s', '%b') RETURNING ID;",
-                user.getEmail(), user.getUsername(), user.getPassword(), user.isAdmin()
+                "INSERT INTO users (username, password, isAdmin) VALUES ('%s', '%s', '%b') RETURNING ID;",
+                user.getUsername(), user.getPassword(), user.isAdmin()
         );
         try (Statement statement = postgresClient.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
@@ -71,8 +70,8 @@ public class UserRepository implements Repository<User> {
 
     private User update(User user) throws SQLException {
         String query = String.format(
-                "UPDATE users SET email = %s, username = %s , password = %s, isAdmin = %b WHERE id = %s;",
-                user.getEmail(), user.getUsername(), user.getPassword(), user.isAdmin(), user.getId()
+                "UPDATE users SET username = %s , password = %s, isAdmin = %b WHERE id = %s;",
+                user.getUsername(), user.getPassword(), user.isAdmin(), user.getId()
         );
         try (Statement statement = postgresClient.createStatement()) {
             return statement.executeUpdate(query) == 0 ? null : user;

@@ -11,6 +11,11 @@ public class ResponseException extends RuntimeException {
         this.statusCode = statusCode;
     }
 
+    public ResponseException(ResponseStatusCode statusCode) {
+        super();
+        this.statusCode = statusCode;
+    }
+
     public ResponseStatusCode getStatusCode() {
         return statusCode;
     }

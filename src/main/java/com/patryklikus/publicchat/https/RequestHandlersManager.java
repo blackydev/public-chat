@@ -56,27 +56,30 @@ public class RequestHandlersManager {
             if (postMapping != null) {
                 EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, postMapping.path());
                 endpointHandler.setPostHandler(methodToHandlerFunction(controller, method));
-                LOG.info("Create handler for POST request method. Endpoint: " + basePath + getMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
+                LOG.info("Create handler for POST request method. Endpoint: " + basePath + postMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
             }
 
             PutMapping putMapping = method.getAnnotation(PutMapping.class);
             if (putMapping != null) {
                 EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, putMapping.path());
                 endpointHandler.setPutMethod(methodToHandlerFunction(controller, method));
-                LOG.info("Create handler for PUT request method: " + basePath + getMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
+                LOG.info("Create handler for PUT request method: " + basePath + putMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
             }
 
             DeleteMapping deleteMapping = method.getAnnotation(DeleteMapping.class);
             if (deleteMapping != null) {
                 EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, deleteMapping.path());
                 endpointHandler.setDeleteMethod(methodToHandlerFunction(controller, method));
-                LOG.info("Create handler for DELETE request method: " + basePath + getMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
+                LOG.info("Create handler for DELETE request method: " + basePath + deleteMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
             }
         }
     }
 
     private EndpointRequestHandler getEndpointHandler(String basePath, String path) {
-        return endpointHandlers.computeIfAbsent(basePath + path, k -> new EndpointRequestHandler(stringResponseSender));
+        String endpoint = basePath + path;
+        if (endpoint.isEmpty())
+            endpoint = "/";
+        return endpointHandlers.computeIfAbsent(endpoint, k -> new EndpointRequestHandler(stringResponseSender));
     }
 
     private Function<Request, Response> methodToHandlerFunction(Object object, Method method) {
@@ -84,7 +87,7 @@ public class RequestHandlersManager {
             try {
                 return (Response) method.invoke(object, request);
             } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e); // TODO very unsafe, change it
+                throw new RuntimeException(e);
             }
         };
     }

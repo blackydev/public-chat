@@ -37,7 +37,6 @@ public class PostgresClient {
         List.of("""
                 CREATE TABLE IF NOT EXISTS users (
                     id SERIAL PRIMARY KEY,
-                    email VARCHAR(255) NOT NULL UNIQUE,
                     username VARCHAR(50) NOT NULL UNIQUE,
                     password VARCHAR(255) NOT NULL,
                     isadmin BOOLEAN DEFAULT FALSE NOT NULL

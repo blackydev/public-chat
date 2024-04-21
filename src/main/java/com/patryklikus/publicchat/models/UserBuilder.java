@@ -3,7 +3,6 @@ package com.patryklikus.publicchat.models;
 
 public final class UserBuilder {
     private Long id;
-    private String email;
     private String username;
     private String password;
     private boolean isAdmin;
@@ -17,11 +16,6 @@ public final class UserBuilder {
 
     public UserBuilder withId(Long id) {
         this.id = id;
-        return this;
-    }
-
-    public UserBuilder withEmail(String email) {
-        this.email = email;
         return this;
     }
 
@@ -41,6 +35,6 @@ public final class UserBuilder {
     }
 
     public User build() {
-        return new User(id, email, username, password, isAdmin);
+        return new User(id, username, password, isAdmin);
     }
 }

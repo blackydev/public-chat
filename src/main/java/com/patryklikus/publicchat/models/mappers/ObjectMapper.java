@@ -9,14 +9,12 @@ import java.util.Map;
 public class ObjectMapper extends JsonMapper {
     public User toUser(String json) {
         Map<String, String> map = jsonToMap(json);
-        if (map.size() != 3) {
+        if (map.size() != 2) {
             return null;
         }
         String username = map.get("username");
-        String email = map.get("email");
         String password = map.get("password");
         return anUser().withUsername(username)
-                .withEmail(email)
                 .withPassword(password)
                 .withIsAdmin(false)
                 .build();

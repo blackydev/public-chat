@@ -1,17 +1,17 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.https.engine;
 
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.INTERNAL_SERVER_ERROR;
-
 import com.patryklikus.publicchat.exceptions.ResponseException;
 import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.Response;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import java.util.Arrays;
+
 import java.util.function.Function;
 import java.util.logging.Logger;
+
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.INTERNAL_SERVER_ERROR;
 
 /**
  * Handles requests of one endpoint. It handles multiple types of requestMethods like get, post, put, and delete.
@@ -48,11 +48,12 @@ public class EndpointRequestHandler implements HttpHandler {
         Response response;
         try {
             response = methodHandler.apply(request);
-        } catch (ResponseException e) {
-            response = new Response(e.getStatusCode(), e.getMessage());
         } catch (RuntimeException e) {
-            LOG.info(Arrays.toString(e.getStackTrace()));
-            response = new Response(INTERNAL_SERVER_ERROR, "Unexpected server error");
+            if (e.getCause().getCause() instanceof ResponseException re) {
+                response = new Response(re.getStatusCode(), re.getMessage());
+            } else {
+                response = new Response(INTERNAL_SERVER_ERROR, "Unexpected server error");
+            }
         }
         responseSender.send(exchange, response);
     }

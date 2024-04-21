@@ -21,6 +21,19 @@ public class UserController {
         this.userService = userService;
     }
 
+    /*@GetMapping
+    public Response getUser(Request request) {
+        String[] pathParts = request.getRequestURI()
+                .getPath()
+                .replace("/api/users/", "")
+                .split("/");
+        if(pathParts.length != 1) {
+            throw new ResponseException(NOT_FOUND);
+        }
+        String endpoint = pathParts[0];
+        return new Response(endpoint);
+    }*/
+
     @PostMapping
     public Response createUser(Request request) {
         User user = objectMapper.toUser(request.getRequestBody());

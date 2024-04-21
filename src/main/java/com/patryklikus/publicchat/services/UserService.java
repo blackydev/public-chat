@@ -14,10 +14,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createUser(User user) {
+    public void createUser(User user) {
         if (user == null) {
             throw new ResponseException(BAD_REQUEST, "Invalid request body");
         }
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 }
