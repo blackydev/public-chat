@@ -1,27 +1,47 @@
+/* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.repositories;
 
 import com.patryklikus.publicchat.clients.PostgresClient;
 import com.patryklikus.publicchat.models.User;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class UserRepository implements Repository<User> {
+    private final String CREATE_TABLE_QUERY = """
+            CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                email VARCHAR(255) NOT NULL UNIQUE,
+                username VARCHAR(50) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL,
+                isadmin BOOLEAN DEFAULT FALSE NOT NULL
+            );
+            """;
     private final PostgresClient postgresClient;
 
     public UserRepository(PostgresClient postgresClient) {
         this.postgresClient = postgresClient;
     }
 
+    public void createTable() {
+        try (Statement statement = postgresClient.createStatement()) {
+            statement.executeUpdate(CREATE_TABLE_QUERY);
+        } catch (SQLException ignore) {
+        }
+    }
+
     @Override
-    public User findById(Long id) throws SQLException {
+    public User findById(Long id) {
         return null;
     }
 
     @Override
-    public User save(User user) throws SQLException {
-        return user.getId() == null ? create(user) : update(user);
+    public User save(User user) {
+        try {
+            return user.getId() == null ? create(user) : update(user);
+        } catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

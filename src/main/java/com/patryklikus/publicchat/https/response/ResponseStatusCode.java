@@ -6,9 +6,11 @@ package com.patryklikus.publicchat.https.response;
  */
 public enum ResponseStatusCode {
     OK(200),
+    NO_CONTENT(204),
     BAD_REQUEST(400),
+    UNAUTHORIZED(401),
     NOT_FOUND(404),
-    INTERVAL_SERVER_ERROR(500);
+    INTERNAL_SERVER_ERROR(500);
 
     private final int code;
 

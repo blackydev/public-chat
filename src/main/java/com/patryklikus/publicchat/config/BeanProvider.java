@@ -4,7 +4,11 @@ package com.patryklikus.publicchat.config;
 import com.patryklikus.publicchat.clients.PostgresClient;
 import com.patryklikus.publicchat.controllers.PageController;
 import com.patryklikus.publicchat.controllers.PublicController;
+import com.patryklikus.publicchat.controllers.UserController;
+import com.patryklikus.publicchat.models.mappers.ObjectMapper;
+import com.patryklikus.publicchat.repositories.UserRepository;
 import com.patryklikus.publicchat.services.ReaderService;
+import com.patryklikus.publicchat.services.UserService;
 
 public class BeanProvider {
     private static final ReaderService READER_SERVICE = new ReaderService();
@@ -12,8 +16,17 @@ public class BeanProvider {
     private static final PageController PAGE_CONTROLLER = new PageController(READER_SERVICE);
     private static final PostgresClient POSTGRESQL_CLIENT = new PostgresClient("jdbc:postgresql://localhost:5432/db", "wdpai", "password");
 
-    public static ReaderService getReaderService() {
-        return READER_SERVICE;
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final UserRepository USER_REPOSITORY = new UserRepository(POSTGRESQL_CLIENT);
+    private static final UserService USER_SERVICE = new UserService(USER_REPOSITORY);
+    private static final UserController USER_CONTROLLER = new UserController(OBJECT_MAPPER, USER_SERVICE);
+
+    public static UserController getUserController() {
+        return USER_CONTROLLER;
+    }
+
+    public static UserRepository getUserRepository() {
+        return USER_REPOSITORY;
     }
 
     public static PublicController getPublicController() {

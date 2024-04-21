@@ -7,6 +7,7 @@ import com.patryklikus.publicchat.https.response.StringResponseSender;
 import com.sun.net.httpserver.HttpServer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -29,7 +30,11 @@ public class RequestHandlersManager {
         endpointHandlers.forEach(server::createContext);
     }
 
-    public void addController(Object controller) {
+    public void addControllers(Object... controllers) {
+        Arrays.stream(controllers).forEach(this::addController);
+    }
+
+    private void addController(Object controller) {
         Class<?> controllerClass = controller.getClass();
         LOG.info("Adding controller to server: " + controllerClass.getName());
         RequestMapping requestMapping = controllerClass.getAnnotation(RequestMapping.class);

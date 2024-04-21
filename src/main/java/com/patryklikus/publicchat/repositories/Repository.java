@@ -1,17 +1,17 @@
+/* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.repositories;
 
-import java.sql.SQLException;
 
 public interface Repository<T> {
-    T findById(Long id) throws SQLException;
+    T findById(Long id);
 
     /**
      * Creates/updates object.
      */
-    T save(T obj) throws SQLException;
+    T save(T obj);
 
     /**
      * Removes object.
      */
-    void remove(T obj) throws SQLException;
+    void remove(T obj);
 }

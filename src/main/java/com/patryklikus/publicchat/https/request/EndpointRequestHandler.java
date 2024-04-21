@@ -1,8 +1,11 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.https.request;
 
+import static com.patryklikus.publicchat.https.response.ResponseStatusCode.BAD_REQUEST;
+import static com.patryklikus.publicchat.https.response.ResponseStatusCode.INTERNAL_SERVER_ERROR;
+
+import com.patryklikus.publicchat.exceptions.ResponseException;
 import com.patryklikus.publicchat.https.response.Response;
-import com.patryklikus.publicchat.https.response.ResponseStatusCode;
 import com.patryklikus.publicchat.https.response.StringResponseSender;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -27,7 +30,7 @@ public class EndpointRequestHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) {
-        LOG.info("Request " + exchange.getRequestMethod()  + " " + exchange.getRequestURI());
+        LOG.info("Request " + exchange.getRequestMethod() + " " + exchange.getRequestURI());
         String method = exchange.getRequestMethod();
         Request request = Request.create(exchange);
         Function<Request, Response> methodHandler = null;
@@ -37,17 +40,21 @@ public class EndpointRequestHandler implements HttpHandler {
             case "PUT" -> methodHandler = putMethod;
             case "DELETE" -> methodHandler = deleteMethod;
         }
-        if(methodHandler == null) {
-            Response response = new Response(ResponseStatusCode.BAD_REQUEST, "This website is unavailable");
+        if (methodHandler == null) {
+            Response response = new Response(BAD_REQUEST, "This website is unavailable");
             responseSender.send(exchange, response); // todo add website sender
-        } else {
-            try {
-                Response response = methodHandler.apply(request);
-                responseSender.send(exchange, response);
-            } catch (RuntimeException e) {
-                LOG.info(Arrays.toString(e.getStackTrace()));
-            }
+            return;
         }
+        Response response;
+        try {
+            response = methodHandler.apply(request);
+        } catch (ResponseException e) {
+            response = new Response(e.getStatusCode(), e.getMessage());
+        } catch (RuntimeException e) {
+            LOG.info(Arrays.toString(e.getStackTrace()));
+            response = new Response(INTERNAL_SERVER_ERROR, "Unexpected server error");
+        }
+        responseSender.send(exchange, response);
     }
 
     public void setGetHandler(Function<Request, Response> getHandler) {
