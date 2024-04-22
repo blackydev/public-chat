@@ -1,10 +1,10 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.https.models;
 
-import java.util.Objects;
-
 import static com.patryklikus.publicchat.https.models.ResponseBodyFormat.STRING;
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.OK;
+
+import java.util.Objects;
 
 public record Response(
         ResponseStatusCode code,

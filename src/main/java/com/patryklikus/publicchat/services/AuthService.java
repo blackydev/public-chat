@@ -1,14 +1,14 @@
+/* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.services;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.models.User;
 import com.patryklikus.publicchat.repositories.UserRepository;
 import com.sun.net.httpserver.HttpExchange;
-
 import java.util.Base64;
 import java.util.List;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class AuthService {
     private final HashingService hashingService;

@@ -1,11 +1,8 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.controllers;
 
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NOT_FOUND;
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
 
-import com.patryklikus.publicchat.exceptions.ResponseException;
-import com.patryklikus.publicchat.https.annotations.GetMapping;
 import com.patryklikus.publicchat.https.annotations.PostMapping;
 import com.patryklikus.publicchat.https.annotations.RequestMapping;
 import com.patryklikus.publicchat.https.models.Request;

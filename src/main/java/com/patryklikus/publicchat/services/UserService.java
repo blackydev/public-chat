@@ -1,11 +1,11 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.services;
 
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
+
 import com.patryklikus.publicchat.exceptions.ResponseException;
 import com.patryklikus.publicchat.models.User;
 import com.patryklikus.publicchat.repositories.UserRepository;
-
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
 
 public class UserService {
     private final UserRepository userRepository;

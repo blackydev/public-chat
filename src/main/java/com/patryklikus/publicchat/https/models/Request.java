@@ -3,7 +3,6 @@ package com.patryklikus.publicchat.https.models;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;

@@ -1,3 +1,4 @@
+/* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.https.models;
 
 import com.patryklikus.publicchat.models.User;
