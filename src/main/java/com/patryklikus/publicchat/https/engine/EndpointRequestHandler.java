@@ -3,7 +3,7 @@ package com.patryklikus.publicchat.https.engine;
 
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
 
-import com.patryklikus.publicchat.exceptions.ResponseException;
+import com.patryklikus.publicchat.https.models.ResponseException;
 import com.patryklikus.publicchat.https.annotations.Authenticated;
 import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.https.models.Request;

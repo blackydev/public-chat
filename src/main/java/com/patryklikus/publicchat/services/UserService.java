@@ -1,8 +1,8 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.services;
 
-import com.patryklikus.publicchat.exceptions.ResponseException;
 import com.patryklikus.publicchat.https.models.Authentication;
+import com.patryklikus.publicchat.https.models.ResponseException;
 import com.patryklikus.publicchat.models.User;
 import com.patryklikus.publicchat.repositories.UserRepository;
 

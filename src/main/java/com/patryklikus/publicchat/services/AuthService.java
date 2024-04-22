@@ -38,8 +38,9 @@ public class AuthService {
 
     private String[] decodeCredentials(String authHeader) {
         String credentials = authHeader.substring("Basic ".length());
-        byte[] decodedBytes = Base64.getDecoder().decode(credentials); // todo
+        byte[] decodedBytes = Base64.getDecoder().decode(credentials); // todo will it work?
         String decoded = new String(decodedBytes, UTF_8);
         return decoded.split(":");
     }
+
 }

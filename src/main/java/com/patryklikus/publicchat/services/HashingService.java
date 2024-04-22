@@ -2,15 +2,12 @@
 package com.patryklikus.publicchat.services;
 
 import com.sun.net.httpserver.Headers;
+
 import java.security.SecureRandom;
 import java.util.Objects;
 
 public class HashingService {
     private static final SecureRandom RANDOM = new SecureRandom();
-
-    public boolean authorize(Headers headers) {
-        return true; // todo
-    }
 
     public String hash(String toHash) {
         return toHash;
