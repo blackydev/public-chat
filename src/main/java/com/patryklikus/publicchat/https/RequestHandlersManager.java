@@ -6,6 +6,7 @@ import com.patryklikus.publicchat.https.engine.EndpointRequestHandler;
 import com.patryklikus.publicchat.https.engine.StringResponseSender;
 import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.Response;
+import com.patryklikus.publicchat.services.AuthService;
 import com.sun.net.httpserver.HttpServer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,12 +19,14 @@ import java.util.logging.Logger;
 public class RequestHandlersManager {
     private static final Logger LOG = Logger.getLogger(RequestHandlersManager.class.getName());
     private final HttpServer server;
+    private final AuthService authService;
     private final StringResponseSender stringResponseSender;
 
     private final Map<String, EndpointRequestHandler> endpointHandlers;
 
-    public RequestHandlersManager(HttpServer server) {
+    public RequestHandlersManager(HttpServer server, AuthService authService) {
         this.server = server;
+        this.authService = authService;
         stringResponseSender = new StringResponseSender();
         endpointHandlers = new HashMap<>();
     }
@@ -62,14 +65,14 @@ public class RequestHandlersManager {
             PutMapping putMapping = method.getAnnotation(PutMapping.class);
             if (putMapping != null) {
                 EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, putMapping.path());
-                endpointHandler.setPutMethod(methodToHandlerFunction(controller, method));
+                endpointHandler.setPutHandler(methodToHandlerFunction(controller, method));
                 LOG.info("Create handler for PUT request method: " + basePath + putMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
             }
 
             DeleteMapping deleteMapping = method.getAnnotation(DeleteMapping.class);
             if (deleteMapping != null) {
                 EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, deleteMapping.path());
-                endpointHandler.setDeleteMethod(methodToHandlerFunction(controller, method));
+                endpointHandler.setDeleteHandler(methodToHandlerFunction(controller, method));
                 LOG.info("Create handler for DELETE request method: " + basePath + deleteMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
             }
         }
@@ -79,7 +82,7 @@ public class RequestHandlersManager {
         String endpoint = basePath + path;
         if (endpoint.isEmpty())
             endpoint = "/";
-        return endpointHandlers.computeIfAbsent(endpoint, k -> new EndpointRequestHandler(stringResponseSender));
+        return endpointHandlers.computeIfAbsent(endpoint, k -> new EndpointRequestHandler(stringResponseSender, authService));
     }
 
     private Function<Request, Response> methodToHandlerFunction(Object object, Method method) {

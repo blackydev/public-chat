@@ -34,6 +34,10 @@ public class UserRepository implements Repository<User> {
         return null;
     }
 
+    public User findByUsername(String username) {
+        return null;
+    }
+
     @Override
     public User save(User user) {
         try {

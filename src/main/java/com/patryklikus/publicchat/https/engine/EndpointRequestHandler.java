@@ -2,16 +2,18 @@
 package com.patryklikus.publicchat.https.engine;
 
 import com.patryklikus.publicchat.exceptions.ResponseException;
+import com.patryklikus.publicchat.https.annotations.Authenticated;
+import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.Response;
+import com.patryklikus.publicchat.services.AuthService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.util.function.Function;
 import java.util.logging.Logger;
 
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.INTERNAL_SERVER_ERROR;
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
 
 /**
  * Handles requests of one endpoint. It handles multiple types of requestMethods like get, post, put, and delete.
@@ -19,43 +21,65 @@ import static com.patryklikus.publicchat.https.models.ResponseStatusCode.INTERNA
 public class EndpointRequestHandler implements HttpHandler {
     private static final Logger LOG = Logger.getLogger(EndpointRequestHandler.class.getName());
     private final StringResponseSender responseSender;
+    private final AuthService authService;
     private Function<Request, Response> getHandler;
     private Function<Request, Response> postHandler;
-    private Function<Request, Response> putMethod;
-    private Function<Request, Response> deleteMethod;
+    private Function<Request, Response> putHandler;
+    private Function<Request, Response> deleteHandler;
 
-    public EndpointRequestHandler(StringResponseSender responseSender) {
+    public EndpointRequestHandler(StringResponseSender responseSender, AuthService authService) {
         this.responseSender = responseSender;
+        this.authService = authService;
     }
 
     @Override
     public void handle(HttpExchange exchange) {
         LOG.info("Request " + exchange.getRequestMethod() + " " + exchange.getRequestURI());
-        String method = exchange.getRequestMethod();
-        Request request = Request.create(exchange);
-        Function<Request, Response> methodHandler = null;
-        switch (method) {
-            case "GET" -> methodHandler = getHandler;
-            case "POST" -> methodHandler = postHandler;
-            case "PUT" -> methodHandler = putMethod;
-            case "DELETE" -> methodHandler = deleteMethod;
-        }
+        Function<Request, Response> methodHandler = chooseHandler(exchange);
+        Response response = getResponse(exchange, methodHandler);
+        responseSender.send(exchange, response);
+    }
+
+    private Response getResponse(HttpExchange exchange, Function<Request, Response> methodHandler) {
         if (methodHandler == null) {
-            Response response = new Response(BAD_REQUEST, "This website is unavailable");
-            responseSender.send(exchange, response); // todo add website sender
-            return;
+            return new Response(BAD_REQUEST, "This website is unavailable");
         }
-        Response response;
-        try {
-            response = methodHandler.apply(request);
-        } catch (RuntimeException e) {
-            if (e.getCause().getCause() instanceof ResponseException re) {
-                response = new Response(re.getStatusCode(), re.getMessage());
-            } else {
-                response = new Response(INTERNAL_SERVER_ERROR, "Unexpected server error");
+        Authentication authentication = authService.authenticate(exchange);
+        Authenticated authenticated = methodHandler.getClass().getAnnotation(Authenticated.class); // todo check it
+        if (authenticated != null) {
+            if (authentication == null) {
+                return new Response(UNAUTHORIZED);
+            }
+            if (authenticated.admin() && !authentication.isAdmin()) {
+                return new Response(FORBIDDEN);
             }
         }
-        responseSender.send(exchange, response);
+        Request request = Request.create(exchange, authentication);
+        return applyHandler(methodHandler, request);
+    }
+
+
+    private Response applyHandler(Function<Request, Response> methodHandler, Request request) {
+        try {
+            return methodHandler.apply(request);
+        } catch (RuntimeException e) {
+            if (e.getCause().getCause() instanceof ResponseException re) {
+                return new Response(re.getStatusCode(), re.getMessage());
+            } else {
+                return new Response(INTERNAL_SERVER_ERROR, "Unexpected server error");
+            }
+        }
+    }
+
+    private Function<Request, Response> chooseHandler(HttpExchange exchange) {
+        String method = exchange.getRequestMethod();
+        return switch (method) {
+            case "GET" -> getHandler;
+            case "POST" -> postHandler;
+            case "PUT" -> putHandler;
+            case "DELETE" -> deleteHandler;
+            default -> null;
+        };
     }
 
     public void setGetHandler(Function<Request, Response> getHandler) {
@@ -66,11 +90,11 @@ public class EndpointRequestHandler implements HttpHandler {
         this.postHandler = postHandler;
     }
 
-    public void setPutMethod(Function<Request, Response> putMethod) {
-        this.putMethod = putMethod;
+    public void setPutHandler(Function<Request, Response> putHandler) {
+        this.putHandler = putHandler;
     }
 
-    public void setDeleteMethod(Function<Request, Response> deleteMethod) {
-        this.deleteMethod = deleteMethod;
+    public void setDeleteHandler(Function<Request, Response> deleteHandler) {
+        this.deleteHandler = deleteHandler;
     }
 }

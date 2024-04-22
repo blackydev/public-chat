@@ -3,7 +3,7 @@ package com.patryklikus.publicchat.models;
 
 public class User {
     private final String username;
-    private final String password;
+    private String password;
     private final boolean isAdmin;
     private Long id;
 
@@ -32,5 +32,9 @@ public class User {
 
     public boolean isAdmin() {
         return isAdmin;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

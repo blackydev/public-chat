@@ -3,6 +3,7 @@ package com.patryklikus.publicchat.config;
 
 import com.patryklikus.publicchat.https.RequestHandlersManager;
 import com.sun.net.httpserver.HttpServer;
+
 import java.sql.SQLException;
 
 public class BeanInitializer {
@@ -17,7 +18,7 @@ public class BeanInitializer {
     }
 
     private static void initEndpoints(HttpServer server) {
-        var requestHandlersManager = new RequestHandlersManager(server);
+        var requestHandlersManager = new RequestHandlersManager(server, BeanProvider.getAuthService());
         requestHandlersManager.addControllers(
                 BeanProvider.getPublicController(),
                 BeanProvider.getPageController(),
