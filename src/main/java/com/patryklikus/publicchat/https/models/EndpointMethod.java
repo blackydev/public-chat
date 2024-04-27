@@ -3,6 +3,7 @@ package com.patryklikus.publicchat.https.models;
 
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.INTERNAL_SERVER_ERROR;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -16,5 +17,13 @@ public record EndpointMethod<T>(T obj, Method method) {
             }
             return new Response(INTERNAL_SERVER_ERROR, "Unexpected server error");
         }
+    }
+
+    public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
+        return method.isAnnotationPresent(annotationClass);
+    }
+
+    public <A extends Annotation> A getAnnotation(Class<A> annotationClass) {
+        return method.getAnnotation(annotationClass);
     }
 }

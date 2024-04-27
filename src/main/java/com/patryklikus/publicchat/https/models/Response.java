@@ -29,6 +29,6 @@ public record Response(
     }
 
     public Response(ResponseStatusCode code) {
-        this(code, "", STRING);
+        this(code, code.name(), STRING);
     }
 }

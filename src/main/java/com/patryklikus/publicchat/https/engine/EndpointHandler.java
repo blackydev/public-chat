@@ -1,8 +1,6 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.https.engine;
 
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
-
 import com.patryklikus.publicchat.https.annotations.Authenticated;
 import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.https.models.EndpointMethod;
@@ -11,7 +9,11 @@ import com.patryklikus.publicchat.https.models.Response;
 import com.patryklikus.publicchat.services.AuthService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
+import java.util.Arrays;
 import java.util.logging.Logger;
+
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
 
 /**
  * Handles requests of one endpoint. It handles multiple types of requestMethods like GET, POST, PUT, and DELETE.
@@ -39,26 +41,25 @@ public class EndpointHandler implements HttpHandler {
             Response response = getResponse(exchange, methodHandler);
             responseSender.send(exchange, response);
         } catch (RuntimeException e) {
-            LOG.warning("Unexpected method handler exception: " + e.getStackTrace());
+            LOG.warning("Unexpected method handler exception: " + Arrays.toString(e.getStackTrace()));
         }
     }
 
-    private Response getResponse(HttpExchange exchange, EndpointMethod<?> endpointMethod) {
-        if (endpointMethod == null) {
+    private Response getResponse(HttpExchange exchange, EndpointMethod<?> method) {
+        if (method == null) {
             return new Response(BAD_REQUEST, "This website is unavailable");
         }
-        Authentication authentication = authService.authenticate(exchange);
-        Class<?> endpointMethodClass = endpointMethod.method().getClass();
-        if (endpointMethodClass.isAnnotationPresent(Authenticated.class)) {
+        Authentication authentication = authService.authenticate(exchange.getRequestHeaders());
+        if (method.isAnnotationPresent(Authenticated.class)) {
             if (authentication == null) {
                 return new Response(UNAUTHORIZED);
             }
-            if (endpointMethodClass.getAnnotation(Authenticated.class).admin() && !authentication.isAdmin()) {
+            if (method.getAnnotation(Authenticated.class).admin() && !authentication.isAdmin()) {
                 return new Response(FORBIDDEN);
             }
         }
         Request request = Request.create(exchange, authentication);
-        return endpointMethod.apply(request);
+        return method.apply(request);
     }
 
     private EndpointMethod<?> chooseHandler(HttpExchange exchange) {

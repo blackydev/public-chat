@@ -6,6 +6,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.models.User;
 import com.patryklikus.publicchat.repositories.UserRepository;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import java.util.Base64;
 import java.util.List;
@@ -20,8 +21,8 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public Authentication authenticate(HttpExchange exchange) {
-        List<String> authorization = exchange.getRequestHeaders().get("Authorization");
+    public Authentication authenticate(Headers headers) {
+        List<String> authorization = headers.get("Authorization");
         if (authorization == null || authorization.size() != 1) {
             return null;
         }

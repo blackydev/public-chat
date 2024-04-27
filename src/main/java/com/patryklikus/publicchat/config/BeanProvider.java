@@ -16,27 +16,26 @@ import com.patryklikus.publicchat.services.ReaderService;
 import com.patryklikus.publicchat.services.UserService;
 
 public class BeanProvider {
-    private static final ReaderService READER_SERVICE = new ReaderService();
-    private static final PublicController PUBLIC_CONTROLLER = new PublicController(READER_SERVICE);
-    private static final AuthController AUTH_CONTROLLER = new AuthController();
-    private static final PageController PAGE_CONTROLLER = new PageController(READER_SERVICE);
     private static final PostgresClient POSTGRESQL_CLIENT = new PostgresClient("jdbc:postgresql://localhost:5432/db", "wdpai", "password");
-
-    private static final HashingService HASHING_SERVICE = new HashingService();
+    // MAPPERS
     private static final JsonMapper JSON_MAPPER = new JsonMapper();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper(JSON_MAPPER);
+    // REPOSITORIES
     private static final UserRepository USER_REPOSITORY = new UserRepository(POSTGRESQL_CLIENT);
+    private static final MessageRepository MESSAGE_REPOSITORY = new MessageRepository(POSTGRESQL_CLIENT);
+    // SERVICES
+    private static final ReaderService READER_SERVICE = new ReaderService();
+    private static final HashingService HASHING_SERVICE = new HashingService();
     private static final AuthService AUTH_SERVICE = new AuthService(HASHING_SERVICE, USER_REPOSITORY);
     private static final UserService USER_SERVICE = new UserService(USER_REPOSITORY, HASHING_SERVICE);
+    // CONTROLLERS
+    private static final PublicController PUBLIC_CONTROLLER = new PublicController(READER_SERVICE);
+    private static final PageController PAGE_CONTROLLER = new PageController(READER_SERVICE);
+    private static final AuthController AUTH_CONTROLLER = new AuthController(AUTH_SERVICE);
     private static final UserController USER_CONTROLLER = new UserController(OBJECT_MAPPER, USER_SERVICE);
-    private static final MessageRepository MESSAGE_REPOSITORY = new MessageRepository(POSTGRESQL_CLIENT);
 
-    public static UserController getUserController() {
-        return USER_CONTROLLER;
-    }
-
-    public static AuthService getAuthService() {
-        return AUTH_SERVICE;
+    public static PostgresClient getPostgresqlClient() {
+        return POSTGRESQL_CLIENT;
     }
 
     public static UserRepository getUserRepository() {
@@ -47,6 +46,11 @@ public class BeanProvider {
         return MESSAGE_REPOSITORY;
     }
 
+
+    public static AuthService getAuthService() {
+        return AUTH_SERVICE;
+    }
+
     public static PublicController getPublicController() {
         return PUBLIC_CONTROLLER;
     }
@@ -55,11 +59,11 @@ public class BeanProvider {
         return PAGE_CONTROLLER;
     }
 
-    public static AuthController getAuthController() {
-        return AUTH_CONTROLLER;
+    public static UserController getUserController() {
+        return USER_CONTROLLER;
     }
 
-    public static PostgresClient getPostgresqlClient() {
-        return POSTGRESQL_CLIENT;
+    public static AuthController getAuthController() {
+        return AUTH_CONTROLLER;
     }
 }
