@@ -7,7 +7,6 @@ import com.patryklikus.publicchat.https.engine.StringResponseSender;
 import com.patryklikus.publicchat.https.models.EndpointMethod;
 import com.patryklikus.publicchat.services.AuthService;
 import com.sun.net.httpserver.HttpServer;
-
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -85,6 +84,6 @@ public class RequestHandlersManager {
         String endpoint = basePath + path;
         if (endpoint.isEmpty())
             endpoint = "/";
-        return endpointHandlers.computeIfAbsent(endpoint, _ -> new EndpointHandler(stringResponseSender, authService));
+        return endpointHandlers.computeIfAbsent(endpoint, k -> new EndpointHandler(stringResponseSender, authService));
     }
 }

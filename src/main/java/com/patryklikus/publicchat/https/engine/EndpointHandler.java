@@ -1,6 +1,8 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.https.engine;
 
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
+
 import com.patryklikus.publicchat.https.annotations.Authenticated;
 import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.https.models.EndpointMethod;
@@ -9,10 +11,7 @@ import com.patryklikus.publicchat.https.models.Response;
 import com.patryklikus.publicchat.services.AuthService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import java.util.logging.Logger;
-
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
 
 /**
  * Handles requests of one endpoint. It handles multiple types of requestMethods like GET, POST, PUT, and DELETE.
@@ -51,11 +50,10 @@ public class EndpointHandler implements HttpHandler {
         Authentication authentication = authService.authenticate(exchange);
         Class<?> endpointMethodClass = endpointMethod.method().getClass();
         if (endpointMethodClass.isAnnotationPresent(Authenticated.class)) {
-            Authenticated authenticated = endpointMethodClass.getAnnotation(Authenticated.class);
             if (authentication == null) {
                 return new Response(UNAUTHORIZED);
             }
-            if (authenticated.admin() && !authentication.isAdmin()) {
+            if (endpointMethodClass.getAnnotation(Authenticated.class).admin() && !authentication.isAdmin()) {
                 return new Response(FORBIDDEN);
             }
         }

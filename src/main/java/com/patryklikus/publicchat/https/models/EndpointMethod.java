@@ -1,9 +1,10 @@
+/* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.https.models;
+
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.INTERNAL_SERVER_ERROR;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.INTERNAL_SERVER_ERROR;
 
 public record EndpointMethod<T>(T obj, Method method) {
     public Response apply(Request request) {

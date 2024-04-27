@@ -1,18 +1,17 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.models.mappers;
 
+import static com.patryklikus.publicchat.models.PostBuilder.aMessage;
+import static com.patryklikus.publicchat.models.UserBuilder.anUser;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import com.patryklikus.publicchat.models.Message;
 import com.patryklikus.publicchat.models.User;
-
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static com.patryklikus.publicchat.models.PostBuilder.aMessage;
-import static com.patryklikus.publicchat.models.UserBuilder.anUser;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ObjectMapper {
     private final JsonMapper jsonMapper;
