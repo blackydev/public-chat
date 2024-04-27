@@ -44,11 +44,4 @@ public class PostgresClient {
         connection.close();
         LOG.info("Application has been disconnected from database");
     }
-
-    private void executeUpdate(String query) {
-        try (Statement statement = createStatement()) {
-            statement.executeUpdate(query);
-        } catch (SQLException ignore) {
-        }
-    }
 }
