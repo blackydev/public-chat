@@ -3,12 +3,9 @@ package com.patryklikus.publicchat.repositories;
 
 import com.patryklikus.publicchat.clients.PostgresClient;
 import com.patryklikus.publicchat.models.User;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 
 public class UserRepository implements Repository<User> {
     private final String CREATE_TABLE_QUERY = """
@@ -33,48 +30,11 @@ public class UserRepository implements Repository<User> {
     }
 
     @Override
-    public User findById(Long id) {
-        String query = String.format("SELECT users WHERE id = %s LIMIT 1", id);
-        try (Statement stmt = postgresClient.createStatement()) {
-            ResultSet rs = stmt.executeQuery(query);
-            if (rs.next()) {
-                String username = rs.getString("username");
-                boolean isAdmin = rs.getBoolean("isAdmin");
-                return anUser().withId(id)
-                        .withUsername(username)
-                        .withIsAdmin(isAdmin)
-                        .build();
-            }
-            return null;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public User findByUsername(String username) {
-        String query = String.format("SELECT users WHERE username = %s LIMIT 1", username);
-        try (Statement stmt = postgresClient.createStatement()) {
-            ResultSet rs = stmt.executeQuery(query);
-            if (rs.next()) {
-                long id = rs.getLong("id");
-                boolean isAdmin = rs.getBoolean("isAdmin");
-                return anUser().withId(id)
-                        .withUsername(username)
-                        .withIsAdmin(isAdmin)
-                        .build();
-            }
-            return null;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public User save(User user) {
-        try {
-            return user.getId() == null ? create(user) : update(user);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    public void save(User user) {
+        if (user.getId() == null) {
+            create(user);
+        } else {
+            update(user);
         }
     }
 
@@ -96,20 +56,22 @@ public class UserRepository implements Repository<User> {
         try (Statement stmt = postgresClient.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             rs.next();
-            user.setId(rs.getLong(1));
+            user.setId(rs.getLong("id"));
             return user;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private User update(User user) throws SQLException {
+    private User update(User user) {
         String query = String.format(
                 "UPDATE users SET username = %s , password = %s, isAdmin = %b WHERE id = %s;",
                 user.getUsername(), user.getPassword(), user.isAdmin(), user.getId()
         );
         try (Statement stmt = postgresClient.createStatement()) {
             return stmt.executeUpdate(query) == 0 ? null : user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

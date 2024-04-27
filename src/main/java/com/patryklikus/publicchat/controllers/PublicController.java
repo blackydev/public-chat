@@ -19,10 +19,8 @@ public class PublicController {
     @GetMapping
     public Response getPublicResource(Request request) {
         String content = readerService.readResource("." + request.getRequestURI().toString());
-        if (content == null) {
-            return new Response(ResponseStatusCode.NOT_FOUND, "Resource not found");
-        } else {
-            return new Response(ResponseStatusCode.OK, content);
-        }
+        return content == null
+                ? new Response(ResponseStatusCode.NOT_FOUND, "Resource not found")
+                : new Response(ResponseStatusCode.OK, content);
     }
 }

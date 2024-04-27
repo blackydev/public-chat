@@ -3,15 +3,15 @@ package com.patryklikus.publicchat.models;
 
 import java.time.LocalDateTime;
 
-public class Post {
-    private Long id;
-    private final Long authorId;
+public class Message {
+    private final User author;
     private final String content;
-    private final LocalDateTime timestamp;
+    private Long id;
+    private LocalDateTime timestamp;
 
-    Post(Long id, Long authorId, String content, LocalDateTime timestamp) {
+    Message(Long id, User author, String content, LocalDateTime timestamp) {
         this.id = id;
-        this.authorId = authorId;
+        this.author = author;
         this.content = content;
         this.timestamp = timestamp;
     }
@@ -20,8 +20,8 @@ public class Post {
         return id;
     }
 
-    public Long getAuthorId() {
-        return authorId;
+    public User getAuthor() {
+        return author;
     }
 
     public String getContent() {
@@ -34,5 +34,9 @@ public class Post {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 }

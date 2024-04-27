@@ -3,12 +3,10 @@ package com.patryklikus.publicchat.repositories;
 
 
 public interface Repository<T> {
-    T findById(Long id);
-
     /**
      * Creates/updates object.
      */
-    T save(T obj);
+    void save(T obj);
 
     /**
      * Removes object.

@@ -1,7 +1,6 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.services;
 
-import com.sun.net.httpserver.Headers;
 
 import java.security.SecureRandom;
 import java.util.Objects;

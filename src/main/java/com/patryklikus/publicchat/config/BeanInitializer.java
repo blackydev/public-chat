@@ -14,6 +14,7 @@ public class BeanInitializer {
     private static void initRepositories() throws SQLException {
         BeanProvider.getPostgresqlClient().connect();
         BeanProvider.getUserRepository().createTable();
+        BeanProvider.getMessageRepository().createTable();
     }
 
     private static void initEndpoints(HttpServer server) {

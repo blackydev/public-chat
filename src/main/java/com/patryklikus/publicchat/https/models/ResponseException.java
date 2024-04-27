@@ -1,7 +1,6 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.https.models;
 
-import com.patryklikus.publicchat.https.models.ResponseStatusCode;
 
 public class ResponseException extends RuntimeException {
     private final ResponseStatusCode statusCode;

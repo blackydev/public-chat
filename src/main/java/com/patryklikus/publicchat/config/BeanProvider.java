@@ -6,6 +6,7 @@ import com.patryklikus.publicchat.controllers.PageController;
 import com.patryklikus.publicchat.controllers.PublicController;
 import com.patryklikus.publicchat.controllers.UserController;
 import com.patryklikus.publicchat.models.mappers.ObjectMapper;
+import com.patryklikus.publicchat.repositories.MessageRepository;
 import com.patryklikus.publicchat.repositories.UserRepository;
 import com.patryklikus.publicchat.services.AuthService;
 import com.patryklikus.publicchat.services.HashingService;
@@ -24,6 +25,7 @@ public class BeanProvider {
     private static final AuthService AUTH_SERVICE = new AuthService(HASHING_SERVICE, USER_REPOSITORY);
     private static final UserService USER_SERVICE = new UserService(USER_REPOSITORY, HASHING_SERVICE);
     private static final UserController USER_CONTROLLER = new UserController(OBJECT_MAPPER, USER_SERVICE);
+    private static final MessageRepository MESSAGE_REPOSITORY = new MessageRepository(POSTGRESQL_CLIENT);
 
     public static UserController getUserController() {
         return USER_CONTROLLER;
@@ -35,6 +37,10 @@ public class BeanProvider {
 
     public static UserRepository getUserRepository() {
         return USER_REPOSITORY;
+    }
+
+    public static MessageRepository getMessageRepository() {
+        return MESSAGE_REPOSITORY;
     }
 
     public static PublicController getPublicController() {

@@ -1,6 +1,8 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.controllers;
 
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
+
 import com.patryklikus.publicchat.https.annotations.Authenticated;
 import com.patryklikus.publicchat.https.annotations.PostMapping;
 import com.patryklikus.publicchat.https.annotations.PutMapping;
@@ -10,8 +12,6 @@ import com.patryklikus.publicchat.https.models.Response;
 import com.patryklikus.publicchat.models.User;
 import com.patryklikus.publicchat.models.mappers.ObjectMapper;
 import com.patryklikus.publicchat.services.UserService;
-
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
 
 @RequestMapping(path = "/api/users")
 public class UserController {

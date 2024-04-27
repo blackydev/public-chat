@@ -5,14 +5,14 @@ import java.time.LocalDateTime;
 
 public final class PostBuilder {
     private Long id;
-    private Long authorId;
+    private User author;
     private String content;
     private LocalDateTime timestamp;
 
     private PostBuilder() {
     }
 
-    public static PostBuilder aPost() {
+    public static PostBuilder aMessage() {
         return new PostBuilder();
     }
 
@@ -21,8 +21,8 @@ public final class PostBuilder {
         return this;
     }
 
-    public PostBuilder withAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public PostBuilder withAuthor(User author) {
+        this.author = author;
         return this;
     }
 
@@ -36,7 +36,7 @@ public final class PostBuilder {
         return this;
     }
 
-    public Post build() {
-        return new Post(id, authorId, content, timestamp);
+    public Message build() {
+        return new Message(id, author, content, timestamp);
     }
 }
