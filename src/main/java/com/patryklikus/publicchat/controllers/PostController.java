@@ -6,6 +6,7 @@ import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.Response;
 import com.patryklikus.publicchat.models.User;
 import com.patryklikus.publicchat.models.mappers.ObjectMapper;
+import com.patryklikus.publicchat.services.PostService;
 import com.patryklikus.publicchat.services.UserService;
 
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
@@ -24,7 +25,7 @@ public class PostController {
     @PostMapping
     public Response createPost(Request request) {
         User user = objectMapper.toUser(request.getRequestBody());
-        postService.createPost(user);
+       // postService.createPost(user);
         return new Response(NO_CONTENT);
     }
 
@@ -32,7 +33,7 @@ public class PostController {
     @DeleteMapping
     public Response deletePost(Request request) {
         User user = objectMapper.toUser(request.getRequestBody());
-        postService.deletePost(request.getAuthentication(), user);
+        // postService.deletePost(request.getAuthentication(), user);
         return new Response(NO_CONTENT);
     }
 }

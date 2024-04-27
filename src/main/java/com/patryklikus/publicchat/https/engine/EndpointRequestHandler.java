@@ -33,10 +33,14 @@ public class EndpointRequestHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) {
-        LOG.info("Request " + exchange.getRequestMethod() + " " + exchange.getRequestURI());
-        Function<Request, Response> methodHandler = chooseHandler(exchange);
-        Response response = getResponse(exchange, methodHandler);
-        responseSender.send(exchange, response);
+        try {
+            LOG.info("Request " + exchange.getRequestMethod() + " " + exchange.getRequestURI());
+            Function<Request, Response> methodHandler = chooseHandler(exchange);
+            Response response = getResponse(exchange, methodHandler);
+            responseSender.send(exchange, response);
+        } catch(RuntimeException e) {
+            LOG.warning("Unexpected method handler exception: " + e.getStackTrace());
+        }
     }
 
     private Response getResponse(HttpExchange exchange, Function<Request, Response> methodHandler) {
@@ -44,8 +48,9 @@ public class EndpointRequestHandler implements HttpHandler {
             return new Response(BAD_REQUEST, "This website is unavailable");
         }
         Authentication authentication = authService.authenticate(exchange);
-        Authenticated authenticated = methodHandler.getClass().getAnnotation(Authenticated.class); // todo check it
-        if (authenticated != null) {
+        Class<?> handlerClass = methodHandler.getClass();
+        if (handlerClass.isAnnotationPresent(Authenticated.class)) {
+            Authenticated authenticated = handlerClass.getAnnotation(Authenticated.class);
             if (authentication == null) {
                 return new Response(UNAUTHORIZED);
             }

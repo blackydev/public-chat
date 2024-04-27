@@ -21,7 +21,7 @@ public class AuthService {
 
     public Authentication authenticate(HttpExchange exchange) {
         List<String> authorization = exchange.getRequestHeaders().get("Authorization");
-        if (authorization.size() != 1) {
+        if (authorization == null || authorization.size() != 1) {
             return null;
         }
         String authHeader = authorization.getFirst();

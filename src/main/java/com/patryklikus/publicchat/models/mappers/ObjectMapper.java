@@ -1,15 +1,18 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.models.mappers;
 
-import static com.patryklikus.publicchat.models.UserBuilder.anUser;
-
-import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.models.User;
+
+import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.Map;
 
-public class ObjectMapper extends JsonMapper {
-    public User toUser(String json) {
-        Map<String, String> map = jsonToMap(json);
+import static com.patryklikus.publicchat.models.UserBuilder.anUser;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+public class ObjectMapper {
+    public User toUser(String form) {
+        Map<String, String> map = formToMap(form);
         if (map.size() != 2) {
             return null;
         }
@@ -19,5 +22,17 @@ public class ObjectMapper extends JsonMapper {
                 .withPassword(password)
                 .withIsAdmin(false)
                 .build();
+    }
+
+    private Map<String, String> formToMap(String form) {
+        Map<String, String> formData = new HashMap<>();
+        String[] pairs = form.split("&");
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=");
+            String key = URLDecoder.decode(keyValue[0], UTF_8);
+            String value = URLDecoder.decode(keyValue[1], UTF_8);
+            formData.put(key, value);
+        }
+        return formData;
     }
 }
