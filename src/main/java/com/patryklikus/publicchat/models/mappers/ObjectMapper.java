@@ -1,7 +1,7 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.models.mappers;
 
-import static com.patryklikus.publicchat.models.PostBuilder.aMessage;
+import static com.patryklikus.publicchat.models.MessageBuilder.aMessage;
 import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 import static java.nio.charset.StandardCharsets.UTF_8;
 

@@ -2,7 +2,7 @@
 package com.patryklikus.publicchat.services;
 
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
-import static com.patryklikus.publicchat.models.PostBuilder.aMessage;
+import static com.patryklikus.publicchat.models.MessageBuilder.aMessage;
 
 import com.patryklikus.publicchat.https.models.ResponseException;
 import com.patryklikus.publicchat.models.Message;
