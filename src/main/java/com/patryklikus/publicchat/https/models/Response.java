@@ -6,6 +6,9 @@ import static com.patryklikus.publicchat.https.models.ResponseStatusCode.OK;
 
 import java.util.Objects;
 
+/**
+ * Represents response which controllers methods should return.
+ */
 public record Response(
         ResponseStatusCode code,
         String body,

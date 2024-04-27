@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 /**
- * Represents Http Request.
+ * Represents Http Request in controllers methods.
  */
 public class Request implements com.sun.net.httpserver.Request {
     private final URI uri;

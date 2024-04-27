@@ -8,6 +8,7 @@ import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.Response;
 import com.patryklikus.publicchat.services.AuthService;
 import com.sun.net.httpserver.HttpServer;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -16,6 +17,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
+/**
+ * It creates {@link EndpointRequestHandler}s from controllers methods.
+ */
 public class RequestHandlersManager {
     private static final Logger LOG = Logger.getLogger(RequestHandlersManager.class.getName());
     private final HttpServer server;

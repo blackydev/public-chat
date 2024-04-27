@@ -20,5 +20,8 @@ public interface ResponseSender {
         }
     }
 
+    /**
+     * Sends response to client. Closes HttpExchange.
+     */
     void sendUnsafe(HttpExchange exchange, Response response) throws IOException;
 }

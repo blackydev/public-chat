@@ -1,20 +1,21 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.models.mappers;
 
-import com.patryklikus.publicchat.models.Message;
-import com.patryklikus.publicchat.models.User;
-
-import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.patryklikus.publicchat.models.PostBuilder.aMessage;
 import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import com.patryklikus.publicchat.models.Message;
+import com.patryklikus.publicchat.models.User;
+import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class ObjectMapper {
     public User toUser(String form) {
-        Map<String, String> map = formToMap(form);
+        Map<String, String> map = queryToMap(form);
         if (map.size() != 2) {
             return null;
         }
@@ -27,7 +28,7 @@ public class ObjectMapper {
     }
 
     public Message toMessage(long authorId, String form) {
-        Map<String, String> map = formToMap(form);
+        Map<String, String> map = queryToMap(form);
         if (map.size() != 1) {
             return null;
         }
@@ -37,9 +38,28 @@ public class ObjectMapper {
                 .build();
     }
 
-    private Map<String, String> formToMap(String form) {
+
+    public String toJson(List<Message> messages) {
+        return "[" + messages.stream().map(this::toJson).collect(Collectors.joining(",")) + "]";
+    }
+
+    private String toJson(Message message) {
+        return String.format("""
+                        {
+                           "id": %s,
+                           "author": {"id": %s, username: "%s"},
+                           "content": "%s",
+                           "timestamp": "%s"
+                        }
+                        """,
+                message.getId(), message.getAuthor().getId(), message.getAuthor().getUsername(),
+                message.getContent(), message.getTimestamp()
+        );
+    }
+
+    public Map<String, String> queryToMap(String query) {
         Map<String, String> formData = new HashMap<>();
-        String[] pairs = form.split("&");
+        String[] pairs = query.split("&");
         for (String pair : pairs) {
             String[] keyValue = pair.split("=");
             String key = URLDecoder.decode(keyValue[0], UTF_8);

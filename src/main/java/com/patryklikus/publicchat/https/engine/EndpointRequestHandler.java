@@ -1,8 +1,6 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.https.engine;
 
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
-
 import com.patryklikus.publicchat.https.annotations.Authenticated;
 import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.https.models.Request;
@@ -11,11 +9,15 @@ import com.patryklikus.publicchat.https.models.ResponseException;
 import com.patryklikus.publicchat.services.AuthService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
 import java.util.function.Function;
 import java.util.logging.Logger;
 
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
+
 /**
- * Handles requests of one endpoint. It handles multiple types of requestMethods like get, post, put, and delete.
+ * Handles requests of one endpoint. It handles multiple types of requestMethods like GET, POST, PUT, and DELETE.
+ * It handles {@link Authenticated} annotation.
  */
 public class EndpointRequestHandler implements HttpHandler {
     private static final Logger LOG = Logger.getLogger(EndpointRequestHandler.class.getName());
@@ -38,7 +40,7 @@ public class EndpointRequestHandler implements HttpHandler {
             Function<Request, Response> methodHandler = chooseHandler(exchange);
             Response response = getResponse(exchange, methodHandler);
             responseSender.send(exchange, response);
-        } catch(RuntimeException e) {
+        } catch (RuntimeException e) {
             LOG.warning("Unexpected method handler exception: " + e.getStackTrace());
         }
     }

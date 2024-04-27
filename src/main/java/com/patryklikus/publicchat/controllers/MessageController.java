@@ -1,17 +1,17 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.controllers;
 
-import com.patryklikus.publicchat.https.annotations.Authenticated;
-import com.patryklikus.publicchat.https.annotations.DeleteMapping;
-import com.patryklikus.publicchat.https.annotations.PostMapping;
-import com.patryklikus.publicchat.https.annotations.RequestMapping;
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
+
+import com.patryklikus.publicchat.https.annotations.*;
 import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.Response;
+import com.patryklikus.publicchat.https.models.ResponseException;
 import com.patryklikus.publicchat.models.Message;
 import com.patryklikus.publicchat.models.mappers.ObjectMapper;
 import com.patryklikus.publicchat.services.MessageService;
-
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping(path = "/api/messages")
 public class MessageController {
@@ -24,6 +24,17 @@ public class MessageController {
     }
 
     @Authenticated
+    @GetMapping
+    public Response getMessages(Request request) {
+        Map<String, String> queries = objectMapper.queryToMap(request.getRequestURI().getQuery());
+        long idFrom = mapToLong(queries.get("idFrom"));
+        long idTo = mapToLong(queries.get("idTo"));
+        List<Message> messages = messageService.getMessages(idFrom, idTo);
+        String json = objectMapper.toJson(messages);
+        return new Response(json);
+    }
+
+    @Authenticated
     @PostMapping
     public Response createMessage(Request request) {
         Message message = objectMapper.toMessage(request.getAuthentication().userId(), request.getRequestBody());
@@ -31,24 +42,19 @@ public class MessageController {
         return new Response(NO_CONTENT);
     }
 
-    @Authenticated
+    @Authenticated(admin = true)
     @DeleteMapping
     public Response deleteMessage(Request request) {
-        if (!request.getAuthentication().isAdmin()) {
-            return new Response(FORBIDDEN);
-        }
-
-        String messageId = request.getRequestURI()
-                .getPath()
-                .replace("/api/message/", "");
-
-        long parsedId;
-        try {
-            parsedId = Long.parseLong(messageId);
-        } catch (NumberFormatException e) {
-            return new Response(BAD_REQUEST);
-        }
-        messageService.removeMessage(Long.parseLong(messageId));
+        String messageId = request.getRequestURI().getPath().replace("/api/message/", "");
+        messageService.removeMessage(mapToLong(messageId));
         return new Response(NO_CONTENT);
+    }
+
+    private long mapToLong(String number) {
+        try {
+            return Long.parseLong(number);
+        } catch (NumberFormatException e) {
+            throw new ResponseException(BAD_REQUEST);
+        }
     }
 }

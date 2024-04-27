@@ -1,10 +1,12 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.repositories;
 
+import static com.patryklikus.publicchat.models.PostBuilder.aMessage;
+import static com.patryklikus.publicchat.models.UserBuilder.anUser;
+
 import com.patryklikus.publicchat.clients.PostgresClient;
 import com.patryklikus.publicchat.models.Message;
 import com.patryklikus.publicchat.models.User;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,9 +15,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import static com.patryklikus.publicchat.models.PostBuilder.aMessage;
-import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 
 public class MessageRepository implements Repository<Message> {
     private final String CREATE_TABLE_QUERY = """

@@ -1,7 +1,9 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.https.models;
 
-
+/**
+ * Allows to send response from outside controller (e.g. in controller).
+ */
 public class ResponseException extends RuntimeException {
     private final ResponseStatusCode statusCode;
 

@@ -2,7 +2,7 @@
 package com.patryklikus.publicchat.https.models;
 
 /**
- * Enum represents http response status code
+ * Enum represents http response status code. It's used by {@link Response} and {@link ResponseException}.
  */
 public enum ResponseStatusCode {
     OK(200),
