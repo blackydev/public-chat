@@ -50,6 +50,10 @@ body {
     height: 100vh;
 }
 
+#form-error {
+    color: #d20505;
+}
+
 .flex-center {
     display: flex;
     justify-content: center;

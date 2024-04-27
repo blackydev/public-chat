@@ -1,23 +1,16 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.repositories;
 
-import static com.patryklikus.publicchat.models.UserBuilder.anUser;
-
 import com.patryklikus.publicchat.clients.PostgresClient;
 import com.patryklikus.publicchat.models.User;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static com.patryklikus.publicchat.models.UserBuilder.anUser;
+
 public class UserRepository implements Repository<User> {
-    private final String CREATE_TABLE_QUERY = """
-            CREATE TABLE IF NOT EXISTS users (
-                id SERIAL PRIMARY KEY,
-                username VARCHAR(50) NOT NULL UNIQUE,
-                password VARCHAR(255) NOT NULL,
-                isadmin BOOLEAN DEFAULT FALSE NOT NULL
-            );
-            """;
     private final PostgresClient postgresClient;
 
     public UserRepository(PostgresClient postgresClient) {
@@ -26,8 +19,16 @@ public class UserRepository implements Repository<User> {
 
     public void createTable() {
         try (Statement statement = postgresClient.createStatement()) {
-            statement.executeUpdate(CREATE_TABLE_QUERY);
-        } catch (SQLException ignore) {
+            statement.executeUpdate("""
+                    CREATE TABLE IF NOT EXISTS users (
+                        id SERIAL PRIMARY KEY,
+                        username VARCHAR(50) NOT NULL UNIQUE,
+                        password VARCHAR(255) NOT NULL,
+                        isadmin BOOLEAN DEFAULT FALSE NOT NULL
+                    );
+                    """);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -45,7 +46,7 @@ public class UserRepository implements Repository<User> {
             }
             return null;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 
@@ -68,7 +69,7 @@ public class UserRepository implements Repository<User> {
         }
     }
 
-    private User create(User user) {
+    private void create(User user) {
         String query = String.format(
                 "INSERT INTO users (username, password, isAdmin) VALUES ('%s', '%s', '%b') RETURNING ID;",
                 user.getUsername(), user.getPassword(), user.isAdmin()
@@ -77,19 +78,18 @@ public class UserRepository implements Repository<User> {
             ResultSet rs = stmt.executeQuery(query);
             rs.next();
             user.setId(rs.getLong("id"));
-            return user;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private User update(User user) {
+    private void update(User user) {
         String query = String.format(
                 "UPDATE users SET username = %s , password = %s, isAdmin = %b WHERE id = %s;",
                 user.getUsername(), user.getPassword(), user.isAdmin(), user.getId()
         );
         try (Statement stmt = postgresClient.createStatement()) {
-            return stmt.executeUpdate(query) == 0 ? null : user;
+            stmt.executeUpdate(query);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

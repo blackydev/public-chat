@@ -1,22 +1,29 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.models.mappers;
 
-import static com.patryklikus.publicchat.models.PostBuilder.aMessage;
-import static com.patryklikus.publicchat.models.UserBuilder.anUser;
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import com.patryklikus.publicchat.models.Message;
 import com.patryklikus.publicchat.models.User;
+
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.patryklikus.publicchat.models.PostBuilder.aMessage;
+import static com.patryklikus.publicchat.models.UserBuilder.anUser;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class ObjectMapper {
-    public User toUser(String form) {
-        Map<String, String> map = queryToMap(form);
-        if (map.size() != 2) {
+    private final JsonMapper jsonMapper;
+
+    public ObjectMapper(JsonMapper jsonMapper) {
+        this.jsonMapper = jsonMapper;
+    }
+
+    public User toUser(String json) {
+        Map<String, String> map = jsonMapper.jsonToMap(json);
+        if (map.size() < 2) {
             return null;
         }
         String username = map.get("username");
@@ -27,8 +34,8 @@ public class ObjectMapper {
                 .build();
     }
 
-    public Message toMessage(long authorId, String form) {
-        Map<String, String> map = queryToMap(form);
+    public Message toMessage(long authorId, String json) {
+        Map<String, String> map = jsonMapper.jsonToMap(json);
         if (map.size() != 1) {
             return null;
         }

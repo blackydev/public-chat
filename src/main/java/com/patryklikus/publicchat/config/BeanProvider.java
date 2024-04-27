@@ -2,9 +2,11 @@
 package com.patryklikus.publicchat.config;
 
 import com.patryklikus.publicchat.clients.PostgresClient;
+import com.patryklikus.publicchat.controllers.AuthController;
 import com.patryklikus.publicchat.controllers.PageController;
 import com.patryklikus.publicchat.controllers.PublicController;
 import com.patryklikus.publicchat.controllers.UserController;
+import com.patryklikus.publicchat.models.mappers.JsonMapper;
 import com.patryklikus.publicchat.models.mappers.ObjectMapper;
 import com.patryklikus.publicchat.repositories.MessageRepository;
 import com.patryklikus.publicchat.repositories.UserRepository;
@@ -16,11 +18,13 @@ import com.patryklikus.publicchat.services.UserService;
 public class BeanProvider {
     private static final ReaderService READER_SERVICE = new ReaderService();
     private static final PublicController PUBLIC_CONTROLLER = new PublicController(READER_SERVICE);
+    private static final AuthController AUTH_CONTROLLER = new AuthController();
     private static final PageController PAGE_CONTROLLER = new PageController(READER_SERVICE);
     private static final PostgresClient POSTGRESQL_CLIENT = new PostgresClient("jdbc:postgresql://localhost:5432/db", "wdpai", "password");
 
     private static final HashingService HASHING_SERVICE = new HashingService();
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final JsonMapper JSON_MAPPER = new JsonMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper(JSON_MAPPER);
     private static final UserRepository USER_REPOSITORY = new UserRepository(POSTGRESQL_CLIENT);
     private static final AuthService AUTH_SERVICE = new AuthService(HASHING_SERVICE, USER_REPOSITORY);
     private static final UserService USER_SERVICE = new UserService(USER_REPOSITORY, HASHING_SERVICE);
@@ -49,6 +53,10 @@ public class BeanProvider {
 
     public static PageController getPageController() {
         return PAGE_CONTROLLER;
+    }
+
+    public static AuthController getAuthController() {
+        return AUTH_CONTROLLER;
     }
 
     public static PostgresClient getPostgresqlClient() {

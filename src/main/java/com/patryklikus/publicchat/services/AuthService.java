@@ -11,6 +11,7 @@ import java.util.Base64;
 import java.util.List;
 
 public class AuthService {
+    private static final String AUTHORIZATION_PREFIX = "Basic ";
     private final HashingService hashingService;
     private final UserRepository userRepository;
 
@@ -25,7 +26,7 @@ public class AuthService {
             return null;
         }
         String authHeader = authorization.getFirst();
-        if (!authHeader.startsWith("Basic ")) {
+        if (!authHeader.startsWith(AUTHORIZATION_PREFIX)) {
             return null;
         }
         String[] userPass = decodeCredentials(authHeader);
@@ -37,7 +38,7 @@ public class AuthService {
     }
 
     private String[] decodeCredentials(String authHeader) {
-        String credentials = authHeader.substring("Basic ".length());
+        String credentials = authHeader.substring(AUTHORIZATION_PREFIX.length());
         byte[] decodedBytes = Base64.getDecoder().decode(credentials); // todo will it work?
         String decoded = new String(decodedBytes, UTF_8);
         return decoded.split(":");

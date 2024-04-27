@@ -17,14 +17,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MessageRepository implements Repository<Message> {
-    private final String CREATE_TABLE_QUERY = """
-            CREATE TABLE IF NOT EXISTS messages (
-                id serial primary key,
-                author_id integer not null references "users",
-                content text not null,
-                timestamp timestamp default CURRENT_TIMESTAMP not null
-            );
-            """;
     private final PostgresClient postgresClient;
 
     public MessageRepository(PostgresClient postgresClient) {
@@ -33,8 +25,16 @@ public class MessageRepository implements Repository<Message> {
 
     public void createTable() {
         try (Statement statement = postgresClient.createStatement()) {
-            statement.executeUpdate(CREATE_TABLE_QUERY);
-        } catch (SQLException ignore) {
+            statement.executeUpdate("""
+                    CREATE TABLE IF NOT EXISTS messages (
+                        id serial primary key,
+                        author_id integer not null references "users",
+                        content text not null,
+                        timestamp timestamp default CURRENT_TIMESTAMP not null
+                    );
+                    """);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -59,6 +59,7 @@ public class MessageRepository implements Repository<Message> {
             return Collections.emptyList();
         }
     }
+
 
     @Override
     public void save(Message message) {

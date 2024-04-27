@@ -2,31 +2,29 @@
 package com.patryklikus.publicchat.https;
 
 import com.patryklikus.publicchat.https.annotations.*;
-import com.patryklikus.publicchat.https.engine.EndpointRequestHandler;
+import com.patryklikus.publicchat.https.engine.EndpointHandler;
 import com.patryklikus.publicchat.https.engine.StringResponseSender;
-import com.patryklikus.publicchat.https.models.Request;
-import com.patryklikus.publicchat.https.models.Response;
+import com.patryklikus.publicchat.https.models.EndpointMethod;
 import com.patryklikus.publicchat.services.AuthService;
 import com.sun.net.httpserver.HttpServer;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.logging.Logger;
 
 /**
- * It creates {@link EndpointRequestHandler}s from controllers methods.
+ * It creates {@link EndpointHandler}s from controllers methods.
  */
 public class RequestHandlersManager {
     private static final Logger LOG = Logger.getLogger(RequestHandlersManager.class.getName());
+    private static final String CREATE_HANDLER_LOG = "Create handler for %s method. Endpoint: %s handling method: %s";
     private final HttpServer server;
     private final AuthService authService;
     private final StringResponseSender stringResponseSender;
 
-    private final Map<String, EndpointRequestHandler> endpointHandlers;
+    private final Map<String, EndpointHandler> endpointHandlers;
 
     public RequestHandlersManager(HttpServer server, AuthService authService) {
         this.server = server;
@@ -52,50 +50,41 @@ public class RequestHandlersManager {
                 : requestMapping.path();
 
         for (Method method : controllerClass.getMethods()) {
+            var endpointMethod = new EndpointMethod<>(controller, method);
             GetMapping getMapping = method.getAnnotation(GetMapping.class);
             if (getMapping != null) {
-                EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, getMapping.path());
-                endpointHandler.setGetHandler(methodToHandlerFunction(controller, method));
-                LOG.info("Create handler for GET request method. Endpoint: " + basePath + getMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
+                EndpointHandler endpointHandler = getEndpointHandler(basePath, getMapping.path());
+                endpointHandler.setGetHandler(endpointMethod);
+                LOG.fine(String.format(CREATE_HANDLER_LOG, "GET", basePath + getMapping.path(), controllerClass.getName() + "#" + method.getName()));
             }
 
             PostMapping postMapping = method.getAnnotation(PostMapping.class);
             if (postMapping != null) {
-                EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, postMapping.path());
-                endpointHandler.setPostHandler(methodToHandlerFunction(controller, method));
-                LOG.info("Create handler for POST request method. Endpoint: " + basePath + postMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
+                EndpointHandler endpointHandler = getEndpointHandler(basePath, postMapping.path());
+                endpointHandler.setPostHandler(endpointMethod);
+                LOG.fine(String.format(CREATE_HANDLER_LOG, "GET", basePath + postMapping.path(), controllerClass.getName() + "#" + method.getName()));
             }
 
             PutMapping putMapping = method.getAnnotation(PutMapping.class);
             if (putMapping != null) {
-                EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, putMapping.path());
-                endpointHandler.setPutHandler(methodToHandlerFunction(controller, method));
-                LOG.info("Create handler for PUT request method: " + basePath + putMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
+                EndpointHandler endpointHandler = getEndpointHandler(basePath, putMapping.path());
+                endpointHandler.setPutHandler(endpointMethod);
+                LOG.fine(String.format(CREATE_HANDLER_LOG, "GET", basePath + putMapping.path(), controllerClass.getName() + "#" + method.getName()));
             }
 
             DeleteMapping deleteMapping = method.getAnnotation(DeleteMapping.class);
             if (deleteMapping != null) {
-                EndpointRequestHandler endpointHandler = getEndpointHandler(basePath, deleteMapping.path());
-                endpointHandler.setDeleteHandler(methodToHandlerFunction(controller, method));
-                LOG.info("Create handler for DELETE request method: " + basePath + deleteMapping.path() + " handling method: " + controllerClass.getName() + "." + method.getName() + "()");
+                EndpointHandler endpointHandler = getEndpointHandler(basePath, deleteMapping.path());
+                endpointHandler.setDeleteHandler(endpointMethod);
+                LOG.fine(String.format(CREATE_HANDLER_LOG, "GET", basePath + deleteMapping.path(), controllerClass.getName() + "#" + method.getName()));
             }
         }
     }
 
-    private EndpointRequestHandler getEndpointHandler(String basePath, String path) {
+    private EndpointHandler getEndpointHandler(String basePath, String path) {
         String endpoint = basePath + path;
         if (endpoint.isEmpty())
             endpoint = "/";
-        return endpointHandlers.computeIfAbsent(endpoint, k -> new EndpointRequestHandler(stringResponseSender, authService));
-    }
-
-    private Function<Request, Response> methodToHandlerFunction(Object object, Method method) {
-        return request -> {
-            try {
-                return (Response) method.invoke(object, request);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
-        };
+        return endpointHandlers.computeIfAbsent(endpoint, _ -> new EndpointHandler(stringResponseSender, authService));
     }
 }
