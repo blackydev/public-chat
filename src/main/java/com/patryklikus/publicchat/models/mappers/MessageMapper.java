@@ -1,36 +1,23 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.models.mappers;
 
-import static com.patryklikus.publicchat.models.MessageBuilder.aMessage;
-import static com.patryklikus.publicchat.models.UserBuilder.anUser;
-import static java.nio.charset.StandardCharsets.UTF_8;
-
+import com.patryklikus.publicchat.models.GetMessageRangeDto;
 import com.patryklikus.publicchat.models.Message;
-import com.patryklikus.publicchat.models.User;
-import java.net.URLDecoder;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ObjectMapper {
+import static com.patryklikus.publicchat.models.MessageBuilder.aMessage;
+import static com.patryklikus.publicchat.models.UserBuilder.anUser;
+
+public class MessageMapper {
     private final JsonMapper jsonMapper;
+    private final QueryMapper queryMapper;
 
-    public ObjectMapper(JsonMapper jsonMapper) {
+    public MessageMapper(JsonMapper jsonMapper, QueryMapper queryMapper) {
         this.jsonMapper = jsonMapper;
-    }
-
-    public User toUser(String json) {
-        Map<String, String> map = jsonMapper.jsonToMap(json);
-        if (map.size() < 2) {
-            return null;
-        }
-        String username = map.get("username");
-        String password = map.get("password");
-        return anUser().withUsername(username)
-                .withPassword(password)
-                .withIsAdmin(false)
-                .build();
+        this.queryMapper = queryMapper;
     }
 
     public Message toMessage(long authorId, String json) {
@@ -39,9 +26,22 @@ public class ObjectMapper {
             return null;
         }
         String content = map.get("content");
+        if (content == null) {
+            return null;
+        }
         return aMessage().withAuthor(anUser().withId(authorId).build())
                 .withContent(content)
                 .build();
+    }
+
+    public GetMessageRangeDto toMessageRangeDto(String query) {
+        Map<String, String> map = queryMapper.queryToMap(query);
+        Long minId = getLongMember(map, "minId");
+        Long maxId = getLongMember(map, "maxId");
+        if (minId == null || maxId == null) {
+            return null;
+        }
+        return new GetMessageRangeDto(minId, maxId);
     }
 
 
@@ -63,15 +63,11 @@ public class ObjectMapper {
         );
     }
 
-    public Map<String, String> queryToMap(String query) {
-        Map<String, String> formData = new HashMap<>();
-        String[] pairs = query.split("&");
-        for (String pair : pairs) {
-            String[] keyValue = pair.split("=");
-            String key = URLDecoder.decode(keyValue[0], UTF_8);
-            String value = URLDecoder.decode(keyValue[1], UTF_8);
-            formData.put(key, value);
+    private Long getLongMember(Map<String, String> map, String member) {
+        try {
+            return Long.parseLong(map.get(member));
+        } catch (NumberFormatException e) {
+            return null;
         }
-        return formData;
     }
 }

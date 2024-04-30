@@ -5,8 +5,9 @@ import com.patryklikus.publicchat.https.annotations.*;
 import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.Response;
 import com.patryklikus.publicchat.https.models.ResponseException;
+import com.patryklikus.publicchat.models.GetMessageRangeDto;
 import com.patryklikus.publicchat.models.Message;
-import com.patryklikus.publicchat.models.mappers.ObjectMapper;
+import com.patryklikus.publicchat.models.mappers.MessageMapper;
 import com.patryklikus.publicchat.services.MessageService;
 
 import java.util.List;
@@ -17,27 +18,27 @@ import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONT
 
 @RequestMapping(path = "/api/messages")
 public class MessageController {
-    private final ObjectMapper objectMapper;
+    private final MessageMapper messageMapper;
     private final MessageService messageService;
 
-    public MessageController(ObjectMapper objectMapper, MessageService messageService) {
-        this.objectMapper = objectMapper;
+    public MessageController(MessageMapper messageMapper, MessageService messageService) {
+        this.messageMapper = messageMapper;
         this.messageService = messageService;
     }
 
     @Authenticated
     @GetMapping
     public Response getMessages(Request request) {
-        Map<String, String> query = objectMapper.queryToMap(request.getRequestURI().getQuery());
-        List<Message> messages = messageService.getMessages(getLongMember(query, "idFrom"), getLongMember(query, "idTo"));
-        String jsonMessage = objectMapper.toJson(messages);
-        return new Response(jsonMessage);
+        GetMessageRangeDto messageRange = messageMapper.toMessageRangeDto(request.getRequestURI().getQuery());
+        List<Message> messages = messageService.getMessages(messageRange);
+        String jsonMessages = messageMapper.toJson(messages);
+        return new Response(jsonMessages);
     }
 
     @Authenticated
     @PostMapping
     public Response createMessage(Request request) {
-        Message message = objectMapper.toMessage(request.getAuthentication().userId(), request.getRequestBody());
+        Message message = messageMapper.toMessage(request.getAuthentication().userId(), request.getRequestBody());
         messageService.createMessage(message);
         return new Response(NO_CONTENT);
     }

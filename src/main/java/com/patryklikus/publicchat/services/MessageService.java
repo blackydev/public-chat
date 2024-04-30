@@ -2,6 +2,7 @@
 package com.patryklikus.publicchat.services;
 
 import com.patryklikus.publicchat.https.models.ResponseException;
+import com.patryklikus.publicchat.models.GetMessageRangeDto;
 import com.patryklikus.publicchat.models.Message;
 import com.patryklikus.publicchat.repositories.MessageRepository;
 
@@ -16,12 +17,12 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public List<Message> getMessages(long idFrom, long idTo) {
-        if (idFrom > idTo)
+    public List<Message> getMessages(GetMessageRangeDto messageRange) {
+        if (messageRange.minId() > messageRange.maxId())
             throw new ResponseException(BAD_REQUEST);
-        if (idTo - idFrom > 10)
+        if (messageRange.maxId() - messageRange.minId() > 10)
             throw new ResponseException(BAD_REQUEST);
-        return messageRepository.findMany(idFrom, idTo);
+        return messageRepository.findMany(messageRange.minId(), messageRange.maxId());
     }
 
     public void createMessage(Message message) {
