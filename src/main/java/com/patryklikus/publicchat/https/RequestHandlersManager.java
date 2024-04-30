@@ -7,6 +7,7 @@ import com.patryklikus.publicchat.https.engine.StringResponseSender;
 import com.patryklikus.publicchat.https.models.EndpointMethod;
 import com.patryklikus.publicchat.services.AuthService;
 import com.sun.net.httpserver.HttpServer;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,7 +19,6 @@ import java.util.logging.Logger;
  */
 public class RequestHandlersManager {
     private static final Logger LOG = Logger.getLogger(RequestHandlersManager.class.getName());
-    private static final String CREATE_HANDLER_LOG = "Create handler for %s method. Endpoint: %s handling method: %s";
     private final HttpServer server;
     private final AuthService authService;
     private final StringResponseSender stringResponseSender;
@@ -49,39 +49,49 @@ public class RequestHandlersManager {
                 : requestMapping.path();
 
         for (Method method : controllerClass.getMethods()) {
-            var endpointMethod = new EndpointMethod<>(controller, method);
+            String methodName = null, endpoint = null;
+            EndpointMethod<?> endpointMethod = new EndpointMethod<>(controller, method);
+
             GetMapping getMapping = method.getAnnotation(GetMapping.class);
             if (getMapping != null) {
-                EndpointHandler endpointHandler = getEndpointHandler(basePath, getMapping.path());
-                endpointHandler.setGetHandler(endpointMethod);
-                LOG.fine(String.format(CREATE_HANDLER_LOG, "GET", basePath + getMapping.path(), controllerClass.getName() + "#" + method.getName()));
+                methodName = "GET";
+                endpoint = basePath + getMapping.path();
+                getEndpointHandler(endpoint).setGetHandler(endpointMethod);
             }
 
             PostMapping postMapping = method.getAnnotation(PostMapping.class);
             if (postMapping != null) {
-                EndpointHandler endpointHandler = getEndpointHandler(basePath, postMapping.path());
-                endpointHandler.setPostHandler(endpointMethod);
-                LOG.fine(String.format(CREATE_HANDLER_LOG, "GET", basePath + postMapping.path(), controllerClass.getName() + "#" + method.getName()));
+                methodName = "POST";
+                endpoint = basePath + postMapping.path();
+                getEndpointHandler(endpoint).setPostHandler(endpointMethod);
             }
 
             PutMapping putMapping = method.getAnnotation(PutMapping.class);
             if (putMapping != null) {
-                EndpointHandler endpointHandler = getEndpointHandler(basePath, putMapping.path());
-                endpointHandler.setPutHandler(endpointMethod);
-                LOG.fine(String.format(CREATE_HANDLER_LOG, "GET", basePath + putMapping.path(), controllerClass.getName() + "#" + method.getName()));
+                methodName = "PUT";
+                endpoint = basePath + putMapping.path();
+                getEndpointHandler(endpoint).setPutHandler(endpointMethod);
             }
 
             DeleteMapping deleteMapping = method.getAnnotation(DeleteMapping.class);
             if (deleteMapping != null) {
-                EndpointHandler endpointHandler = getEndpointHandler(basePath, deleteMapping.path());
-                endpointHandler.setDeleteHandler(endpointMethod);
-                LOG.fine(String.format(CREATE_HANDLER_LOG, "GET", basePath + deleteMapping.path(), controllerClass.getName() + "#" + method.getName()));
+                methodName = "DELETE";
+                endpoint = basePath + deleteMapping.path();
+                getEndpointHandler(endpoint).setDeleteHandler(endpointMethod);
+            }
+
+            if (methodName != null) {
+                LOG.fine(String.format(
+                        "Create handler for %s method. Endpoint: %s handling method: %s",
+                        methodName, endpoint, controllerClass.getName() + "#" + method.getName()
+                ));
             }
         }
     }
 
-    private EndpointHandler getEndpointHandler(String basePath, String path) {
-        String endpoint = basePath + path;
+    private EndpointHandler getEndpointHandler(String endpoint) {
+        if (endpoint.endsWith("/"))
+            endpoint = endpoint.substring(0, endpoint.length() - 1);
         if (endpoint.isEmpty())
             endpoint = "/";
         return endpointHandlers.computeIfAbsent(endpoint, k -> new EndpointHandler(stringResponseSender, authService));

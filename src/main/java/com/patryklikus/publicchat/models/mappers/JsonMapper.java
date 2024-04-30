@@ -9,7 +9,7 @@ public class JsonMapper {
     /**
      * This method map JSON to Map. It supports only JSON objects with string properties. If json is invalid returns empty map.
      */
-    protected Map<String, String> jsonToMap(String json) {
+    public Map<String, String> jsonToMap(String json) {
         try {
             return jsonToMapUnsafe(json);
         } catch (Exception e) {

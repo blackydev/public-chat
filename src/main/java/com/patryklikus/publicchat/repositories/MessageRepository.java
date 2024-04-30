@@ -70,8 +70,8 @@ public class MessageRepository implements Repository<Message> {
     }
 
     @Override
-    public void remove(Message message) {
-        String query = String.format("DELETE FROM messages WHERE id = %s;", message.getId());
+    public void remove(long id) {
+        String query = String.format("DELETE FROM messages WHERE id = %s;", id);
         try (Statement stmt = postgresClient.createStatement()) {
             stmt.executeUpdate(query);
         } catch (SQLException e) {

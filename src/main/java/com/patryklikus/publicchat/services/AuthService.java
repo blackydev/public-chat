@@ -1,15 +1,15 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.services;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.models.User;
 import com.patryklikus.publicchat.repositories.UserRepository;
 import com.sun.net.httpserver.Headers;
-import com.sun.net.httpserver.HttpExchange;
+
 import java.util.Base64;
 import java.util.List;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class AuthService {
     private static final String AUTHORIZATION_PREFIX = "Basic ";
@@ -41,8 +41,6 @@ public class AuthService {
     private String[] decodeCredentials(String authHeader) {
         String credentials = authHeader.substring(AUTHORIZATION_PREFIX.length());
         byte[] decodedBytes = Base64.getDecoder().decode(credentials); // todo will it work?
-        String decoded = new String(decodedBytes, UTF_8);
-        return decoded.split(":");
+        return new String(decodedBytes, UTF_8).split(":");
     }
-
 }

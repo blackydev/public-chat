@@ -1,13 +1,14 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.repositories;
 
-import static com.patryklikus.publicchat.models.UserBuilder.anUser;
-
 import com.patryklikus.publicchat.clients.PostgresClient;
 import com.patryklikus.publicchat.models.User;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 
 public class UserRepository implements Repository<User> {
     private final PostgresClient postgresClient;
@@ -59,8 +60,8 @@ public class UserRepository implements Repository<User> {
     }
 
     @Override
-    public void remove(User user) {
-        String query = String.format("DELETE FROM users WHERE id = %s;", user.getId());
+    public void remove(long id) {
+        String query = String.format("DELETE FROM users WHERE id = %s;", id);
         try (Statement stmt = postgresClient.createStatement()) {
             stmt.executeUpdate(query);
         } catch (SQLException e) {

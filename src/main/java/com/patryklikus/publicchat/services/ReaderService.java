@@ -8,13 +8,13 @@ public class ReaderService {
     private static final ClassLoader CLASS_LOADER = ReaderService.class.getClassLoader();
 
     /**
-     * @return resource content or null if doesn't exist
+     * @return resource content or empty string if doesn't exist
      */
     public String readResource(String resourceUri) {
         StringBuilder content = new StringBuilder();
         try (InputStream inputStream = CLASS_LOADER.getResourceAsStream(resourceUri)) {
             if (inputStream == null) {
-                return null;
+                return "";
             }
             Scanner scanner = new Scanner(inputStream);
             if (scanner.hasNextLine()) {
@@ -24,7 +24,7 @@ public class ReaderService {
                 content.append("\n").append(scanner.nextLine());
             }
         } catch (Exception e) {
-            return null;
+            return "";
         }
         return content.toString();
     }

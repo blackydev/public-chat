@@ -1,7 +1,7 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.models;
 
-public class User {
+public class User implements Idable {
     private final String username;
     private String password;
     private final boolean isAdmin;
