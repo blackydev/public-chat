@@ -1,15 +1,14 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.models.mappers;
 
-import com.patryklikus.publicchat.models.GetMessageRangeDto;
-import com.patryklikus.publicchat.models.Message;
+import static com.patryklikus.publicchat.models.MessageBuilder.aMessage;
+import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 
+import com.patryklikus.publicchat.models.dtos.GetMessagesRangeDto;
+import com.patryklikus.publicchat.models.Message;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static com.patryklikus.publicchat.models.MessageBuilder.aMessage;
-import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 
 public class MessageMapper {
     private final JsonMapper jsonMapper;
@@ -34,14 +33,14 @@ public class MessageMapper {
                 .build();
     }
 
-    public GetMessageRangeDto toMessageRangeDto(String query) {
+    public GetMessagesRangeDto toMessageRangeDto(String query) {
         Map<String, String> map = queryMapper.queryToMap(query);
         Long minId = getLongMember(map, "minId");
         Long maxId = getLongMember(map, "maxId");
         if (minId == null || maxId == null) {
             return null;
         }
-        return new GetMessageRangeDto(minId, maxId);
+        return new GetMessagesRangeDto(minId, maxId);
     }
 
 

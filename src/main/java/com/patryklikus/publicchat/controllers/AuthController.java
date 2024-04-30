@@ -1,14 +1,14 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.controllers;
 
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.UNAUTHORIZED;
+
 import com.patryklikus.publicchat.https.annotations.PostMapping;
 import com.patryklikus.publicchat.https.annotations.RequestMapping;
 import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.Response;
 import com.patryklikus.publicchat.services.AuthService;
-
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.UNAUTHORIZED;
 
 @RequestMapping(path = "/api/auth")
 public class AuthController {

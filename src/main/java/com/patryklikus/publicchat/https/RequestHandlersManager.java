@@ -7,7 +7,6 @@ import com.patryklikus.publicchat.https.engine.StringResponseSender;
 import com.patryklikus.publicchat.https.models.EndpointMethod;
 import com.patryklikus.publicchat.services.AuthService;
 import com.sun.net.httpserver.HttpServer;
-
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;

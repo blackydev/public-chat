@@ -4,17 +4,16 @@ package com.patryklikus.publicchat.controllers;
 import com.patryklikus.publicchat.https.annotations.*;
 import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.Response;
-import com.patryklikus.publicchat.https.models.ResponseException;
-import com.patryklikus.publicchat.models.GetMessageRangeDto;
 import com.patryklikus.publicchat.models.Message;
+import com.patryklikus.publicchat.models.dtos.GetMessagesRangeDto;
 import com.patryklikus.publicchat.models.mappers.MessageMapper;
 import com.patryklikus.publicchat.services.MessageService;
 
 import java.util.List;
-import java.util.Map;
 
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
+import static java.lang.Long.parseLong;
 
 @RequestMapping(path = "/api/messages")
 public class MessageController {
@@ -29,7 +28,7 @@ public class MessageController {
     @Authenticated
     @GetMapping
     public Response getMessages(Request request) {
-        GetMessageRangeDto messageRange = messageMapper.toMessageRangeDto(request.getRequestURI().getQuery());
+        GetMessagesRangeDto messageRange = messageMapper.toMessageRangeDto(request.getRequestURI().getQuery());
         List<Message> messages = messageService.getMessages(messageRange);
         String jsonMessages = messageMapper.toJson(messages);
         return new Response(jsonMessages);
@@ -47,15 +46,11 @@ public class MessageController {
     @DeleteMapping
     public Response deleteMessage(Request request) {
         String messageId = request.getRequestURI().getPath().replace("/api/message/", "");
-        messageService.removeMessage(getLongMember(messageId));
-        return new Response(NO_CONTENT);
-    }
-
-    private long getLongMember(Map<String, String> map, String member) {
         try {
-            return Long.parseLong(map.get(member));
+            messageService.removeMessage(parseLong(messageId));
         } catch (NumberFormatException e) {
-            throw new ResponseException(BAD_REQUEST);
+            return new Response(BAD_REQUEST);
         }
+        return new Response(NO_CONTENT);
     }
 }

@@ -1,11 +1,10 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.models.mappers;
 
-import com.patryklikus.publicchat.models.User;
-
-import java.util.Map;
-
 import static com.patryklikus.publicchat.models.UserBuilder.anUser;
+
+import com.patryklikus.publicchat.models.User;
+import java.util.Map;
 
 public class UserMapper {
     private final JsonMapper jsonMapper;

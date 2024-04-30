@@ -1,14 +1,13 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.repositories;
 
+import static com.patryklikus.publicchat.models.UserBuilder.anUser;
+
 import com.patryklikus.publicchat.clients.PostgresClient;
 import com.patryklikus.publicchat.models.User;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 
 public class UserRepository implements Repository<User> {
     private final PostgresClient postgresClient;

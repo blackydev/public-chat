@@ -1,6 +1,8 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.https.engine;
 
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
+
 import com.patryklikus.publicchat.https.annotations.Authenticated;
 import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.https.models.EndpointMethod;
@@ -9,11 +11,8 @@ import com.patryklikus.publicchat.https.models.Response;
 import com.patryklikus.publicchat.services.AuthService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import java.util.Arrays;
 import java.util.logging.Logger;
-
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
 
 /**
  * Handles requests of one endpoint. It handles multiple types of requestMethods like GET, POST, PUT, and DELETE.
