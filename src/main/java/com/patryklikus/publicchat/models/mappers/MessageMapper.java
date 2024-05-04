@@ -48,7 +48,7 @@ public class MessageMapper {
         return "[" + messages.stream().map(this::toJson).collect(Collectors.joining(",")) + "]";
     }
 
-    private String toJson(Message message) {
+    public String toJson(Message message) {
         return String.format("""
                         {
                            "id": %s,

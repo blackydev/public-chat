@@ -16,6 +16,10 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
+    public Message getLastMessage() {
+        return messageRepository.findLast();
+    }
+
     public List<Message> getMessages(GetMessagesRangeDto messageRange) {
         if (messageRange.minId() > messageRange.maxId())
             throw new ResponseException(BAD_REQUEST);

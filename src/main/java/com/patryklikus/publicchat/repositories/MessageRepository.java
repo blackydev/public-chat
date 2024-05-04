@@ -1,12 +1,10 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.repositories;
 
-import static com.patryklikus.publicchat.models.MessageBuilder.aMessage;
-import static com.patryklikus.publicchat.models.UserBuilder.anUser;
-
 import com.patryklikus.publicchat.clients.PostgresClient;
 import com.patryklikus.publicchat.models.Message;
 import com.patryklikus.publicchat.models.User;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,6 +13,9 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.patryklikus.publicchat.models.MessageBuilder.aMessage;
+import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 
 public class MessageRepository implements Repository<Message> {
     private final PostgresClient postgresClient;
@@ -36,6 +37,25 @@ public class MessageRepository implements Repository<Message> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Message findLast() {
+        String query = "SELECT m.id, m.content, m.timestamp, u.id AS author_id, u.username AS author_username FROM messages m ORDER BY id DESC LIMIT 1 JOIN users u ON m.author_id = u.id";
+        try (Statement stmt = postgresClient.createStatement()) {
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                long id = rs.getLong("id");
+                String content = rs.getString("content");
+                Timestamp timestamp = rs.getTimestamp("timestamp");
+                return aMessage().withId(id)
+                        .withAuthor(getAuthor(rs))
+                        .withContent(content)
+                        .withTimestamp(timestamp.toLocalDateTime())
+                        .build();
+            }
+        } catch (SQLException ignored) {
+        }
+        return null;
     }
 
     public List<Message> findMany(Long idFrom, Long idTo) {

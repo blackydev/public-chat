@@ -1,23 +1,23 @@
-document.getElementById('registration-form').addEventListener('submit', function (event) {
-    event.preventDefault();
+import {authenticationStorage} from 'public/scripts/utils.js';
 
+document.getElementById('registration-form').addEventListener('submit', async function (event) {
+    event.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-
-    fetch('/api/users', {
-        method: 'POST', body: {username, password}
-    })
-        .then(res => {
-            if (!res.ok) {
-                return res.text().then(errorMessage => {
-                    document.getElementById('form-error').innerHTML = `${errorMessage}`;
-                    throw new Error(`Request failed with status ${res.status}`);
-                });
-            }
-            localStorage.setItem("accessToken", btoa(`${username}:${password}`));
-            window.location.href = '/';
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+    await register(username, password)
 });
+
+async function register(username, password) {
+    const response = await fetch('/api/users', {
+        method: 'POST', body: JSON.stringify({username, password})
+    });
+
+    if (!response.ok) {
+        const errorMessage = await response.text();
+        document.getElementById('form-error').innerHTML = `${errorMessage}`;
+        return;
+    }
+
+    authenticationStorage.save(username, password);
+    window.location.href = '/';
+}
