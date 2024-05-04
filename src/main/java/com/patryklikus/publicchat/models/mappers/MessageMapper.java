@@ -4,8 +4,8 @@ package com.patryklikus.publicchat.models.mappers;
 import static com.patryklikus.publicchat.models.MessageBuilder.aMessage;
 import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 
-import com.patryklikus.publicchat.models.dtos.GetMessagesRangeDto;
 import com.patryklikus.publicchat.models.Message;
+import com.patryklikus.publicchat.models.dtos.GetMessagesRangeDto;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

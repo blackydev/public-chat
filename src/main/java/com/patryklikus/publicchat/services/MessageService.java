@@ -4,8 +4,8 @@ package com.patryklikus.publicchat.services;
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
 
 import com.patryklikus.publicchat.https.models.ResponseException;
-import com.patryklikus.publicchat.models.dtos.GetMessagesRangeDto;
 import com.patryklikus.publicchat.models.Message;
+import com.patryklikus.publicchat.models.dtos.GetMessagesRangeDto;
 import com.patryklikus.publicchat.repositories.MessageRepository;
 import java.util.List;
 
