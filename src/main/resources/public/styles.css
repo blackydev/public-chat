@@ -83,6 +83,16 @@ body {
 }
 
 /* LOGO */
+#header {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#header-margin {
+    height: 80px;
+}
+
 .logo {
     font-family: Arial, sans-serif;
     font-size: 40px;
@@ -163,10 +173,12 @@ form#message {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 35px 0 20px 0;
 }
 
 form#message input {
     height: 20px;
+    width: 100%;
     padding: 5px 10px;
     border: none;
     border-radius: 30px;
@@ -182,11 +194,11 @@ form#message button {
     font-size: 12px;
     background-color: var(--primary-color);
     border: none;
-    border-radius: 3px;
+    border-radius: 10px;
     color: white;
     cursor: pointer;
     align-items: center;
-    padding: 0 10px;
+    padding: 0 25px;
 }
 
 /* MESSAGE */

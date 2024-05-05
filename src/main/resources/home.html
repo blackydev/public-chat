@@ -15,13 +15,23 @@
 <body>
 <div class="h-100v flex-center-space-between flex-column">
     <div>
-        <div class="logo flex-center h-10px mt-10px">
-            <span class="public">PUBLIC</span><span class="chat">CHAT</span>
+        <div id="header">
+            <div class="logo flex-center h-10px mt-10px">
+                <span class="public">PUBLIC</span><span class="chat">CHAT</span>
+            </div>
+            <nav class="flex-center">
+                <a href="/settings">Setting</a>
+                <button id="logout">Logout</button>
+            </nav>
         </div>
-        <nav class="flex-center">
-            <a href="/settings">Setting</a>
-            <button id="logout">Logout</button>
-        </nav>
+        <div id="header-margin"></div>
+
+        <form id="message" class="flex-center flex-column mb-10px">
+            <label for="message-content"></label>
+            <input type="text" id="message-content" placeholder="What's up?">
+            <button>SEND</button>
+        </form>
+
         <div id="board" class="flex-center-start mt-25px">
             <div class="message-box">
                 <div class="author">
@@ -36,12 +46,8 @@
                 </div>
             </div>
         </div>
+        <div></div>
     </div>
-    <form id="message" class="flex-center flex-column mb-10px">
-        <label for="message-content"></label>
-        <input type="text" id="message-content" placeholder="What's up?">
-        <button>SEND</button>
-    </form>
 </div>
 <script src="public/scripts/home.js"></script>
 </body>
