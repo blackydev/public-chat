@@ -14,7 +14,7 @@ async function register(username, password) {
 
     if (!response.ok) {
         const errorMessage = await response.text();
-        document.getElementById('form-error').innerHTML = `${errorMessage}`;
+        document.getElementById('error').innerHTML = `${errorMessage}`;
         return;
     }
 

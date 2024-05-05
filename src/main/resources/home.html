@@ -13,7 +13,22 @@
 </head>
 
 <body>
-<h1>Page Title</h1>
+<div class="h-100 flex-center-space-between flex-column">
+    <div class="logo flex-center h-10px mt-10px">
+        <span class="public">PUBLIC</span><span class="chat">CHAT</span>
+    </div>
+    <div>
+    <form id="message" class="flex-center mb-10px">
+        <label for="message-content"></label>
+        <input type="text" id="message-content" placeholder="What's up?">
+        <button>SEND</button>
+    </form>
+        <nav>
+            <a href="/settings">Setting</a>
+            <a href="/logout">Logout</a>
+        </nav>
+    </div>
+</div>
 <script src="public/scripts/home.js"></script>
 </body>
 
