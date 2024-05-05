@@ -86,14 +86,17 @@ body {
 }
 
 /* NAVIGATION */
-nav {
-}
-
 nav * {
     color: black;
     text-decoration: none;
     font-size: 18px;
     margin: 0 10px;
+    border: 0;
+    background-color: transparent;
+}
+
+nav *:hover {
+    cursor: pointer;
 }
 
 /* FORMS */
@@ -172,3 +175,5 @@ form#message button {
     align-items: center;
     padding: 0 10px;
 }
+
+/* MESSAGE */
