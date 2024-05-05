@@ -13,7 +13,7 @@
 </head>
 
 <body>
-<div class="h-100 flex-center-space-between flex-column">
+<div class="h-100v flex-center-space-between flex-column">
     <div>
         <div class="logo flex-center h-10px mt-10px">
             <span class="public">PUBLIC</span><span class="chat">CHAT</span>
@@ -22,14 +22,18 @@
             <a href="/settings">Setting</a>
             <button id="logout">Logout</button>
         </nav>
-    </div>
-    <div id="board">
-        <div class="message-container">
-            <div class="message-author">
-                author
-            </div>
-            <div class="message-content">
-            Hello world!
+        <div id="board" class="flex-center-start mt-25px">
+            <div class="message-box">
+                <div class="author">
+                    author
+                </div>
+                <div class="content">
+                    Hello world!
+                </div>
+                <div class="footer flex-center-space-between flex-row-reverse">
+                    <div class="date">now</div>
+                    <button class="remove">remove</button>
+                </div>
             </div>
         </div>
     </div>

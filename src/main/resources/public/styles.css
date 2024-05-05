@@ -41,7 +41,7 @@ body {
     height: 100vh;
 }
 
-.h-100 {
+.h-100v {
     height: 100vh;
 }
 
@@ -49,8 +49,21 @@ body {
     margin-top: 10px;
 }
 
+.mt-25px {
+    margin-top: 25px;
+}
+
 .mb-10px {
     margin-bottom: 10px;
+}
+
+.flex-row-reverse {
+    flex-direction: row-reverse;
+}
+
+.flex-center-start {
+    display: flex;
+    justify-content: start;
 }
 
 .flex-center {
@@ -177,3 +190,28 @@ form#message button {
 }
 
 /* MESSAGE */
+.message-box {
+    width: 100%;
+    font-size: 15px;
+}
+
+.message-box .author {
+    margin: 0 0 3px 3px;
+}
+
+.message-box .content {
+    background-color: white;
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+.message-box .footer {
+    margin: 0 5px;
+}
+
+.message-box .footer button.remove {
+    color: red;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
