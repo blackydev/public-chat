@@ -6,7 +6,6 @@ class MessageService {
 
     constructor() {
         this.#getLastMessageId().then(lastMessageId => {
-            console.log()
             this.#olderGotMessageId = lastMessageId + 1;
             this.#newerGotMessageId = lastMessageId;
         })
@@ -24,8 +23,7 @@ class MessageService {
             body: {olderGotMessageId, newerGotMessageId}
         });
         this.#newerGotMessageId = newerGotMessageId; // todo
-        console.log(response.body)
-        return response.body
+        return await response.json();
     }
 
     async getOlderMessages() {
@@ -40,8 +38,7 @@ class MessageService {
             body: {olderGotMessageId, newerGotMessageId}
         });
         this.#olderGotMessageId = olderGotMessageId;
-        console.log(response.body)
-        return response.body
+        return await response.json();
     }
 
     async #getLastMessageId() {
@@ -51,7 +48,7 @@ class MessageService {
         if (response.status === 401) {
             userService.logout();
         }
-        return response.body;
+        return await response.json();
     }
 
     #isInitialized() {
