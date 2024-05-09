@@ -40,7 +40,7 @@ public class PostgresClient {
         }
     }
 
-    public void close() throws SQLException {
+    public void close() throws SQLException { // todo
         connection.close();
         LOG.info("Application has been disconnected from database");
     }

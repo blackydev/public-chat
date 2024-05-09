@@ -26,10 +26,11 @@ public class AuthService {
             return null;
         }
         String authHeader = authorization.getFirst();
+        System.out.println(authHeader);
         if (!authHeader.startsWith(AUTHORIZATION_PREFIX)) {
             return null;
         }
-        String[] userPass = decodeCredentials(authHeader);
+        String[] userPass = decodeCredentials(authHeader.substring(AUTHORIZATION_PREFIX.length()));
         User user = userRepository.findByUsername(userPass[0]);
         if (user != null && hashingService.compare(userPass[1], user.getPassword())) {
             return new Authentication(user);
