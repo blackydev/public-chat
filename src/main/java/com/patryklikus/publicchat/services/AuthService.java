@@ -29,7 +29,7 @@ public class AuthService {
         if (!authHeader.startsWith(AUTHORIZATION_PREFIX)) {
             return null;
         }
-        String[] userPass = decodeCredentials(authHeader.substring(AUTHORIZATION_PREFIX.length()));
+        String[] userPass = decodeCredentials(authHeader);
         User user = userRepository.findByUsername(userPass[0]);
         if (user != null && hashingService.compare(userPass[1], user.getPassword())) {
             return new Authentication(user);

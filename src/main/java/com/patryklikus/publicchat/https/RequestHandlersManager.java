@@ -7,6 +7,7 @@ import com.patryklikus.publicchat.https.engine.StringResponseSender;
 import com.patryklikus.publicchat.https.models.EndpointMethod;
 import com.patryklikus.publicchat.services.AuthService;
 import com.sun.net.httpserver.HttpServer;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -80,7 +81,7 @@ public class RequestHandlersManager {
             }
 
             if (methodName != null) {
-                LOG.fine(String.format(
+                LOG.info(String.format(
                         "Create handler for %s method. Endpoint: %s handling method: %s",
                         methodName, endpoint, controllerClass.getName() + "#" + method.getName()
                 ));
