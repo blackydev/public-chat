@@ -11,6 +11,13 @@ class MessageService {
         })
     }
 
+    async create(content) {
+        const response = await fetch(MessageService.#ENDPOINT, {
+            method: 'POST', headers: {"Authorization": authenticationStorage.get()}, body: JSON.stringify({content})
+        });
+        return await response.json();
+    }
+
     async getNewerMessages() {
         if (!this.#isInitialized()) {
             return [];

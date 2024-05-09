@@ -84,7 +84,7 @@ public class MessageRepository implements Repository<Message> {
     @Override
     public void save(Message message) {
         if (message.getId() != null) {
-            throw new RuntimeException("Message s is immutable!");
+            throw new RuntimeException("Message is immutable!");
         }
         create(message);
     }
@@ -107,15 +107,14 @@ public class MessageRepository implements Repository<Message> {
 
     private void create(Message message) {
         String query = String.format(
-                "INSERT INTO messages (author_id, content) VALUES ('%s', '%s') RETURNING ID;",
+                "INSERT INTO messages (author_id, content) VALUES (%s, '%s') RETURNING ID;",
                 message.getAuthor().getId(), message.getContent()
         );
         try (Statement stmt = postgresClient.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             rs.next();
             message.setId(rs.getLong("id"));
-            LocalDateTime timestamp = rs.getTimestamp("timestamp").toLocalDateTime();
-            message.setTimestamp(timestamp);
+            message.setTimestamp(LocalDateTime.now());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
