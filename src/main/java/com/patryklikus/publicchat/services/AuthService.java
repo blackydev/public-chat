@@ -26,7 +26,6 @@ public class AuthService {
             return null;
         }
         String authHeader = authorization.getFirst();
-        System.out.println(authHeader);
         if (!authHeader.startsWith(AUTHORIZATION_PREFIX)) {
             return null;
         }
