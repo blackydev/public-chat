@@ -3,24 +3,27 @@ if (authenticationStorage.get() === null) {
 }
 
 messageService.getOlderMessages().then(messages => {
-    messages.forEach(message => addHtmlMessage(message.author, message.content, message.timestamp));
+    messages.forEach(message => addHtmlMessage(message.author.username, message.content, message.timestamp));
 })
 
 document.getElementById('message').addEventListener('submit', async function (event) {
     event.preventDefault();
-    const content = document.getElementById('message-content').value;
-    if (content !== '') {
-        await messageService.create(content); // todo [Error] Unhandled Promise Rejection: SyntaxError: The string did not match the expected pattern.
+    const content = document.getElementById('message-content');
+    if (content.value !== '') {
+        await messageService.create(content.value);
+        content.value = '';
     }
 });
 
-function addHtmlMessage(author, content, date) {
+
+function addHtmlMessage(authorName, content, datetime) {
+    console.log("Add html message");
     document.getElementById('board').innerHtml = `
         <div class="message-box">
-            <div class="author">${author}</div>
+            <div class="author">${authorName}</div>
             <div class="content">${content}</div>
             <div class="footer flex-center-space-between flex-row-reverse">
-                <div class="date">${date}</div>
+                <div class="date">${datetime}</div>
                 <button class="remove">remove</button>
             </div>
         </div>

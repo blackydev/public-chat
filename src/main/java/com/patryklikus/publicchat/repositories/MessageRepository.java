@@ -40,7 +40,13 @@ public class MessageRepository implements Repository<Message> {
     }
 
     public Message findLast() {
-        String query = "SELECT m.id, m.content, m.timestamp, u.id AS author_id, u.username AS author_username FROM messages m ORDER BY id DESC LIMIT 1 JOIN users u ON m.author_id = u.id";
+        String query = """
+                SELECT m.id, m.content, m.timestamp, u.id AS author_id, u.username AS author_username
+                FROM messages m
+                JOIN users u ON m.author_id = u.id
+                ORDER BY m.id DESC
+                LIMIT 1;
+                """;
         try (Statement stmt = postgresClient.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             if (rs.next()) {

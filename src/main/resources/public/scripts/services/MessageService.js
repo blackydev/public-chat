@@ -1,3 +1,5 @@
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 class MessageService {
     static #ENDPOINT = "/api/messages";
     static #MAX_BATCH_SIZE = 5;
@@ -12,39 +14,44 @@ class MessageService {
     }
 
     async create(content) {
-        const response = await fetch(MessageService.#ENDPOINT, {
+        await fetch(MessageService.#ENDPOINT, {
             method: 'POST', headers: {"Authorization": authenticationStorage.get()}, body: JSON.stringify({content})
         });
-        return await response.json();
     }
 
     async getNewerMessages() {
         if (!this.#isInitialized()) {
-            return [];
+            await delay(2000);
+            return await this.getNewerMessages()
         }
-        const olderGotMessageId = this.#olderGotMessageId;
-        const newerGotMessageId = this.#newerGotMessageId + MessageService.#MAX_BATCH_SIZE;
+        const minId = this.#olderGotMessageId;
+        const maxId = this.#newerGotMessageId + MessageService.#MAX_BATCH_SIZE;
         const response = await fetch(MessageService.#ENDPOINT, {
             method: 'GET',
             headers: {"Authorization": authenticationStorage.get()},
-            body: {olderGotMessageId, newerGotMessageId}
+            body: {olderGotMessageId: minId, newerGotMessageId: maxId}
         });
-        this.#newerGotMessageId = newerGotMessageId; // todo
+        this.#newerGotMessageId = maxId; // todo
         return await response.json();
     }
 
     async getOlderMessages() {
-        if (!this.#isInitialized()) {
+        if (this.#olderGotMessageId < 0) {
             return [];
         }
-        const olderGotMessageId = this.#olderGotMessageId - MessageService.#MAX_BATCH_SIZE;
-        const newerGotMessageId = this.#newerGotMessageId;
-        const response = await fetch(MessageService.#ENDPOINT, {
+        if (!this.#isInitialized()) {
+            await delay(2000);
+            return await this.getOlderMessages()
+        }
+        const minId = this.#olderGotMessageId - MessageService.#MAX_BATCH_SIZE;
+        const maxId = this.#newerGotMessageId;
+        const endpointAndQuery = `${MessageService.#ENDPOINT}?minId=${minId}&maxId=${maxId}`;
+        const response = await fetch(endpointAndQuery, {
             method: 'GET',
             headers: {"Authorization": authenticationStorage.get()},
-            body: {olderGotMessageId, newerGotMessageId}
         });
-        this.#olderGotMessageId = olderGotMessageId;
+        this.#olderGotMessageId = minId;
+        console.log(await response.json())
         return await response.json();
     }
 
