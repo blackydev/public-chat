@@ -1,9 +1,9 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.https.models;
 
-import java.util.Objects;
-
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.OK;
+
+import java.util.Objects;
 
 /**
  * Represents response which controllers methods should return.

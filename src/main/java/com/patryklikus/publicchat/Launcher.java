@@ -4,7 +4,6 @@ package com.patryklikus.publicchat;
 import com.patryklikus.publicchat.config.BeanInitializer;
 import com.patryklikus.publicchat.https.RequestHandlersManager;
 import com.sun.net.httpserver.HttpServer;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.sql.SQLException;
