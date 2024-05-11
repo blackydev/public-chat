@@ -39,7 +39,9 @@ public class MessageController {
     @GetMapping
     public Response getMessages(Request request) {
         GetMessagesRangeDto messageRange = messageMapper.toMessageRangeDto(request.getRequestURI().getQuery());
+        System.out.println(messageRange);
         List<Message> messages = messageService.getMessages(messageRange);
+        System.out.println(messageMapper.toJson(messages));
         return new Response(messageMapper.toJson(messages));
     }
 

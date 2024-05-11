@@ -59,15 +59,22 @@ public class MessageRepository implements Repository<Message> {
                         .withTimestamp(timestamp.toLocalDateTime())
                         .build();
             }
-        } catch (SQLException ignored) {
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     public List<Message> findMany(Long idFrom, Long idTo) {
-        String query = String.format("SELECT m.id, m.content, m.timestamp, u.id AS author_id, u.username AS author_username FROM messages m WHERE id >= %s AND id <= %s JOIN users u ON m.author_id = u.id", idFrom, idTo);
+        String query = """
+                SELECT m.id, m.content, m.timestamp, u.id AS author_id, u.username AS author_username
+                FROM messages m
+                WHERE m.id >= %s AND m.id <= %s
+                JOIN users u ON m.author_id = u.id;
+                """;
+        String formattedQuery = String.format(query, idFrom, idTo);
         try (Statement stmt = postgresClient.createStatement()) {
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(formattedQuery);
             List<Message> messages = new LinkedList<>();
             if (rs.next()) {
                 long id = rs.getLong("id");
@@ -82,7 +89,7 @@ public class MessageRepository implements Repository<Message> {
             }
             return messages;
         } catch (SQLException e) {
-            return Collections.emptyList();
+            throw new RuntimeException(e);
         }
     }
 

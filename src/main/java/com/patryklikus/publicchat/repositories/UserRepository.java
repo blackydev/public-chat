@@ -47,7 +47,7 @@ public class UserRepository implements Repository<User> {
             }
             return null;
         } catch (SQLException e) {
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
