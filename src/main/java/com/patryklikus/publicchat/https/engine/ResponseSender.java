@@ -12,7 +12,7 @@ public abstract class ResponseSender {
     /**
      * Sends response to client. Closes HttpExchange.
      */
-    void send(HttpExchange exchange, Response response) {
+    public void send(HttpExchange exchange, Response response) {
         try {
             sendUnsafe(exchange, response);
         } catch (IOException e) {

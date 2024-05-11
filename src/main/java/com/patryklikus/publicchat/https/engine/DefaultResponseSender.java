@@ -6,7 +6,7 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class StringResponseSender extends ResponseSender {
+public class DefaultResponseSender extends ResponseSender {
     protected void sendUnsafe(HttpExchange exchange, Response response) throws IOException {
         exchange.sendResponseHeaders(response.code().getCode(), response.body().length());
         OutputStream os = exchange.getResponseBody();
