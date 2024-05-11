@@ -42,7 +42,7 @@ public class EndpointHandler implements HttpHandler {
             if (e.getCause().getCause() instanceof ResponseException re) {
                 response = new Response(re.getStatusCode(), re.getMessage());
             } else {
-                LOG.warning("Unexpected method handler exception: " + Arrays.toString(e.getStackTrace()));
+                LOG.warning("Unexpected method handler exception: " + e.getCause().getCause().getMessage());
                 response = new Response(INTERNAL_SERVER_ERROR, "Unexpected server error");
             }
         }

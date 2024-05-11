@@ -35,9 +35,9 @@ public class UserRepository implements Repository<User> {
 
     public User findByUsername(String username) {
         String query = "SELECT id, isAdmin, password FROM users WHERE username = ? LIMIT 1";
-        try (PreparedStatement stmt = postgresClient.prepareStatement(query)) {
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
+        try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
+            statement.setString(1, username);
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 long id = rs.getLong("id");
                 boolean isAdmin = rs.getBoolean("isAdmin");
@@ -66,9 +66,9 @@ public class UserRepository implements Repository<User> {
     @Override
     public void remove(long id) {
         String query = "DELETE FROM users WHERE id = ?;";
-        try (PreparedStatement stmt = postgresClient.prepareStatement(query)) {
-            stmt.setLong(1, id);
-            stmt.executeUpdate();
+        try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -76,11 +76,11 @@ public class UserRepository implements Repository<User> {
 
     private void create(User user) {
         String query = "INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?) RETURNING ID;";
-        try (PreparedStatement stmt = postgresClient.prepareStatement(query)) {
-            stmt.setString(1, user.getUsername());
-            stmt.setString(2, user.getPassword());
-            stmt.setBoolean(3, user.isAdmin());
-            ResultSet rs = stmt.executeQuery(query);
+        try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getPassword());
+            statement.setBoolean(3, user.isAdmin());
+            ResultSet rs = statement.executeQuery();
             rs.next();
             user.setId(rs.getLong("id"));
         } catch (SQLException e) {
@@ -90,12 +90,12 @@ public class UserRepository implements Repository<User> {
 
     private void update(User user) {
         String query = "UPDATE users SET username = ? , password = ?, isAdmin = ? WHERE id = ?;";
-        try (PreparedStatement stmt = postgresClient.prepareStatement(query)) {
-            stmt.setString(1, user.getUsername());
-            stmt.setString(2, user.getPassword());
-            stmt.setBoolean(3, user.isAdmin());
-            stmt.setLong(4, user.getId());
-            stmt.executeUpdate();
+        try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getPassword());
+            statement.setBoolean(3, user.isAdmin());
+            statement.setLong(4, user.getId());
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -47,8 +47,8 @@ public class MessageRepository implements Repository<Message> {
                 ORDER BY m.id DESC
                 LIMIT 1;
                 """;
-        try (PreparedStatement stmt = postgresClient.prepareStatement(query)) {
-            ResultSet rs = stmt.executeQuery();
+        try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 long id = rs.getLong("id");
                 String content = rs.getString("content");
@@ -69,13 +69,13 @@ public class MessageRepository implements Repository<Message> {
         String query = """
                 SELECT m.id, m.content, m.timestamp, u.id AS author_id, u.username AS author_username
                 FROM messages m
-                WHERE m.id >= ? AND m.id <= ?
-                JOIN users u ON m.author_id = u.id;
+                JOIN users u ON m.author_id = u.id
+                WHERE m.id >= ? AND m.id <= ?;
                 """;
-        try (PreparedStatement stmt = postgresClient.prepareStatement(query)) {
-            stmt.setLong(1, idFrom);
-            stmt.setLong(1, idTo);
-            ResultSet rs = stmt.executeQuery();
+        try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
+            statement.setLong(1, idFrom);
+            statement.setLong(2, idTo);
+            ResultSet rs = statement.executeQuery();
             List<Message> messages = new LinkedList<>();
             if (rs.next()) {
                 long id = rs.getLong("id");
@@ -106,9 +106,9 @@ public class MessageRepository implements Repository<Message> {
     @Override
     public void remove(long id) {
         String query = "DELETE FROM messages WHERE id = ?;";
-        try (PreparedStatement stmt = postgresClient.prepareStatement(query)) {
-            stmt.setLong(1, id);
-            stmt.executeUpdate();
+        try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -122,10 +122,10 @@ public class MessageRepository implements Repository<Message> {
 
     private void create(Message message) {
         String query = "INSERT INTO messages (author_id, content) VALUES (?, ?) RETURNING ID;";
-        try (PreparedStatement stmt = postgresClient.prepareStatement(query)) {
-            stmt.setLong(1, message.getAuthor().getId());
-            stmt.setString(2, message.getContent());
-            ResultSet rs = stmt.executeQuery(query);
+        try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
+            statement.setLong(1, message.getAuthor().getId());
+            statement.setString(2, message.getContent());
+            ResultSet rs = statement.executeQuery();
             rs.next();
             message.setId(rs.getLong("id"));
             message.setTimestamp(LocalDateTime.now());
