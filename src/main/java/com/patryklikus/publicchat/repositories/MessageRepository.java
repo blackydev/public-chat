@@ -1,19 +1,20 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.repositories;
 
-import static com.patryklikus.publicchat.models.MessageBuilder.aMessage;
-import static com.patryklikus.publicchat.models.UserBuilder.anUser;
-
 import com.patryklikus.publicchat.clients.PostgresClient;
 import com.patryklikus.publicchat.models.Message;
 import com.patryklikus.publicchat.models.User;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.patryklikus.publicchat.models.MessageBuilder.aMessage;
+import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 
 public class MessageRepository implements Repository<Message> {
     private final PostgresClient postgresClient;
@@ -23,15 +24,16 @@ public class MessageRepository implements Repository<Message> {
     }
 
     public void createTable() {
-        try (Statement statement = postgresClient.createStatement()) {
-            statement.executeUpdate("""
-                    CREATE TABLE IF NOT EXISTS messages (
-                        id serial primary key,
-                        author_id integer not null references "users",
-                        content text not null,
-                        timestamp timestamp default CURRENT_TIMESTAMP not null
-                    );
-                    """);
+        String query = """
+                CREATE TABLE IF NOT EXISTS messages (
+                    id serial primary key,
+                    author_id integer not null references "users",
+                    content text not null,
+                    timestamp timestamp default CURRENT_TIMESTAMP not null
+                );
+                """;
+        try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -45,8 +47,8 @@ public class MessageRepository implements Repository<Message> {
                 ORDER BY m.id DESC
                 LIMIT 1;
                 """;
-        try (Statement stmt = postgresClient.createStatement()) {
-            ResultSet rs = stmt.executeQuery(query);
+        try (PreparedStatement stmt = postgresClient.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 long id = rs.getLong("id");
                 String content = rs.getString("content");
@@ -67,12 +69,13 @@ public class MessageRepository implements Repository<Message> {
         String query = """
                 SELECT m.id, m.content, m.timestamp, u.id AS author_id, u.username AS author_username
                 FROM messages m
-                WHERE m.id >= %s AND m.id <= %s
+                WHERE m.id >= ? AND m.id <= ?
                 JOIN users u ON m.author_id = u.id;
                 """;
-        String formattedQuery = String.format(query, idFrom, idTo);
-        try (Statement stmt = postgresClient.createStatement()) {
-            ResultSet rs = stmt.executeQuery(formattedQuery);
+        try (PreparedStatement stmt = postgresClient.prepareStatement(query)) {
+            stmt.setLong(1, idFrom);
+            stmt.setLong(1, idTo);
+            ResultSet rs = stmt.executeQuery();
             List<Message> messages = new LinkedList<>();
             if (rs.next()) {
                 long id = rs.getLong("id");
@@ -102,9 +105,10 @@ public class MessageRepository implements Repository<Message> {
 
     @Override
     public void remove(long id) {
-        String query = String.format("DELETE FROM messages WHERE id = %s;", id);
-        try (Statement stmt = postgresClient.createStatement()) {
-            stmt.executeUpdate(query);
+        String query = "DELETE FROM messages WHERE id = ?;";
+        try (PreparedStatement stmt = postgresClient.prepareStatement(query)) {
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -117,11 +121,10 @@ public class MessageRepository implements Repository<Message> {
     }
 
     private void create(Message message) {
-        String query = String.format(
-                "INSERT INTO messages (author_id, content) VALUES (%s, '%s') RETURNING ID;",
-                message.getAuthor().getId(), message.getContent()
-        );
-        try (Statement stmt = postgresClient.createStatement()) {
+        String query = "INSERT INTO messages (author_id, content) VALUES (?, ?) RETURNING ID;";
+        try (PreparedStatement stmt = postgresClient.prepareStatement(query)) {
+            stmt.setLong(1, message.getAuthor().getId());
+            stmt.setString(2, message.getContent());
             ResultSet rs = stmt.executeQuery(query);
             rs.next();
             message.setId(rs.getLong("id"));

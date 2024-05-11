@@ -25,6 +25,7 @@ public class MessageService {
             throw new ResponseException(BAD_REQUEST);
         if (messageRange.maxId() - messageRange.minId() > 10)
             throw new ResponseException(BAD_REQUEST);
+        System.out.println("asd");
         return messageRepository.findMany(messageRange.minId(), messageRange.maxId());
     }
 

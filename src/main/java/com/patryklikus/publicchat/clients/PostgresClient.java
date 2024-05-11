@@ -1,10 +1,7 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.clients;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.logging.Logger;
 
 public class PostgresClient {
@@ -31,9 +28,9 @@ public class PostgresClient {
         LOG.info("Application has been connected to database");
     }
 
-    public Statement createStatement() {
+    public PreparedStatement prepareStatement(String query) {
         try {
-            return connection.createStatement();
+            return connection.prepareStatement(query);
         } catch (SQLException e) {
             LOG.warning("Exception during creating statement to postgreSQL database: " + e.getMessage());
             throw new RuntimeException(e);
