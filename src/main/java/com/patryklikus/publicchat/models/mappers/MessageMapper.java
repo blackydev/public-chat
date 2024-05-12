@@ -52,11 +52,11 @@ public class MessageMapper {
         return String.format("""
                         {
                            "id": %s,
-                           "author": {"id": %s, username: "%s"},
+                           "author": {"id": %s, "username": "%s"},
                            "content": "%s",
                            "timestamp": "%s"
                         }
-                        """,
+                        """, // todo move to api responseSender
                 message.getId(), message.getAuthor().getId(), message.getAuthor().getUsername(),
                 message.getContent(), message.getTimestamp()
         );

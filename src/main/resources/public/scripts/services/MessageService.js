@@ -21,7 +21,7 @@ class MessageService {
 
     async getNewerMessages() {
         if (!this.#isInitialized()) {
-            await delay(2000);
+            await delay(200);
             return await this.getNewerMessages()
         }
         const minId = this.#olderGotMessageId;
@@ -31,8 +31,9 @@ class MessageService {
             headers: {"Authorization": authenticationStorage.get()},
             body: {olderGotMessageId: minId, newerGotMessageId: maxId}
         });
-        this.#newerGotMessageId = maxId; // todo
-        return await response.json();
+        const messages = await response.json();
+        this.#newerGotMessageId += messages.length;
+        return messages.sort((m1, m2) => m1.id - m2.id);
     }
 
     async getOlderMessages() {
@@ -40,7 +41,7 @@ class MessageService {
             return [];
         }
         if (!this.#isInitialized()) {
-            await delay(2000);
+            await delay(200);
             return await this.getOlderMessages()
         }
         const minId = this.#olderGotMessageId - MessageService.#MAX_BATCH_SIZE;
@@ -51,7 +52,6 @@ class MessageService {
             headers: {"Authorization": authenticationStorage.get()},
         });
         this.#olderGotMessageId = minId;
-        console.log(await response.json())
         return await response.json();
     }
 
@@ -62,7 +62,7 @@ class MessageService {
         if (response.status === 401) {
             userService.logout();
         }
-        return await response.json();
+        return (await response.json()).sort((m1, m2) => m1.id - m2.id);
     }
 
     #isInitialized() {

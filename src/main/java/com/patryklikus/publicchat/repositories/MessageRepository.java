@@ -77,7 +77,7 @@ public class MessageRepository implements Repository<Message> {
             statement.setLong(2, idTo);
             ResultSet rs = statement.executeQuery();
             List<Message> messages = new LinkedList<>();
-            if (rs.next()) {
+            while (rs.next()) {
                 long id = rs.getLong("id");
                 String content = rs.getString("content");
                 Timestamp timestamp = rs.getTimestamp("timestamp");

@@ -35,7 +35,7 @@ public class PostgresClient {
         return connection.prepareStatement(query);
     }
 
-    public void close() throws SQLException { // todo
+    public void close() throws SQLException { // todo handle
         connection.close();
         LOG.info("Application has been disconnected from database");
     }

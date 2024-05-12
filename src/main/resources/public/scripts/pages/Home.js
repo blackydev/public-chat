@@ -2,9 +2,18 @@ if (authenticationStorage.get() === null) {
     window.location.href = '/register';
 }
 
-messageService.getOlderMessages().then(messages => {
-    messages.forEach(message => addHtmlMessage(message.author.username, message.content, message.timestamp));
-})
+printLastMessages();
+setInterval(() => printNewMessages(), 500);
+
+async function printNewMessages() {
+    const messages = await messageService.getNewerMessages()
+    messages.forEach(msg => addHtmlMessageAtEnd(msg, true));
+}
+
+async function printLastMessages() {
+    const messages = await messageService.getOlderMessages()
+    messages.reverse().forEach(msg => addHtmlMessageAtEnd(msg));
+}
 
 document.getElementById('message').addEventListener('submit', async function (event) {
     event.preventDefault();
@@ -16,18 +25,26 @@ document.getElementById('message').addEventListener('submit', async function (ev
 });
 
 
-function addHtmlMessage(authorName, content, datetime) {
+function addHtmlMessageAtEnd(msg, isNewMessage = false) {
+    const date = new Date(msg.timestamp);
     console.log("Add html message");
-    document.getElementById('board').innerHtml = `
+    const htmlMessage = `
         <div class="message-box">
-            <div class="author">${authorName}</div>
-            <div class="content">${content}</div>
+            <div class="author">${msg.author.username}</div>
+            <div class="content">${msg.content}</div>
             <div class="footer flex-center-space-between flex-row-reverse">
-                <div class="date">${datetime}</div>
+                <div class="date">${date.getDay()}</div>
                 <button class="remove">remove</button>
             </div>
         </div>
     `;
+    const board = document.getElementById('board');
+    if (isMessageNew) {
+        board.innerHTML = htmlMessage + board.innerHTML
+    } else {
+        board.innerHTML += htmlMessage;
+    }
+
 }
 
 document.getElementById('logout').addEventListener('click', () => userService.logout());
