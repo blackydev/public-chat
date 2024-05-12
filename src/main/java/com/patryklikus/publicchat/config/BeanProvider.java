@@ -3,10 +3,7 @@ package com.patryklikus.publicchat.config;
 
 import com.patryklikus.publicchat.clients.PostgresClient;
 import com.patryklikus.publicchat.controllers.*;
-import com.patryklikus.publicchat.models.mappers.JsonMapper;
-import com.patryklikus.publicchat.models.mappers.MessageMapper;
-import com.patryklikus.publicchat.models.mappers.QueryMapper;
-import com.patryklikus.publicchat.models.mappers.UserMapper;
+import com.patryklikus.publicchat.models.mappers.*;
 import com.patryklikus.publicchat.repositories.MessageRepository;
 import com.patryklikus.publicchat.repositories.UserRepository;
 import com.patryklikus.publicchat.services.*;
@@ -19,6 +16,7 @@ public class BeanProvider {
      */
     private static final JsonMapper JSON_MAPPER = new JsonMapper();
     private static final QueryMapper QUERY_MAPPER = new QueryMapper();
+    private static final AuthMapper AUTH_MAPPER = new AuthMapper();
     private static final UserMapper USER_MAPPER = new UserMapper(JSON_MAPPER);
     private static final MessageMapper MESSAGE_MAPPER = new MessageMapper(JSON_MAPPER, QUERY_MAPPER);
 
@@ -42,7 +40,7 @@ public class BeanProvider {
      */
     static final PublicController PUBLIC_CONTROLLER = new PublicController(READER_SERVICE);
     static final PageController PAGE_CONTROLLER = new PageController(READER_SERVICE);
-    static final AuthController AUTH_CONTROLLER = new AuthController(AUTH_SERVICE);
-    static final UserController USER_CONTROLLER = new UserController(USER_MAPPER, USER_SERVICE);
+    static final AuthController AUTH_CONTROLLER = new AuthController(AUTH_MAPPER, AUTH_SERVICE);
+    static final UserController USER_CONTROLLER = new UserController(AUTH_MAPPER, USER_MAPPER, USER_SERVICE);
     static final MessageController MESSAGE_CONTROLLER = new MessageController(MESSAGE_MAPPER, MESSAGE_SERVICE);
 }

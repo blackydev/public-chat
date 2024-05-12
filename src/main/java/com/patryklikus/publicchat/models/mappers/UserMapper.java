@@ -4,6 +4,7 @@ package com.patryklikus.publicchat.models.mappers;
 import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 
 import com.patryklikus.publicchat.models.User;
+
 import java.util.Map;
 
 public class UserMapper {
@@ -20,7 +21,7 @@ public class UserMapper {
         }
         String username = map.get("username");
         String password = map.get("password");
-        if(username == null || password == null) {
+        if (username == null || password == null) {
             return null;
         }
         return anUser().withUsername(username)

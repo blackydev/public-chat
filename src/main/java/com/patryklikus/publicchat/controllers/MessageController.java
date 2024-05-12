@@ -9,6 +9,7 @@ import com.patryklikus.publicchat.models.dtos.GetMessagesRangeDto;
 import com.patryklikus.publicchat.models.mappers.MessageMapper;
 import com.patryklikus.publicchat.services.MessageService;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
@@ -40,6 +41,7 @@ public class MessageController {
     public Response getMessages(Request request) {
         GetMessagesRangeDto messageRange = messageMapper.toMessageRangeDto(request.getRequestURI().getQuery());
         List<Message> messages = messageService.getMessages(messageRange);
+        messages.sort(Comparator.comparingLong(Message::getId));
         return new Response(messageMapper.toJson(messages));
     }
 

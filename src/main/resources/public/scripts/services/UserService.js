@@ -22,8 +22,9 @@ class UserService {
             document.getElementById('error').innerHTML = `${errorMessage}`;
             return;
         }
+        const resBody = await response.json();
 
-        authenticationStorage.save(username, password);
+        authenticationStorage.save(username, password, resBody.isAdmin);
         window.location.href = '/';
     }
 }

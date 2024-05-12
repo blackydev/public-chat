@@ -1,16 +1,27 @@
 class AuthenticationStorage {
-    static #KEY = "Authentication";
+    static #AUTHENTICATION = "authentication";
+    static #IS_ADMIN = "isAdmin";
 
-    get() {
-        return `Basic ${localStorage.getItem(AuthenticationStorage.#KEY)}`;
+    getAuthentication() {
+        const authentication = localStorage.getItem(AuthenticationStorage.#AUTHENTICATION);
+        if (authentication !== null) {
+            return `Basic ${localStorage.getItem(AuthenticationStorage.#AUTHENTICATION)}`;
+        }
+        return null;
     }
 
-    save(username, password) {
-        localStorage.setItem(AuthenticationStorage.#KEY, btoa(`${username}:${password}`));
+    isAdmin() {
+        return localStorage.getItem(AuthenticationStorage.#IS_ADMIN) || false;
+    }
+
+    save(username, password, isAdmin) {
+        localStorage.setItem(AuthenticationStorage.#AUTHENTICATION, btoa(`${username}:${password}`));
+        localStorage.setItem(AuthenticationStorage.#IS_ADMIN, isAdmin);
     }
 
     clear() {
-        localStorage.removeItem(AuthenticationStorage.#KEY);
+        localStorage.removeItem(AuthenticationStorage.#AUTHENTICATION);
+        localStorage.removeItem(AuthenticationStorage.#IS_ADMIN);
     }
 }
 

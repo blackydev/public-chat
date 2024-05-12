@@ -2,39 +2,9 @@
     --primary-color: #5598f6;
 }
 
-@font-face {
-    font-family: "Comfortaa";
-    src: url("public/fonts/Comfortaa-Bold.ttf") format("truetype");
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: "Comfortaa";
-    src: url("public/fonts/Comfortaa-Light.ttf") format("truetype");
-    font-weight: 300; /* Light */
-}
-
-@font-face {
-    font-family: "Comfortaa";
-    src: url("public/fonts/Comfortaa-Medium.ttf") format("truetype");
-    font-weight: 500; /* Medium */
-}
-
-@font-face {
-    font-family: "Comfortaa";
-    src: url("public/fonts/Comfortaa-Regular.ttf") format("truetype");
-    font-weight: normal;
-}
-
-@font-face {
-    font-family: "Comfortaa";
-    src: url("public/fonts/Comfortaa-SemiBold.ttf") format("truetype");
-    font-weight: 600; /* SemiBold */
-}
-
 /* UTILS */
 body {
-    font-family: "Comfortaa", sans-serif;
+    font-family: sans-serif;
     background-color: #e7e7e7;
     margin: 0;
     padding: 0;
@@ -53,7 +23,7 @@ body {
     margin-top: 25px;
 }
 
-.mb-10px {
+.mb-25px {
     margin-bottom: 10px;
 }
 
@@ -219,6 +189,7 @@ form#message button {
 
 .message-box .footer {
     margin: 0 5px;
+    font-size: 12px;
 }
 
 .message-box .footer button.remove {
@@ -226,4 +197,16 @@ form#message button {
     background-color: transparent;
     border: none;
     padding: 0;
+}
+
+button#message-more {
+    height: 30px;
+    font-size: 12px;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    align-items: center;
+    padding: 0 25px;
 }
