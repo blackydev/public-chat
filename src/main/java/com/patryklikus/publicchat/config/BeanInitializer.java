@@ -17,7 +17,11 @@ public class BeanInitializer {
         POSTGRESQL_CLIENT.connect();
         USER_REPOSITORY.createTable();
         MESSAGE_REPOSITORY.createTable();
-        DEMO_DATA_PROVIDER.init();
+        try {
+            DEMO_DATA_PROVIDER.init();
+        } catch(RuntimeException ignore) {
+            // probably already initialized
+        }
     }
 
     private static void initEndpoints(HttpServer server) {
