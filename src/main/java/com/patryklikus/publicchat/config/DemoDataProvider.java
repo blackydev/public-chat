@@ -1,3 +1,4 @@
+/* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.config;
 
 import com.patryklikus.publicchat.models.Message;
@@ -7,7 +8,6 @@ import com.patryklikus.publicchat.models.UserBuilder;
 import com.patryklikus.publicchat.services.MessageService;
 import com.patryklikus.publicchat.services.ReaderService;
 import com.patryklikus.publicchat.services.UserService;
-
 import java.util.ArrayList;
 import java.util.List;
 
