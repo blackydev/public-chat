@@ -4,7 +4,7 @@ package com.patryklikus.publicchat.models;
 public class User implements Idable {
     private final String username;
     private String password;
-    private final boolean isAdmin;
+    private boolean isAdmin;
     private Long id;
 
     User(Long id, String username, String password, boolean isAdmin) {
@@ -16,10 +16,6 @@ public class User implements Idable {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -34,7 +30,15 @@ public class User implements Idable {
         return isAdmin;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

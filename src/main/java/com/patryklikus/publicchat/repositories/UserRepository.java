@@ -32,6 +32,27 @@ public class UserRepository implements Repository<User> {
         }
     }
 
+    public User findById(long userId) {
+        String query = "SELECT username, isAdmin, password FROM users WHERE id = ? LIMIT 1";
+        try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
+            statement.setLong(1, userId);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                String username = rs.getString("username");
+                boolean isAdmin = rs.getBoolean("isAdmin");
+                String password = rs.getString("password");
+                return anUser().withId(userId)
+                        .withUsername(username)
+                        .withIsAdmin(isAdmin)
+                        .withPassword(password)
+                        .build();
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public User findByUsername(String username) {
         String query = "SELECT id, isAdmin, password FROM users WHERE username = ? LIMIT 1";
         try (PreparedStatement statement = postgresClient.prepareStatement(query)) {

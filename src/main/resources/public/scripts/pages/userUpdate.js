@@ -2,5 +2,5 @@ document.getElementById('user-update-form').addEventListener('submit', async fun
     event.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-    await userService.update(username, password);
+    await userService.updateCurrent(username, password);
 });

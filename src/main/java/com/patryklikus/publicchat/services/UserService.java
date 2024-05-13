@@ -1,8 +1,7 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.services;
 
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.CONFLICT;
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
 
 import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.https.models.ResponseException;
@@ -27,6 +26,15 @@ public class UserService {
         checkConflict(user);
         user.setId(authentication.userId());
         saveUser(user);
+    }
+
+    public void setAdminPerms(long userId, boolean adminPerms) {
+        User user = userRepository.findById(userId);
+        if(user == null) {
+            throw new ResponseException(NOT_FOUND);
+        }
+        user.setAdmin(adminPerms);
+        userRepository.save(user);
     }
 
     private void checkConflict(User user) {
