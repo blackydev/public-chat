@@ -121,7 +121,7 @@ public class MessageRepository implements Repository<Message> {
     }
 
     private void create(Message message) {
-        String query = "INSERT INTO message-box.css (author_id, content) VALUES (?, ?) RETURNING ID;";
+        String query = "INSERT INTO messages (author_id, content) VALUES (?, ?) RETURNING ID;";
         try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
             statement.setLong(1, message.getAuthor().getId());
             statement.setString(2, message.getContent());

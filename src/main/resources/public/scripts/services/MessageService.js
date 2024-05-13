@@ -1,7 +1,7 @@
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 class MessageService {
-    static #ENDPOINT = "/api/message-box.css";
+    static #ENDPOINT = "/api/messages";
     static #MAX_BATCH_SIZE = 10;
     #minId = null;
     #maxId = null;
