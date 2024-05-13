@@ -1,3 +1,4 @@
+userService.logout();
 document.getElementById('registration-form').addEventListener('submit', async function (event) {
     event.preventDefault();
     const username = document.getElementById('username').value;
