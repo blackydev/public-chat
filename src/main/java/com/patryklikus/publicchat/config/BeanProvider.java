@@ -47,5 +47,5 @@ public class BeanProvider {
     /**
      * OTHERS
      */
-    static final DemoDataProvider DEMO_DATA_PROVIDER = new DemoDataProvider(USER_SERVICE, MESSAGE_SERVICE, READER_SERVICE)
+    static final DemoDataProvider DEMO_DATA_PROVIDER = new DemoDataProvider(USER_SERVICE, MESSAGE_SERVICE, READER_SERVICE);
 }
