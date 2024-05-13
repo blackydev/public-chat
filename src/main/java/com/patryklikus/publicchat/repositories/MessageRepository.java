@@ -25,7 +25,7 @@ public class MessageRepository implements Repository<Message> {
 
     public void createTable() {
         String query = """
-                CREATE TABLE IF NOT EXISTS message-box.css (
+                CREATE TABLE IF NOT EXISTS messages (
                     id serial primary key,
                     author_id integer not null references "users",
                     content text not null,
@@ -42,7 +42,7 @@ public class MessageRepository implements Repository<Message> {
     public Message findLast() {
         String query = """
                 SELECT m.id, m.content, m.timestamp, u.id AS author_id, u.username AS author_username
-                FROM message-box.css m
+                FROM messages m
                 JOIN users u ON m.author_id = u.id
                 ORDER BY m.id DESC
                 LIMIT 1;
@@ -68,7 +68,7 @@ public class MessageRepository implements Repository<Message> {
     public List<Message> findMany(Long idFrom, Long idTo) {
         String query = """
                 SELECT m.id, m.content, m.timestamp, u.id AS author_id, u.username AS author_username
-                FROM message-box.css m
+                FROM messages m
                 JOIN users u ON m.author_id = u.id
                 WHERE m.id >= ? AND m.id <= ?;
                 """;
@@ -105,7 +105,7 @@ public class MessageRepository implements Repository<Message> {
 
     @Override
     public void remove(long id) {
-        String query = "DELETE FROM message-box.css WHERE id = ?;";
+        String query = "DELETE FROM messages WHERE id = ?;";
         try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
             statement.setLong(1, id);
             statement.executeUpdate();
