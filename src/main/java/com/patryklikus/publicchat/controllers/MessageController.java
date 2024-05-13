@@ -16,7 +16,7 @@ import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQ
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
 import static java.lang.Long.parseLong;
 
-@RequestMapping(path = "/api/messages")
+@RequestMapping(path = "/api/message-box.css")
 public class MessageController {
     private final MessageMapper messageMapper;
     private final MessageService messageService;

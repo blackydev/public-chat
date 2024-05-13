@@ -25,7 +25,7 @@ public class MessageRepository implements Repository<Message> {
 
     public void createTable() {
         String query = """
-                CREATE TABLE IF NOT EXISTS messages (
+                CREATE TABLE IF NOT EXISTS message-box.css (
                     id serial primary key,
                     author_id integer not null references "users",
                     content text not null,
@@ -42,7 +42,7 @@ public class MessageRepository implements Repository<Message> {
     public Message findLast() {
         String query = """
                 SELECT m.id, m.content, m.timestamp, u.id AS author_id, u.username AS author_username
-                FROM messages m
+                FROM message-box.css m
                 JOIN users u ON m.author_id = u.id
                 ORDER BY m.id DESC
                 LIMIT 1;
@@ -68,7 +68,7 @@ public class MessageRepository implements Repository<Message> {
     public List<Message> findMany(Long idFrom, Long idTo) {
         String query = """
                 SELECT m.id, m.content, m.timestamp, u.id AS author_id, u.username AS author_username
-                FROM messages m
+                FROM message-box.css m
                 JOIN users u ON m.author_id = u.id
                 WHERE m.id >= ? AND m.id <= ?;
                 """;
@@ -105,7 +105,7 @@ public class MessageRepository implements Repository<Message> {
 
     @Override
     public void remove(long id) {
-        String query = "DELETE FROM messages WHERE id = ?;";
+        String query = "DELETE FROM message-box.css WHERE id = ?;";
         try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
             statement.setLong(1, id);
             statement.executeUpdate();
@@ -121,7 +121,7 @@ public class MessageRepository implements Repository<Message> {
     }
 
     private void create(Message message) {
-        String query = "INSERT INTO messages (author_id, content) VALUES (?, ?) RETURNING ID;";
+        String query = "INSERT INTO message-box.css (author_id, content) VALUES (?, ?) RETURNING ID;";
         try (PreparedStatement statement = postgresClient.prepareStatement(query)) {
             statement.setLong(1, message.getAuthor().getId());
             statement.setString(2, message.getContent());

@@ -1,0 +1,45 @@
+form.default {
+    background-color: #efefef;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 400px;
+}
+
+form.default input {
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: inline-block;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    padding: 12px 20px;
+    width: 100%;
+}
+
+form.default button {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px 0;
+    padding: 10px;
+    width: 100%;
+}
+
+form.default button:hover {
+    background-color: var(--primary-color);
+}
+
+form.default a {
+    color: #101010;
+    text-decoration: none;
+    font-size: 0.8em;
+}
+
+form #error {
+    color: #d20505;
+}

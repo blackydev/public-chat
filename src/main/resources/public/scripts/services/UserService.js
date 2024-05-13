@@ -7,14 +7,18 @@ class UserService {
         await this.#sendRequest('/api/auth', username, password)
     }
 
+    async update(username, password) {
+        await this.#sendRequest('/api/users/me', username, password, 'PUT');
+    }
+
     logout() {
         authenticationStorage.clear();
         window.location.href = '/login';
     }
 
-    async #sendRequest(endpoint, username, password) {
+    async #sendRequest(endpoint, username, password, method = "POST") {
         const response = await fetch(endpoint, {
-            method: 'POST', body: JSON.stringify({username, password})
+            method, body: JSON.stringify({username, password})
         });
 
         if (!response.ok) {
