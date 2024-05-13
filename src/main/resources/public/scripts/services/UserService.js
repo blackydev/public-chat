@@ -18,7 +18,9 @@ class UserService {
 
     async #sendRequest(endpoint, username, password, method = "POST") {
         const response = await fetch(endpoint, {
-            method, body: JSON.stringify({username, password})
+            body: JSON.stringify({username, password}),
+            headers: {"Authorization": authenticationStorage.getAuthentication()},
+            method,
         });
 
         if (!response.ok) {

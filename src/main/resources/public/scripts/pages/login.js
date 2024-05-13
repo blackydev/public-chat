@@ -1,4 +1,4 @@
-userService.logout();
+authenticationStorage.clear();
 document.getElementById('login-form').addEventListener('submit', async function (event) {
     event.preventDefault();
     const username = document.getElementById('username').value;

@@ -1,12 +1,12 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.controllers;
 
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.OK;
+
 import com.patryklikus.publicchat.https.annotations.GetMapping;
 import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.Response;
 import com.patryklikus.publicchat.services.ReaderService;
-
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.OK;
 
 public class PageController {
     private final ReaderService readerService;

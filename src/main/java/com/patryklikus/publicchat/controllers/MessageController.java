@@ -1,6 +1,10 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.controllers;
 
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
+import static java.lang.Long.parseLong;
+
 import com.patryklikus.publicchat.https.annotations.*;
 import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.Response;
@@ -8,13 +12,8 @@ import com.patryklikus.publicchat.models.Message;
 import com.patryklikus.publicchat.models.dtos.GetMessagesRangeDto;
 import com.patryklikus.publicchat.models.mappers.MessageMapper;
 import com.patryklikus.publicchat.services.MessageService;
-
 import java.util.Comparator;
 import java.util.List;
-
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
-import static java.lang.Long.parseLong;
 
 @RequestMapping(path = "/api/messages")
 public class MessageController {

@@ -58,7 +58,7 @@ class MessageService {
             userService.logout();
             return null;
         }
-        return await response.json();
+        return (await response.json()).sort((m1, m2) => m1.id - m2.id);
     }
 
     async #getLastMessageId() {

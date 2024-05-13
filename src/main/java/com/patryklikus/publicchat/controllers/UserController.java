@@ -1,7 +1,6 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.controllers;
 
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
 
 import com.patryklikus.publicchat.https.annotations.Authenticated;
 import com.patryklikus.publicchat.https.annotations.PostMapping;
@@ -40,6 +39,7 @@ public class UserController {
     public Response updateUser(Request request) {
         User user = userMapper.toUser(request.getRequestBody());
         userService.updateUser(request.getAuthentication(), user);
-        return new Response(NO_CONTENT);
+        Authentication authentication = new Authentication(user);
+        return new Response(authMapper.toJson(authentication));
     }
 }

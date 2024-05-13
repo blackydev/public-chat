@@ -12,7 +12,6 @@ import com.patryklikus.publicchat.https.models.Response;
 import com.patryklikus.publicchat.https.models.ResponseException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**

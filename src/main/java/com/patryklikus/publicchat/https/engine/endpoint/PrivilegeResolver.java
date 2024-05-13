@@ -10,6 +10,7 @@ import com.patryklikus.publicchat.https.models.EndpointMethod;
 import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.ResponseException;
 
+
 public class PrivilegeResolver {
     public void test(EndpointMethod endpointMethod, Request request) {
         Authentication authentication = request.getAuthentication();

@@ -4,7 +4,6 @@ package com.patryklikus.publicchat.models.mappers;
 import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 
 import com.patryklikus.publicchat.models.User;
-
 import java.util.Map;
 
 public class UserMapper {

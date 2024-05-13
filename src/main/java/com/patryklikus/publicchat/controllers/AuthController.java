@@ -1,7 +1,6 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.controllers;
 
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.UNAUTHORIZED;
 
 import com.patryklikus.publicchat.https.annotations.PostMapping;
