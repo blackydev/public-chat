@@ -1,6 +1,12 @@
+addAdminNavBars();
 loadMoreMessages();
 setInterval(updateMessages, 2000);
 document.getElementById("message-more").addEventListener('click', loadMoreMessages)
+
+function addAdminNavBars() {
+    if (authenticationStorage.isAdmin())
+        htmlBoardService.addToNavBar("Permissions", "/permissions/admin");
+}
 
 async function loadMoreMessages() {
     const messages = await messageService.getOlderMessages()

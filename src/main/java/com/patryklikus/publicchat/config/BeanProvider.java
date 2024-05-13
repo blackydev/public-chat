@@ -43,4 +43,9 @@ public class BeanProvider {
     static final AuthController AUTH_CONTROLLER = new AuthController(AUTH_MAPPER, AUTH_SERVICE);
     static final UserController USER_CONTROLLER = new UserController(AUTH_MAPPER, USER_MAPPER, USER_SERVICE);
     static final MessageController MESSAGE_CONTROLLER = new MessageController(MESSAGE_MAPPER, MESSAGE_SERVICE);
+
+    /**
+     * OTHERS
+     */
+    static final DemoDataProvider DEMO_DATA_PROVIDER = new DemoDataProvider(USER_SERVICE, MESSAGE_SERVICE, READER_SERVICE)
 }

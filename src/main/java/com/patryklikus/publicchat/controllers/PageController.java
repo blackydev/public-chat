@@ -23,7 +23,6 @@ public class PageController {
     @GetMapping(path = "/login")
     public Response login(Request request) {
         return getHtmlResourceResponse("login");
-
     }
 
     @GetMapping(path = "/register")
@@ -35,6 +34,12 @@ public class PageController {
     public Response userUpdate(Request request) {
         return getHtmlResourceResponse("userUpdate");
     }
+
+    @GetMapping(path = "/settings/admin-permissions")
+    public Response editAdminPermissions(Request request) {
+        return getHtmlResourceResponse("userSetAdmin");
+    }
+
 
     private Response getHtmlResourceResponse(String resourceUri) {
         String content = readerService.readResource(resourceUri + ".html");

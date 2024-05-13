@@ -23,6 +23,11 @@ class HtmlBoardService {
             board.innerHTML += htmlMessage;
         }
     }
+
+    addToNavBar(content, url) {
+        const nav = document.getElementsByTagName('nav')[0];
+        nav.innerHtml += `<a href="${url}">${content}</a>`;
+    }
 }
 
 const htmlBoardService = new HtmlBoardService();

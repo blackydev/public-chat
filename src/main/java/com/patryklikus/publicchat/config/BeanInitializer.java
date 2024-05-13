@@ -5,6 +5,7 @@ import static com.patryklikus.publicchat.config.BeanProvider.*;
 
 import com.patryklikus.publicchat.https.RequestHandlersManager;
 import com.sun.net.httpserver.HttpServer;
+
 import java.sql.SQLException;
 
 public class BeanInitializer {
@@ -17,6 +18,7 @@ public class BeanInitializer {
         POSTGRESQL_CLIENT.connect();
         USER_REPOSITORY.createTable();
         MESSAGE_REPOSITORY.createTable();
+        DEMO_DATA_PROVIDER.init();
     }
 
     private static void initEndpoints(HttpServer server) {
