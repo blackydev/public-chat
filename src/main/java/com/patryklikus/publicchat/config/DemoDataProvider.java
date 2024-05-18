@@ -9,13 +9,11 @@ import com.patryklikus.publicchat.models.UserBuilder;
 import com.patryklikus.publicchat.services.MessageService;
 import com.patryklikus.publicchat.services.ReaderService;
 import com.patryklikus.publicchat.services.UserService;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static com.patryklikus.publicchat.config.BeanProvider.DEMO_DATA_PROVIDER;
 
 public class DemoDataProvider {
     private static final Logger LOG = Logger.getLogger(DemoDataProvider.class.getName());

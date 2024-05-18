@@ -1,7 +1,6 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.models;
 
-import java.util.Objects;
 
 public final class UserBuilder {
     private Long id;

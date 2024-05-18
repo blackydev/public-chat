@@ -5,12 +5,10 @@ import static com.patryklikus.publicchat.https.models.ResponseStatusCode.UNAUTHO
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.patryklikus.publicchat.https.models.Authentication;
-import com.patryklikus.publicchat.https.models.Response;
 import com.patryklikus.publicchat.https.models.ResponseException;
 import com.patryklikus.publicchat.models.User;
 import com.patryklikus.publicchat.repositories.UserRepository;
 import com.sun.net.httpserver.Headers;
-
 import java.util.Base64;
 import java.util.List;
 

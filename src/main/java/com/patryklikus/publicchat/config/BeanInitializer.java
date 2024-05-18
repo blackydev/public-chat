@@ -4,11 +4,8 @@ package com.patryklikus.publicchat.config;
 import static com.patryklikus.publicchat.config.BeanProvider.*;
 
 import com.patryklikus.publicchat.https.RequestHandlersManager;
-import com.patryklikus.publicchat.https.models.ResponseException;
 import com.sun.net.httpserver.HttpServer;
-
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class BeanInitializer {

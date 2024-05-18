@@ -12,7 +12,6 @@ import com.patryklikus.publicchat.models.Message;
 import com.patryklikus.publicchat.models.dtos.GetMessagesRangeDto;
 import com.patryklikus.publicchat.models.mappers.MessageMapper;
 import com.patryklikus.publicchat.services.MessageService;
-import java.util.Comparator;
 import java.util.List;
 
 @RequestMapping(path = "/api/messages")

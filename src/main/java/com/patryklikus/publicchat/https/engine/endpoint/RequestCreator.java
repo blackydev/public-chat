@@ -5,7 +5,6 @@ import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.services.AuthService;
 import com.sun.net.httpserver.HttpExchange;
-
 import java.util.function.Function;
 
 public class RequestCreator implements Function<HttpExchange, Request> {
