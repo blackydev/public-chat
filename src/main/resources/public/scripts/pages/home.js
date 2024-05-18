@@ -1,16 +1,27 @@
 addAdminNavBars();
 loadMoreMessages();
 setInterval(updateMessages, 2000);
-document.getElementById("message-more").addEventListener('click', loadMoreMessages)
+const loadMoreMessageHtmlButton = document.getElementById("message-more");
+loadMoreMessageHtmlButton.addEventListener('click', loadMoreMessages);
+removeUnusedMessageMoreButton();
+
+function removeUnusedMessageMoreButton() {
+    if (messageService.isLastMessageGot()) {
+        loadMoreMessageHtmlButton.remove();
+    } else {
+        setTimeout(removeUnusedMessageMoreButton, 1000);
+    }
+}
 
 function addAdminNavBars() {
-    if (authenticationStorage.isAdmin())
+    if (authenticationStorage.isAdmin()) {
         htmlBoardService.addToNavBar("Permissions", "/permissions/admin");
+    }
 }
 
 async function loadMoreMessages() {
     const messages = await messageService.getOlderMessages()
-    messages.reverse().forEach(htmlBoardService.addMessage);
+    messages.forEach(msg => htmlBoardService.addMessage(msg, false));
 }
 
 async function updateMessages() {

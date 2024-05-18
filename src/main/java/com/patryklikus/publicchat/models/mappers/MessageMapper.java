@@ -6,6 +6,7 @@ import static com.patryklikus.publicchat.models.UserBuilder.anUser;
 
 import com.patryklikus.publicchat.models.Message;
 import com.patryklikus.publicchat.models.dtos.GetMessagesRangeDto;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,15 +51,13 @@ public class MessageMapper {
 
     public String toJson(Message message) {
         return String.format("""
-                        {
-                           "id": %s,
-                           "author": {"id": %s, "username": "%s"},
-                           "content": "%s",
-                           "timestamp": "%s"
-                        }
-                        """, // todo move to api responseSender
-                message.getId(), message.getAuthor().getId(), message.getAuthor().getUsername(),
-                message.getContent(), message.getTimestamp()
+                {
+                   "id": %s,
+                   "author": {"id": %s, "username": "%s"},
+                   "content": "%s",
+                   "timestamp": "%s"
+                }
+                """, message.getId(), message.getAuthor().getId(), toJsonString(message.getAuthor().getUsername()), toJsonString(message.getContent()), message.getTimestamp()
         );
     }
 
@@ -68,5 +67,9 @@ public class MessageMapper {
         } catch (NumberFormatException e) {
             return null;
         }
+    }
+
+    private String toJsonString(String str) {
+        return str.replace("\"", "\\\"");
     }
 }

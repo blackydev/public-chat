@@ -40,7 +40,6 @@ public class MessageController {
     public Response getMessages(Request request) {
         GetMessagesRangeDto messageRange = messageMapper.toMessageRangeDto(request.getRequestURI().getQuery());
         List<Message> messages = messageService.getMessages(messageRange);
-        messages.sort(Comparator.comparingLong(Message::getId));
         return new Response(messageMapper.toJson(messages));
     }
 

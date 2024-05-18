@@ -33,7 +33,7 @@ class MessageService {
     }
 
     async getOlderMessages() {
-        if (this.#minId < 0) {
+        if (this.isLastMessageGot()) {
             return [];
         }
         if (!this.#isInitialized()) {
@@ -41,11 +41,15 @@ class MessageService {
             return await this.getOlderMessages()
         }
         const from = this.#minId - MessageService.#MAX_BATCH_SIZE;
-        const to = this.#minId;
+        const to = this.#minId - 1;
         const messages = await this.#getMessages(from, to);
 
         this.#minId = from;
         return messages
+    }
+
+    isLastMessageGot() {
+        return this.#minId != null && this.#minId <= 0;
     }
 
     async #getMessages(minId, maxId) {
@@ -58,7 +62,7 @@ class MessageService {
             userService.logout();
             return null;
         }
-        return (await response.json()).sort((m1, m2) => m1.id - m2.id);
+        return (await response.json()).sort((m1, m2) => m2.id - m1.id);
     }
 
     async #getLastMessageId() {

@@ -4,10 +4,16 @@ package com.patryklikus.publicchat.config;
 import static com.patryklikus.publicchat.config.BeanProvider.*;
 
 import com.patryklikus.publicchat.https.RequestHandlersManager;
+import com.patryklikus.publicchat.https.models.ResponseException;
 import com.sun.net.httpserver.HttpServer;
+
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.logging.Logger;
 
 public class BeanInitializer {
+    private static final Logger LOG = Logger.getLogger(DemoDataProvider.class.getName());
+
     public static void initBeans(HttpServer server) throws SQLException {
         initRepositories();
         initEndpoints(server);
@@ -17,11 +23,7 @@ public class BeanInitializer {
         POSTGRESQL_CLIENT.connect();
         USER_REPOSITORY.createTable();
         MESSAGE_REPOSITORY.createTable();
-        try {
-            DEMO_DATA_PROVIDER.init();
-        } catch(RuntimeException ignore) {
-            // probably already initialized
-        }
+        DEMO_DATA_PROVIDER.init();
     }
 
     private static void initEndpoints(HttpServer server) {
