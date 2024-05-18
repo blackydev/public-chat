@@ -1,12 +1,16 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.services;
 
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.UNAUTHORIZED;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.patryklikus.publicchat.https.models.Authentication;
+import com.patryklikus.publicchat.https.models.Response;
+import com.patryklikus.publicchat.https.models.ResponseException;
 import com.patryklikus.publicchat.models.User;
 import com.patryklikus.publicchat.repositories.UserRepository;
 import com.sun.net.httpserver.Headers;
+
 import java.util.Base64;
 import java.util.List;
 
@@ -18,6 +22,14 @@ public class AuthService {
     public AuthService(HashingService hashingService, UserRepository userRepository) {
         this.hashingService = hashingService;
         this.userRepository = userRepository;
+    }
+
+    public Authentication authenticate(User user) {
+        User found = userRepository.findByUsername(user.getUsername());
+        if (found != null && hashingService.compare(user.getPassword(), found.getPassword())) {
+            return new Authentication(found);
+        }
+        throw new ResponseException(UNAUTHORIZED, "Invalid username or password");
     }
 
     public Authentication authenticate(Headers headers) {
