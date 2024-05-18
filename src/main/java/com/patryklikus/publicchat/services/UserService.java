@@ -30,7 +30,7 @@ public class UserService {
 
     public void setAdminPerms(long userId, boolean adminPerms) {
         User user = userRepository.findById(userId);
-        if(user == null) {
+        if (user == null) {
             throw new ResponseException(NOT_FOUND);
         }
         user.setAdmin(adminPerms);
