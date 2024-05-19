@@ -36,9 +36,9 @@ class HtmlBoardService {
         }
     }
 
-    removeMessage(messageId) {
+    async removeMessage(messageId) {
+        await messageService.remove(messageId);
         document.querySelector(`.message-box[data-message-id="${messageId}"]`).remove();
-        messageService.remove(messageId);
     }
 }
 

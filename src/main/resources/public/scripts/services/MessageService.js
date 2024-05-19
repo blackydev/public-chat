@@ -81,6 +81,7 @@ class MessageService {
             method: 'DELETE',
             headers: {"Authorization": authenticationStorage.getAuthentication()},
         });
+        return response.status
     }
 
     #isInitialized() {
