@@ -41,7 +41,7 @@ public class BeanProvider {
     static final PublicController PUBLIC_CONTROLLER = new PublicController(READER_SERVICE);
     static final PageController PAGE_CONTROLLER = new PageController(READER_SERVICE);
     static final AuthController AUTH_CONTROLLER = new AuthController(AUTH_MAPPER, USER_MAPPER, AUTH_SERVICE);
-    static final UserController USER_CONTROLLER = new UserController(AUTH_MAPPER, USER_MAPPER, USER_SERVICE);
+    static final UserController USER_CONTROLLER = new UserController(AUTH_MAPPER, JSON_MAPPER, USER_MAPPER, USER_SERVICE);
     static final MessageController MESSAGE_CONTROLLER = new MessageController(MESSAGE_MAPPER, MESSAGE_SERVICE);
 
     /**

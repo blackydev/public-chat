@@ -11,7 +11,7 @@ class AuthenticationStorage {
     }
 
     isAdmin() {
-        return localStorage.getItem(AuthenticationStorage.#IS_ADMIN) || false;
+        return JSON.parse(localStorage.getItem(AuthenticationStorage.#IS_ADMIN));
     }
 
     save(username, password, isAdmin) {

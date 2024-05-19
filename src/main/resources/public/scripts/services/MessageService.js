@@ -75,6 +75,14 @@ class MessageService {
         return await response.json();
     }
 
+    async remove(messageId) {
+        const endpointAndQuery = `${MessageService.#ENDPOINT}/${messageId}`;
+        const response = await fetch(endpointAndQuery, {
+            method: 'DELETE',
+            headers: {"Authorization": authenticationStorage.getAuthentication()},
+        });
+    }
+
     #isInitialized() {
         return this.#minId !== null && this.#maxId !== null;
     }

@@ -2,26 +2,28 @@
 package com.patryklikus.publicchat.controllers;
 
 
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.*;
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
 
 import com.patryklikus.publicchat.https.annotations.*;
 import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.https.models.Request;
 import com.patryklikus.publicchat.https.models.Response;
-import com.patryklikus.publicchat.https.models.ResponseException;
 import com.patryklikus.publicchat.models.User;
 import com.patryklikus.publicchat.models.mappers.AuthMapper;
+import com.patryklikus.publicchat.models.mappers.JsonMapper;
 import com.patryklikus.publicchat.models.mappers.UserMapper;
 import com.patryklikus.publicchat.services.UserService;
 
 @RequestMapping(path = "/api/users")
 public class UserController {
     private final AuthMapper authMapper;
+    private final JsonMapper jsonMapper;
     private final UserMapper userMapper;
     private final UserService userService;
 
-    public UserController(AuthMapper authMapper, UserMapper userMapper, UserService userService) {
+    public UserController(AuthMapper authMapper, JsonMapper jsonMapper, UserMapper userMapper, UserService userService) {
         this.authMapper = authMapper;
+        this.jsonMapper = jsonMapper;
         this.userMapper = userMapper;
         this.userService = userService;
     }
@@ -44,35 +46,19 @@ public class UserController {
     }
 
     @Authenticated(admin = true)
-    @PostMapping
+    @PostMapping(path = "/permissions/admin")
+    @DeleteMapping(path = "/permissions/admin")
     public Response addUserAdminPerms(Request request) {
-        String uri = request.getRequestURI().toString();
-        if (!uri.endsWith("/permissions/admin")) {
-            return new Response(NOT_FOUND);
-        }
-        long userId = extractUserId(uri);
-        userService.setAdminPerms(userId, true);
+        String username = jsonMapper.jsonStringToString(request.getRequestBody());
+        userService.setAdminPerms(username, true);
         return new Response(NO_CONTENT);
     }
 
     @Authenticated(admin = true)
-    @DeleteMapping
+    @DeleteMapping(path = "/permissions/admin")
     public Response removeUserAdminPerms(Request request) {
-        String uri = request.getRequestURI().toString();
-        if (!uri.endsWith("/permissions/admin")) {
-            return new Response(NOT_FOUND);
-        }
-        long userId = extractUserId(uri);
-        userService.setAdminPerms(userId, false);
+        String username = jsonMapper.jsonStringToString(request.getRequestBody());
+        userService.setAdminPerms(username, false);
         return new Response(NO_CONTENT);
-    }
-
-    private long extractUserId(String uri) {
-        try {
-            uri = uri.replace("/api/users/", "").replace("/permissions/admin", "");
-            return Long.parseLong(uri);
-        } catch (RuntimeException e) {
-            throw new ResponseException(BAD_REQUEST);
-        }
     }
 }

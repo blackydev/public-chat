@@ -8,7 +8,7 @@ import com.patryklikus.publicchat.https.models.Authentication;
 public class AuthMapper {
     public String toJson(Authentication auth) {
         return String.format("""
-                { "userId": %s, "isAdmin": %s }
+                { "userId": %s, "isAdmin": %b }
                 """, auth.userId(), auth.isAdmin()
         );
     }

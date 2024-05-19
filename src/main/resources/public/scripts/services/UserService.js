@@ -1,14 +1,14 @@
 class UserService {
     async register(username, password) {
-        await this.#sendRequest('/api/users', username, password)
+        await this.#sendUserChangesRequest('/api/users', username, password)
     }
 
     async login(username, password) {
-        await this.#sendRequest('/api/auth', username, password)
+        await this.#sendUserChangesRequest('/api/auth', username, password)
     }
 
     async updateCurrent(username, password) {
-        await this.#sendRequest('/api/users/me', username, password, 'PUT');
+        await this.#sendUserChangesRequest('/api/users/me', username, password, 'PUT');
     }
 
     logout() {
@@ -17,14 +17,14 @@ class UserService {
     }
 
     async addAdminPermissions(userId) {
-        await this.#sendEditPermissionsRequest(userId, 'POST');
+        await this.#sendPermissionsChangesRequest(userId, 'POST');
     }
 
     async removeAdminPermissions(userId) {
-        await this.#sendEditPermissionsRequest(userId, 'DELETE');
+        await this.#sendPermissionsChangesRequest(userId, 'DELETE');
     }
 
-    async #sendRequest(endpoint, username, password, method = "POST") {
+    async #sendUserChangesRequest(endpoint, username, password, method = "POST") {
         const response = await fetch(endpoint, {
             body: JSON.stringify({username, password}),
             headers: {"Authorization": authenticationStorage.getAuthentication()},
@@ -42,9 +42,11 @@ class UserService {
         window.location.href = '/';
     }
 
-    async #sendEditPermissionsRequest(userId, method = "POST") {
-        const response = await fetch(`/api/users/${userId}/permissions/admin`, {
-            method, headers: {"Authorization": authenticationStorage.getAuthentication()}
+    async #sendPermissionsChangesRequest(username, method = "POST") {
+        const response = await fetch(`/api/users/permissions/admin`, {
+            body: JSON.stringify(username),
+            headers: {"Authorization": authenticationStorage.getAuthentication()},
+            method
         });
         if (!response.ok) {
             const errorMessage = await response.text();

@@ -6,6 +6,10 @@ body {
     height: 100vh;
 }
 
+.hidden {
+    display: none;
+}
+
 .h-100v {
     height: 100vh;
 }

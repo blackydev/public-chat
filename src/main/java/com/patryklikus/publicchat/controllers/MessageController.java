@@ -53,7 +53,7 @@ public class MessageController {
     @Authenticated(admin = true)
     @DeleteMapping
     public Response deleteMessage(Request request) {
-        String messageId = request.getRequestURI().getPath().replace("/api/message/", "");
+        String messageId = request.getRequestURI().getPath().replace("/api/messages/", "");
         try {
             messageService.removeMessage(parseLong(messageId));
         } catch (NumberFormatException e) {

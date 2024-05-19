@@ -28,8 +28,8 @@ public class UserService {
         saveUser(user);
     }
 
-    public void setAdminPerms(long userId, boolean adminPerms) {
-        User user = userRepository.findById(userId);
+    public void setAdminPerms(String username, boolean adminPerms) {
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new ResponseException(NOT_FOUND);
         }

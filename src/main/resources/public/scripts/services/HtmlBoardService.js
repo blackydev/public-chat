@@ -1,13 +1,18 @@
 class HtmlBoardService {
     addMessage(message, addAtBeginning = false) {
         const date = new Date(message.timestamp);
-
-        const removeButton = authenticationStorage.isAdmin()
-            ? '<button class="remove">remove</button>'
-            : '';
+        const isAdmin = authenticationStorage.isAdmin();
+        let removeButton = '';
+        if (isAdmin) {
+            removeButton = `
+            <button data-message-id="${message.id}" class="remove" onclick="htmlBoardService.removeMessage(${message.id})"> 
+                remove 
+            </button>
+        `; // some problems with button.addListener('click', ...);
+        }
 
         const htmlMessage = `
-        <div class="message-box mb-25px">
+        <div data-message-id="${message.id}" class="message-box mb-25px">
             <div class="author">${message.author.username}</div>
             <div class="content">${message.content}</div>
             <div class="footer flex-center-space-between flex-row-reverse">
@@ -24,9 +29,16 @@ class HtmlBoardService {
         }
     }
 
-    addToNavBar(content, url) {
-        const nav = document.getElementsByTagName('nav')[0];
-        nav.innerHtml += `<a href="${url}">${content}</a>`;
+    showAdminNav() {
+        const navChildren = document.querySelector('nav').children;
+        for (let i = 0; i < navChildren.length; i++) {
+            navChildren[i].classList.remove('hidden');
+        }
+    }
+
+    removeMessage(messageId) {
+        document.querySelector(`.message-box[data-message-id="${messageId}"]`).remove();
+        messageService.remove(messageId);
     }
 }
 

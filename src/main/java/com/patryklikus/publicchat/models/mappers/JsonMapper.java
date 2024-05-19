@@ -17,6 +17,13 @@ public class JsonMapper {
         }
     }
 
+    public String jsonStringToString(String jsonString) {
+        if (!jsonString.startsWith("\"") || !jsonString.endsWith("\"")) {
+            return null;
+        }
+        return jsonString.substring(1, jsonString.length() - 1);
+    }
+
     private Map<String, String> jsonToMapUnsafe(String json) throws IllegalArgumentException {
         Map<String, String> destination = new HashMap<>();
         json = json.replaceAll("\\s+", ""); // removes all whitespaces

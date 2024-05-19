@@ -15,7 +15,7 @@ function removeUnusedMessageMoreButton() {
 
 function addAdminNavBars() {
     if (authenticationStorage.isAdmin()) {
-        htmlBoardService.addToNavBar("Permissions", "/permissions/admin");
+        htmlBoardService.showAdminNav();
     }
 }
 
