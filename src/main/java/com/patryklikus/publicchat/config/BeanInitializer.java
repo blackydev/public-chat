@@ -1,12 +1,11 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.config;
 
+import static com.patryklikus.publicchat.config.BeanProvider.*;
+
 import com.patryklikus.publicchat.https.RequestHandlersManager;
 import com.sun.net.httpserver.HttpServer;
-
 import java.sql.SQLException;
-
-import static com.patryklikus.publicchat.config.BeanProvider.*;
 
 public class BeanInitializer {
     public static void initBeans(HttpServer server) throws SQLException {

@@ -2,6 +2,8 @@
 package com.patryklikus.publicchat.controllers;
 
 
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
+
 import com.patryklikus.publicchat.https.annotations.*;
 import com.patryklikus.publicchat.https.models.Authentication;
 import com.patryklikus.publicchat.https.models.Request;
@@ -11,8 +13,6 @@ import com.patryklikus.publicchat.models.mappers.AuthMapper;
 import com.patryklikus.publicchat.models.mappers.JsonMapper;
 import com.patryklikus.publicchat.models.mappers.UserMapper;
 import com.patryklikus.publicchat.services.UserService;
-
-import static com.patryklikus.publicchat.https.models.ResponseStatusCode.NO_CONTENT;
 
 @RequestMapping(path = "/api/users")
 public class UserController {
