@@ -2,10 +2,10 @@
 package com.patryklikus.publicchat.services;
 
 import static com.patryklikus.publicchat.https.models.ResponseStatusCode.BAD_REQUEST;
-import static com.patryklikus.publicchat.models.MessageBuilder.aMessage;
 
 import com.patryklikus.publicchat.https.models.ResponseException;
 import com.patryklikus.publicchat.models.Message;
+import com.patryklikus.publicchat.models.dtos.GetMessagesRangeDto;
 import com.patryklikus.publicchat.repositories.MessageRepository;
 import java.util.List;
 
@@ -16,14 +16,16 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public List<Message> getMessages(long idFrom, long idTo) {
-        if(idFrom > idTo) {
+    public Message getLastMessage() {
+        return messageRepository.findLast();
+    }
+
+    public List<Message> getMessages(GetMessagesRangeDto messageRange) {
+        if (messageRange.minId() > messageRange.maxId())
             throw new ResponseException(BAD_REQUEST);
-        }
-        if(idTo - idFrom > 10) {
+        if (messageRange.maxId() - messageRange.minId() > 10)
             throw new ResponseException(BAD_REQUEST);
-        }
-        return messageRepository.findMany(idFrom, idTo);
+        return messageRepository.findMany(messageRange.minId(), messageRange.maxId());
     }
 
     public void createMessage(Message message) {
@@ -31,6 +33,6 @@ public class MessageService {
     }
 
     public void removeMessage(long messageId) {
-        messageRepository.remove(aMessage().withId(messageId).build());
+        messageRepository.remove(messageId);
     }
 }

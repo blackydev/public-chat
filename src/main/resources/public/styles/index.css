@@ -1,0 +1,9 @@
+@import "common/utils.css";
+@import "common/forms.css";
+@import "common/logo.css";
+@import "common/navigation.css";
+
+:root {
+    --primary-color: #5598f6;
+}
+

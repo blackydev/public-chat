@@ -1,0 +1,24 @@
+#header {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#header-margin {
+    height: 80px;
+}
+
+.logo {
+    font-family: Arial, sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.public {
+    color: #171717;
+}
+
+.chat {
+    color: var(--primary-color);
+    margin-left: -0.585em;
+}

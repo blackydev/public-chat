@@ -1,12 +1,14 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.services;
 
+import static com.patryklikus.publicchat.https.models.ResponseStatusCode.UNAUTHORIZED;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.patryklikus.publicchat.https.models.Authentication;
+import com.patryklikus.publicchat.https.models.ResponseException;
 import com.patryklikus.publicchat.models.User;
 import com.patryklikus.publicchat.repositories.UserRepository;
-import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.Headers;
 import java.util.Base64;
 import java.util.List;
 
@@ -20,12 +22,20 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public Authentication authenticate(HttpExchange exchange) {
-        List<String> authorization = exchange.getRequestHeaders().get("Authorization");
+    public Authentication authenticate(User user) {
+        User found = userRepository.findByUsername(user.getUsername());
+        if (found != null && hashingService.compare(user.getPassword(), found.getPassword())) {
+            return new Authentication(found);
+        }
+        throw new ResponseException(UNAUTHORIZED, "Invalid username or password");
+    }
+
+    public Authentication authenticate(Headers headers) {
+        List<String> authorization = headers.get("Authorization");
         if (authorization == null || authorization.size() != 1) {
             return null;
         }
-        String authHeader = authorization.getFirst();
+        String authHeader = authorization.get(0);
         if (!authHeader.startsWith(AUTHORIZATION_PREFIX)) {
             return null;
         }
@@ -39,9 +49,7 @@ public class AuthService {
 
     private String[] decodeCredentials(String authHeader) {
         String credentials = authHeader.substring(AUTHORIZATION_PREFIX.length());
-        byte[] decodedBytes = Base64.getDecoder().decode(credentials); // todo will it work?
-        String decoded = new String(decodedBytes, UTF_8);
-        return decoded.split(":");
+        byte[] decodedBytes = Base64.getDecoder().decode(credentials);
+        return new String(decodedBytes, UTF_8).split(":");
     }
-
 }

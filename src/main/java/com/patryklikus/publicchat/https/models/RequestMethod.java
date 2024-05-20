@@ -2,8 +2,5 @@
 package com.patryklikus.publicchat.https.models;
 
 public enum RequestMethod {
-    GET,
-    POST,
-    PUT,
-    DELETE;
+    GET, POST, PUT, DELETE
 }

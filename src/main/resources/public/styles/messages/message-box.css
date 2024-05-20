@@ -1,0 +1,42 @@
+.message-box {
+    width: 300px;
+    font-size: 15px;
+}
+
+.message-box .author {
+    margin: 0 0 3px 3px;
+}
+
+.message-box .content {
+    background-color: white;
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+.message-box .footer {
+    margin: 0 5px;
+    font-size: 12px;
+}
+
+.message-box .footer button.remove {
+    color: red;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+.message-box .footer button.remove:hover {
+    cursor: pointer;
+}
+
+button#message-more {
+    height: 30px;
+    font-size: 12px;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    align-items: center;
+    padding: 0 25px;
+}

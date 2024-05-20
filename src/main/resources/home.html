@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Public Chat</title>
-    <link rel="stylesheet" href="public/styles.css">
+    <link rel="stylesheet" href="/public/styles/index.css">
+    <link rel="stylesheet" href="/public/styles/messages.css">
     <meta name="description" content="description">
     <meta name="author" content="Patryk Likus github/blackydev"/>
     <meta name="copyright" content="Patryk Likus"/>
@@ -13,8 +14,38 @@
 </head>
 
 <body>
-<h1>Page Title</h1>
-<script src="public/scripts/home.js"></script>
+<div class="h-100v flex-center-space-between flex-column">
+    <div>
+        <div id="header">
+            <div class="logo flex-center h-10px mt-10px">
+                <span class="public">PUBLIC</span><span class="chat">CHAT</span>
+            </div>
+            <nav class="flex-center">
+                <a href="/settings/me">Edit Account</a>
+                <a href="/settings/admin-permissions" class="hidden">Edit Permissions</a>
+                <button id="logout">Logout</button>
+            </nav>
+        </div>
+        <div id="header-margin"></div>
+
+        <form id="message" class="flex-center flex-column mb-25px">
+            <label for="message-content"></label>
+            <input type="text" id="message-content" placeholder="What's up?">
+            <button>SEND</button>
+        </form>
+        <div class="flex-column flex-center-start">
+            <div id="board" class="flex-column flex-center-start">
+            </div>
+            <button id="message-more" class="mt-25px">LOAD MORE</button>
+        </div>
+    </div>
+</div>
+<script src="/public/scripts/services/AuthenticationService.js"></script>
+<script src="/public/scripts/loginRequired.js"></script>
+<script src="/public/scripts/services/UserService.js"></script>
+<script src="/public/scripts/services/MessageService.js"></script>
+<script src="/public/scripts/services/HtmlBoardService.js"></script>
+<script src="/public/scripts/pages/home.js"></script>
 </body>
 
 </html>

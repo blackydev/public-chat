@@ -8,6 +8,7 @@ import com.patryklikus.publicchat.https.models.Response;
 import com.patryklikus.publicchat.https.models.ResponseStatusCode;
 import com.patryklikus.publicchat.services.ReaderService;
 
+
 @RequestMapping(path = "/public")
 public class PublicController {
     private final ReaderService readerService;
@@ -18,7 +19,9 @@ public class PublicController {
 
     @GetMapping
     public Response getPublicResource(Request request) {
-        String content = readerService.readResource("." + request.getRequestURI().toString());
+        String resourceUrl = request.getRequestURI().toString()
+                .replaceFirst("/", "");
+        String content = readerService.readResource(resourceUrl);
         return content == null
                 ? new Response(ResponseStatusCode.NOT_FOUND, "Resource not found")
                 : new Response(ResponseStatusCode.OK, content);

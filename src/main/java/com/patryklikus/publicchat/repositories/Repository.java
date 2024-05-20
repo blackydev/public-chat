@@ -2,14 +2,23 @@
 package com.patryklikus.publicchat.repositories;
 
 
-public interface Repository<T> {
+import com.patryklikus.publicchat.models.Idable;
+
+public interface Repository<T extends Idable> {
     /**
      * Creates/updates object.
      */
     void save(T obj);
 
     /**
+     * Removes object with provided ID.
+     */
+    void remove(long id);
+
+    /**
      * Removes object.
      */
-    void remove(T obj);
+    default void remove(T obj) {
+        remove(obj.getId());
+    }
 }

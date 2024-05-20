@@ -17,19 +17,32 @@ public class PageController {
 
     @GetMapping
     public Response home(Request request) {
-        String content = readerService.readResource("home.html");
-        return new Response(OK, content);
+        return getHtmlResourceResponse("home");
     }
 
     @GetMapping(path = "/login")
     public Response login(Request request) {
-        String content = readerService.readResource("login.html");
-        return new Response(OK, content);
+        return getHtmlResourceResponse("login");
     }
 
     @GetMapping(path = "/register")
     public Response register(Request request) {
-        String content = readerService.readResource("register.html");
+        return getHtmlResourceResponse("register");
+    }
+
+    @GetMapping(path = "/settings/me")
+    public Response userUpdate(Request request) {
+        return getHtmlResourceResponse("userUpdate");
+    }
+
+    @GetMapping(path = "/settings/admin-permissions")
+    public Response editAdminPermissions(Request request) {
+        return getHtmlResourceResponse("userSetAdmin");
+    }
+
+
+    private Response getHtmlResourceResponse(String resourceUri) {
+        String content = readerService.readResource(resourceUri + ".html");
         return new Response(OK, content);
     }
 }

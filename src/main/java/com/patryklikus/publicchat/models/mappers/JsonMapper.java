@@ -9,7 +9,7 @@ public class JsonMapper {
     /**
      * This method map JSON to Map. It supports only JSON objects with string properties. If json is invalid returns empty map.
      */
-    protected Map<String, String> jsonToMap(String json) {
+    public Map<String, String> jsonToMap(String json) {
         try {
             return jsonToMapUnsafe(json);
         } catch (Exception e) {
@@ -17,9 +17,15 @@ public class JsonMapper {
         }
     }
 
+    public String jsonStringToString(String jsonString) {
+        if (!jsonString.startsWith("\"") || !jsonString.endsWith("\"")) {
+            return null;
+        }
+        return jsonString.substring(1, jsonString.length() - 1);
+    }
+
     private Map<String, String> jsonToMapUnsafe(String json) throws IllegalArgumentException {
         Map<String, String> destination = new HashMap<>();
-        json = json.replaceAll("\\s+", ""); // removes all whitespaces
 
         String[] keyValuePairs = removeStringWrapper(json, "{", "}")
                 .split(",");

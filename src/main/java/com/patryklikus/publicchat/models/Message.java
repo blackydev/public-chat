@@ -3,7 +3,7 @@ package com.patryklikus.publicchat.models;
 
 import java.time.LocalDateTime;
 
-public class Message {
+public class Message implements Idable {
     private final User author;
     private final String content;
     private Long id;

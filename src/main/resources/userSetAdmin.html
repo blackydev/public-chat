@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Public Chat</title>
+    <link rel="stylesheet" href="/public/styles/index.css">
+    <meta name="description" content="description">
+    <meta name="author" content="Patryk Likus github/blackydev"/>
+    <meta name="copyright" content="Patryk Likus"/>
+</head>
+
+<body class="flex-center">
+<form id="user-set-admin-form" class="default">
+    <a href="/">
+        <div class="logo flex-center">
+            <span class="public">PUBLIC</span><span class="chat">CHAT</span>
+        </div>
+    </a>
+
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username">
+
+    <div id="error"></div>
+
+    <button id="admin-set">ADD PERMISSIONS</button>
+    <button id="admin-remove">REMOVE PERMISSIONS</button>
+</form>
+<script src="/public/scripts/services/AuthenticationService.js"></script>
+<script src="/public/scripts/loginRequired.js"></script>
+<script src="/public/scripts/services/UserService.js"></script>
+<script src="/public/scripts/pages/userSetAdmin.js"></script>
+</body>
+
+</html>
