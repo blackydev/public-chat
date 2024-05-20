@@ -9,6 +9,7 @@ import com.patryklikus.publicchat.models.UserBuilder;
 import com.patryklikus.publicchat.services.MessageService;
 import com.patryklikus.publicchat.services.ReaderService;
 import com.patryklikus.publicchat.services.UserService;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,8 +44,7 @@ public class DemoDataProvider {
         initRootUser();
         List<User> users = initUsers();
         int index = 0;
-        for (String content : readerService.readResource("./demo/messages.txt").split("\n")) {
-            System.out.println(content);
+        for (String content : readerService.readResource("demo/messages.txt").split("\n")) {
             User author = users.get(index++ % users.size());
             Message message = MessageBuilder.aMessage()
                     .withContent(content)

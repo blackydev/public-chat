@@ -26,7 +26,6 @@ public class JsonMapper {
 
     private Map<String, String> jsonToMapUnsafe(String json) throws IllegalArgumentException {
         Map<String, String> destination = new HashMap<>();
-        json = json.replaceAll("\\s+", ""); // removes all whitespaces
 
         String[] keyValuePairs = removeStringWrapper(json, "{", "}")
                 .split(",");

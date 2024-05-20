@@ -44,7 +44,7 @@ class UserService {
 
     async #sendPermissionsChangesRequest(username, method = "POST") {
         const response = await fetch(`/api/users/permissions/admin`, {
-            body: JSON.stringify(username),
+            body: `"${username}"`,
             headers: {"Authorization": authenticationStorage.getAuthentication()},
             method
         });

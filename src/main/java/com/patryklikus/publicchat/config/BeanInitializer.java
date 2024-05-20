@@ -1,11 +1,12 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.config;
 
-import static com.patryklikus.publicchat.config.BeanProvider.*;
-
 import com.patryklikus.publicchat.https.RequestHandlersManager;
 import com.sun.net.httpserver.HttpServer;
+
 import java.sql.SQLException;
+
+import static com.patryklikus.publicchat.config.BeanProvider.*;
 
 public class BeanInitializer {
     public static void initBeans(HttpServer server) throws SQLException {
@@ -15,10 +16,10 @@ public class BeanInitializer {
     }
 
     private static void initRepositories() throws SQLException {
-      //  POSTGRESQL_CLIENT.connect();
-       // USER_REPOSITORY.createTable();
-        //MESSAGE_REPOSITORY.createTable();
-        //DEMO_DATA_PROVIDER.init();
+        POSTGRESQL_CLIENT.connect();
+        USER_REPOSITORY.createTable();
+        MESSAGE_REPOSITORY.createTable();
+        DEMO_DATA_PROVIDER.init();
     }
 
     private static void initEndpoints(HttpServer server) {
