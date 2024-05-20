@@ -29,8 +29,11 @@ Application uses basic authentication. To authenticate it's required to send `Au
 in `Basic username:password` format (where username:password is Base64 encoded).
 
 ## How to run
+
 It is required to install `docker` and `docker-compose`.
 
 ```
 docker-compose -f ./docker-compose.yml -p public-chat up -d
 ```
+
+The application runs on port 8080 by default.

@@ -13,12 +13,9 @@ services:
       - private_network
     env_file:
       - .env
-
   db:
     build:
       dockerfile: devops/Dockerfile-postgresql
-    ports:
-      - "5432:5432"
     networks:
       - private_network
     env_file:

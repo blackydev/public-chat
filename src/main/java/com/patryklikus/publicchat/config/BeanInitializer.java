@@ -15,10 +15,10 @@ public class BeanInitializer {
     }
 
     private static void initRepositories() throws SQLException {
-        POSTGRESQL_CLIENT.connect();
-        USER_REPOSITORY.createTable();
-        MESSAGE_REPOSITORY.createTable();
-        DEMO_DATA_PROVIDER.init();
+      //  POSTGRESQL_CLIENT.connect();
+       // USER_REPOSITORY.createTable();
+        //MESSAGE_REPOSITORY.createTable();
+        //DEMO_DATA_PROVIDER.init();
     }
 
     private static void initEndpoints(HttpServer server) {
