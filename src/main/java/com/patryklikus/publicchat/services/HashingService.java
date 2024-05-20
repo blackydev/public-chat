@@ -12,8 +12,10 @@ import javax.crypto.spec.PBEKeySpec;
 
 public class HashingService {
     private static final String SALT_SEPARATOR = "\u0007";
-    ;
 
+    /**
+     * @return salt \u0007 hash
+     */
     public String hash(String toHash) {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
@@ -28,6 +30,9 @@ public class HashingService {
         return Objects.equals(hash(plain, salt), saltAndHash[1]);
     }
 
+    /**
+     * @return hash
+     */
     private String hash(String toHash, byte[] salt) {
         KeySpec spec = new PBEKeySpec(toHash.toCharArray(), salt, 65536, 128);
         try {

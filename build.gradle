@@ -20,6 +20,14 @@ test {
     useJUnitPlatform()
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.patryklikus.publicchat.Main'
+        )
+    }
+}
+
 spotless {
     java {
         target project.fileTree(project.rootDir) {
@@ -32,3 +40,5 @@ spotless {
         licenseHeader('/* Copyright Patryk Likus All Rights Reserved. */')
     }
 }
+
+spotlessJava.dependsOn(":processResources", "compileJava")

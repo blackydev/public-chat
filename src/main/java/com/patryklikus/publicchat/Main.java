@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-public class Launcher {
+public class Main {
     private static final Logger LOG = Logger.getLogger(RequestHandlersManager.class.getName());
     private static final int PORT = 8080;
 
