@@ -1,6 +1,7 @@
 /* Copyright Patryk Likus All Rights Reserved. */
 package com.patryklikus.publicchat.config;
 
+import com.patryklikus.publicchat.ShutdownHook;
 import com.patryklikus.publicchat.clients.PostgresClient;
 import com.patryklikus.publicchat.controllers.*;
 import com.patryklikus.publicchat.models.mappers.*;
@@ -48,4 +49,5 @@ public class BeanProvider {
      * OTHERS
      */
     static final DemoDataProvider DEMO_DATA_PROVIDER = new DemoDataProvider(USER_SERVICE, MESSAGE_SERVICE, READER_SERVICE);
+    static final ShutdownHook SHUTDOWN_HOOK = new ShutdownHook();
 }

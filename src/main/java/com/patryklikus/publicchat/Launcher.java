@@ -7,7 +7,6 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.sql.SQLException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
@@ -19,9 +18,7 @@ public class Launcher {
         InetSocketAddress inetSocketAddress = new InetSocketAddress(PORT);
         HttpServer server = HttpServer.create(inetSocketAddress, 0);
 
-
-        ExecutorService threadPoolExecutor = Executors.newVirtualThreadPerTaskExecutor();
-        server.setExecutor(threadPoolExecutor);
+        server.setExecutor(Executors.newCachedThreadPool());
 
         BeanInitializer.initBeans(server);
 

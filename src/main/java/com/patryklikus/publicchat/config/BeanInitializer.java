@@ -6,14 +6,12 @@ import static com.patryklikus.publicchat.config.BeanProvider.*;
 import com.patryklikus.publicchat.https.RequestHandlersManager;
 import com.sun.net.httpserver.HttpServer;
 import java.sql.SQLException;
-import java.util.logging.Logger;
 
 public class BeanInitializer {
-    private static final Logger LOG = Logger.getLogger(DemoDataProvider.class.getName());
-
     public static void initBeans(HttpServer server) throws SQLException {
         initRepositories();
         initEndpoints(server);
+        initShutdownHook();
     }
 
     private static void initRepositories() throws SQLException {
@@ -29,5 +27,10 @@ public class BeanInitializer {
                 PUBLIC_CONTROLLER, PAGE_CONTROLLER, USER_CONTROLLER, MESSAGE_CONTROLLER, AUTH_CONTROLLER
         );
         requestHandlersManager.init();
+    }
+
+    private static void initShutdownHook() {
+        SHUTDOWN_HOOK.add(POSTGRESQL_CLIENT);
+        Runtime.getRuntime().addShutdownHook(SHUTDOWN_HOOK);
     }
 }

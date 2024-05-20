@@ -35,7 +35,7 @@ public class AuthService {
         if (authorization == null || authorization.size() != 1) {
             return null;
         }
-        String authHeader = authorization.getFirst();
+        String authHeader = authorization.get(0);
         if (!authHeader.startsWith(AUTHORIZATION_PREFIX)) {
             return null;
         }
@@ -49,7 +49,7 @@ public class AuthService {
 
     private String[] decodeCredentials(String authHeader) {
         String credentials = authHeader.substring(AUTHORIZATION_PREFIX.length());
-        byte[] decodedBytes = Base64.getDecoder().decode(credentials); // todo will it work?
+        byte[] decodedBytes = Base64.getDecoder().decode(credentials);
         return new String(decodedBytes, UTF_8).split(":");
     }
 }
