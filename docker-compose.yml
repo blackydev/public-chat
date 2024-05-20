@@ -3,18 +3,26 @@ version: '3.8'
 services:
   app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      dockerfile: devops/Dockerfile-app
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    networks:
+      - private_network
+    env_file:
+      - .env
 
   db:
-    image: postgres:13-alpine3.18
+    build:
+      dockerfile: devops/Dockerfile-postgresql
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_USER: wdpai
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: db
+    networks:
+      - private_network
+    env_file:
+      - .env
+
+networks:
+  private_network:
